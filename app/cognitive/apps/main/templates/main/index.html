@@ -1,0 +1,83 @@
+{% extends "main/base.html" %}
+{% block head %}
+{% endblock %}
+{% load staticfiles %}
+{% block branding %}
+        <!-- Branding only huge on homepage -->
+        <div class="container">
+            <div id="brand">
+                <div id="logo">
+                <a href="/about/">
+                <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" width="485" height="168"></a>
+            </div><!--logo-->
+            <span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span><!--tagline-->
+            </div><!--/#brand-->
+        </div><!--container-->
+{% endblock %}
+{% block content %}
+
+        <div id="tbox">
+            <h1>Welcome to Cognitive Atlas</h1><br />
+            <span class="tblock">The Cognitive Atlas is a collaborative knowledge building project that aims to develop a knowledge base (or ontology) that characterizes the state of current thought in cognitive science. The project is led by Russell Poldrack, Professor of Psychology at Stanford University. Development of the project was supported by grant RO1MH082795 from the National Institute of Mental Health. </span>
+        </div><!-- close tbox -->
+        <div id="aform" class="login-box">
+          <h3>Sign In</h3><span style="font-size:8pt;color:#c0c0c0;">Registered users may edit and contribute to the Cognitive Atlas</span><div id="showform">    <form name="login" method="post" action="obj/index.php" id="login_form">        <div class="clearfix">    <input tabindex="3" type="text" class="fwidgettxt" id="username" name="username" value="" size="30" aria-label="username" title="username" /><br />    <input tabindex="4" type="password" class="fwidgettxt" id="password" name="password" value="" size="30" aria-label="password" title="password" /><br />    <span class="sb">Keep me logged in</span>&nbsp;<input type="checkbox" class="no-outline" id="persistent" name="persistent" tabindex="5" aria-label=\"stay logged in for 2 weeks\" title=\"choose persistent login\" >    <input tabindex="6" type="submit" value="Sign in" class="btn" title="submit credentials"></div><div style="text-align:right;">    <span id="remind_me_link" class="sa"><a href="javascript:void(0)" name="remlink" class="sa">Forgotten password?  &raquo;</a></span><br />    <a href="/usr/userreq.php">Request a contributor account &raquo;</a>    </div>    </form></div><div id="reminder" style="display:none;">    <br><br>    <form name="reminder_form" method="post" action="url/blank.php" id="reminder_form">        <span class="er"><input tabindex="6" type="text" size="20" name="user_email" id="user_email" title="email for password reminder">&nbsp;        <input tabindex="7" type="submit" id="remind_me" value="Reset Password" title="password reset submission" ></span><br />    </form></div>            </div><!-- close aform -->
+            <br clear="all">
+            <div class="superbox-container">
+                <div class="superbox conceptbox">
+                    <small>Recently updated mental</small> <b>CONCEPTS</b>
+                    <ul class="superlist">
+                        <li><a href="/term/id/trm_5521a2aa5b127" class="concept">conceptual priming</a></li><li><a href="/term/id/trm_5519b5f181edd" class="concept">goal selection</a></li><li><a href="/term/id/trm_557b4817db34d" class="concept">economic value processing</a></li><li><a href="/term/id/trm_55c298bbe56d5" class="concept">high energy density food recognition</a></li><li><a href="/term/id/trm_5521a45a397a6" class="concept">Repetition priming</a></li><li><a href="/term/id/trm_5595bda0c5dc3" class="concept">facial trustworthiness recognition</a></li><li><a href="/term/id/trm_5595be14a57c5" class="concept">social inference</a></li><li><a href="/term/id/trm_557b482a7c62b" class="concept">emotional face recognition</a></li>                    </ul>
+          <a href="/concepts/a" class="superbutton wideload concept">BROWSE ALL 803 <b>CONCEPTS</b></a>
+        </div>
+        <div class="superbox taskbox">
+          <small>Recently updated experimental</small> <b>TASKS</b>
+            <ul class="superlist">
+              <li><a href="/term/id/trm_551b17b190582" class="task">intensity for somatosensory stimulation</a></li><li><a href="/term/id/trm_551f07a281283" class="task">Distraction paradigm (capture)</a></li><li><a href="/term/id/trm_553fbbf79ebc5" class="task">social influence for food preferences task</a></li><li><a href="/term/id/trm_551b0f2b930ab" class="task">object recognition task</a></li><li><a href="/term/id/trm_5550e5011ce10" class="task">audio narrative</a></li><li><a href="/term/id/trm_55218116cbf40" class="task">Manipulation of individual words</a></li><li><a href="/term/id/trm_551f151f7347e" class="task">Acquired Equivalence</a></li><li><a href="/term/id/trm_55217860a9dea" class="task">Coherent/Incoherent discourse distinction task</a></li>            </ul>
+            <a href="/tasks/a" class="superbutton wideload task">BROWSE ALL 655 <b>TASKS</b></a>
+        </div>
+        <div class="superbox disorderbox">
+          <small>Recently updated </small> <b>DISORDERS</b>
+            <ul class="superlist">
+              <li><a href="/disorder/id/dso_55e1b3573c90c" class="disorder">Letter position dyslexia</a></li><li><a href="/disorder/id/dso_52c731124ad3e" class="disorder">formula creation disorder</a></li><li><a href="/disorder/id/dso_52d06688e07f3" class="disorder">philoprogeria</a></li><li><a href="/disorder/id/dso_55ac96d54ae2c" class="disorder">Semantic Dementia</a></li><li><a href="/disorder/id/dso_52c73c015b5a4" class="disorder">explorer deprecation disorder</a></li><li><a href="/disorder/id/dso_55e1b3f9ace16" class="disorder">surface dyslexia</a></li><li><a href="/disorder/id/dso_5341d1ef4107e" class="disorder">Alzheimer disease </a></li>            </ul>
+            <a href="/disorders/" class="superbutton wideload disorder">BROWSE ALL 217 <b>DISORDERS</b></a>
+        </div>
+        <div class="superbox collectionbox last-item">
+            <small>Recently updated</small> <b>COLLECTIONS</b>
+            <ul class="superlist">
+              <li> <a href="/task-collection/id/tco_50f4844b5abab">NIH Toolbox Motor Battery </a></li><li> <a href="/task-collection/id/tco_50f4841be997b">NIH Toolbox Early Childhood Sensation Battery </a></li><li> <a href="/task-collection/id/tco_50f483e0a6bf9">NIH Toolbox Cognition Battery </a></li><li> <a href="/collection/id/thc_51005e60b28fe">RDoc Social Processes Matrix </a></li><li> <a href="/collection/id/thc_51005496d6228">RDoC Working Memory Matrix </a></li><li> <a href="/collection/id/thc_51005dd46326b">RDoc Positive Valence Systems Matrix </a></li>                    </ul>
+          <a href="/collections/" class="superbutton wideload collection">BROWSE ALL 22 <b>COLLECTIONS</b></a>
+        </div>
+            </div>
+            <div id="iewarn" style="display:none;font-size:10pt;width:100%;">
+                You appear to be using an older version of Internet Explorer. Please upgrade, as this site relies on the capabilities of a newer browser.
+            </div>
+{% endblock %}
+{% block scripts %}
+    <script language="javascript">
+    $(document).ready(function() { 
+        function autoFill(id, v){
+    $(id).css({ color: "#b2adad" }).attr({ value: v }).focus(function(){
+    if($(this).val()==v){
+        $(this).val("").css({ color: "#333" });
+    }
+    }).blur(function(){
+        if($(this).val()==""){
+           $(this).css({ color: "#b2adad" }).val(v);
+        }
+    });
+    }
+    if ($("#username")){
+        autoFill($("#username"), "your email address");
+    }
+    if ($("#user_email")){
+        autoFill($("#user_email"), "your email address");
+    }
+    if ($("#password")){
+        autoFill($("#password"), "XXXXXXXXXXXXXX");
+    }
+    });
+    </script>
+{% endblock %}
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<!-- saved from url=(0030)http://www.cognitiveatlas.org/ -->
+<html lang="en" class=""><!--<![endif]--><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>Cognitive Atlas Annotation Portal</title>
+  
+		<link type="text/css" href="{{ url_for('static',filename='cogat_app.css') }}" rel="stylesheet" media="screen">
+		<link type="text/css" href="{{ url_for('static',filename='print.css') }}" rel="stylesheet" media="print">
+		<script src="{{ url_for('static',filename='jquery.js') }}" type="text/javascript"></script>
+		<script src="{{ url_for('static',filename='validate.js') }}" type="text/javascript"></script>
+		<script src="{{ url_for('static',filename='jquery-ui-1.8.14.custom.min.js') }}" type="text/javascript"></script>
+		<script src="{{ url_for('static',filename='jquery.html5-placeholder-shim.js') }}" type="text/javascript"></script>
+		<link href="{{ url_for('static',filename='css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static',filename='css(1)') }}" rel="stylesheet" type="text/css">
+		<link type="text/css" href="{{ url_for('static',filename='jquery-ui-1.8.14.custom.css') }}" rel="stylesheet" media="screen">
+<style>
+body{
+    background:url("{{ url_for('static',filename='bodyBG.png') }}") repeat 0 0 #000
+}		
+.fullwrap#branding{
+    background-image:url("{{ url_for('static',filename='headerBG2.png') }}")
+}
+.homepage #navbar-inner {
+  margin-left: 28%;
+}
+.homepage #tbox, .homepage #lbox {
+  width: 900px;
+}
+.homepage .superbox {
+  width: 900px;
+}
+#navbar {
+  background: #353535;
+}
+
+#foot .navlink.footlogo a {
+  margin: 0 10px 0px -3px;
+}
+.fullwrap {
+  padding: 10px 0px 0px 0px;
+}
+</style>
+</head>
+<body id="main" class="homepage">
+ 
+    <div class="fullwrap" id="branding">
+<div id="foot" class="fullwrap">
+  <div id="navbar" class="navlink footlogo first-item">
+				<a class="embiggen">cognitive<span id="logo-last">atlas</span><span id="address" class="small quiet pull-right" style="font-size:16px"> Data Annotation Portal</span></a>
+</div>
+
+        <div class="container">
+    			<div id="brand">
+          </div><!--/#brand-->
+        </div><!--container-->
+    </div><!--/#branding-->
+
+    <div class="fullwrap " id="nav">
+      <div id="navbar">
+    		<ul id="navbar-inner" class=" clearfix">
+    				<li class="navlink concept first-item">
+    					<a href="/{{ username }}" class="btn">Home </a>
+    					<div class="active-arrow"></div>
+    					</li>
+    				<li class="navlink task">
+    					<a href="http://www.cognitiveatlas.org/about/" target="_blank" class="btn">About </a>
+    					<div class="active-arrow"></div>
+    					</li>
+    				<li class="navlink coll">
+    					<a href="/help/{{ username }}" class="btn">Get Help</span></a>
+    					<div class="active-arrow"></div>
+    					</li>
+    			</ul>
+        </div><!--navbar-->
+      </div><!--nav-->
+      
+      <div class="fullwrap " id="content">
+        <div class="container" id="pagecontent">
+
+    <div id="pagecontent" class="container">
+		  <div id="tbox">
+          <h1>Cognitive Atlas Help</h1><br>
+          <span class="tblock">You can find additional FAQ and help resources on the Cognitive Atlas site.</span>
+
+<iframe src="https://player.vimeo.com/video/70527995" width="900" height="375" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe> <p><a href="https://vimeo.com/70527995">Cognitive Atlas Walkthrough</a> from <a href="https://vimeo.com/user19599628">Christian Seppa</a> on <a href="https://vimeo.com">Vimeo</a>.</p>
+
+			</div><!-- close tbox -->
+			<br clear="all">
+        <div class="superbox taskbox" style="height:50px">
+          <b>ASK FOR HELP</b>
+
+              <p>You should <a href="#" style="display:initial; margin:0 0 0 0;">contact us</a> with any questions.</p>
+        </div>
+     		</div>
+			<div id="iewarn" style="display:none;font-size:10pt;width:100%;">
+				You appear to be using an older version of Internet Explorer. Please upgrade, as this site relies on the capabilities of a newer browser.
+			</div>
+			<div class="clearboth"></div>
+		</div><!--/#pagecontent-->
+    </div><!-- #pagecontent.container -->
+  </div><!-- .fullwrap#content-->
+<div id="foot" class="fullwrap">
+  <div id="navbar">
+		<ul id="navbar-inner" class="clearfix footlinks">
+			<li class="navlink footlogo first-item">
+				<a class="embiggen">cognitive<span id="logo-last">atlas</span><span id="address" class="small quiet pull-right"> NIMH Grant RO1MH082795, Russell Poldrack, PI.</span></a>
+		</li>
+			</ul>
+		</ul>
+	</div><!-- #navbar-->
+	<div class="container">
+			<div class="pull-left cclink">
+				<a href="http://creativecommons.org/licenses/by-sa/3.0/us/" title="Creative Commons Attribution Share Alike license"><img src="{{ url_for('static',filename='cc_by_sa_88x31.png') }}" alt="Creative Commons by-sa 3.0 us" width="71" height="25"></a>
+			</div>
+			<div class="pull-right small"> Development partner: <a href="http://www.squishymedia.com/" target="_blank" class="">Squishymedia</a></div>
+	</div><!--.container-->
+</div><!--#foot-->
+<ul class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" role="listbox" aria-activedescendant="ui-active-menuitem" style="z-index: 1002; top: 0px; left: 0px; display: none;"></ul></body></html>
