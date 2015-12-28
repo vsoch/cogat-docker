@@ -143,12 +143,12 @@ CACHES = {
 
 # Bogus secret key.
 try:
-    from secrets import *
+    from .secrets import *
 except ImportError:
-    from bogus_secrets import *
+    from .bogus_secrets import *
 
 # Local settings
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     pass

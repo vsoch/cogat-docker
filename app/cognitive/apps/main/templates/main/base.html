@@ -20,8 +20,6 @@
     <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
     <link href='http://fonts.googleapis.com/css?family=Crimson+Text:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
 
-    <link href="{% static "css/css"%}" rel="stylesheet" type="text/css">
-    <link href="{% static "css/css(1)"%}" rel="stylesheet" type="text/css">
     <link type="text/css" href="{% static "css/jquery-ui-1.8.14.custom.css"%}" rel="stylesheet" media="screen">
     {% endblock %}
     {% block head %}{% endblock %}
@@ -146,12 +144,14 @@
     <div class="pull-right small"> Development partner: <a href="http://www.squishymedia.com" target="_blank" class="">Squishymedia</a></div>
     </div><!--.container-->
     </div><!--#foot-->
-{% block scripts %}
-    <script src="{% static "jquery.js"%}" type="text/javascript"></script>
-    <script src="{% static "jquery.validate.js"%}" type="text/javascript"></script>
-    <script src="{% static "jquery-ui-1.8.14.custom.min.js"%}" type="text/javascript"></script>
-    <script src="{% static "jquery.html5-placeholder-shim.js"%}" type="text/javascript"></script>
-{% endblock %}
+
+    <script src="{% static "js/jquery.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/jquery.validate.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/jquery-ui-1.8.14.custom.min.js"%}" type="text/javascript"></script>
+    <script src="{% static "js/jquery.html5-placeholder-shim.js"%}" type="text/javascript"></script>
+    {% block scripts %}{% endblock %}
+
+
 </body>
 {% endblock %}
 </html>
