@@ -1,5 +1,5 @@
 FROM python:2.7.9
-MAINTAINER kb@socialmoon.com
+MAINTAINER vsochat@stanford.edu
 
 RUN pip install --upgrade pip
 RUN pip install -U docker-compose
