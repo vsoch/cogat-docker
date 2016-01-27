@@ -11,17 +11,28 @@ class Node:
 
 
 
-    def all(self,limit=None):
+    def all(self,limit=None,format="df",order_by=None,desc=True):
         '''all returns all concepts, or up to a limit
         :param limit: return N=limit concepts only (default None)
+        :param order_by: order the results by a particular field
+        :param desc: if order by is not None, do descending (default True) 
         '''
-        if limit != None:
-            query = "MATCH (n:%s) RETURN n LIMIT %s" %(self.name,limit) 
-        else:
-            query = "MATCH (n:%s) RETURN n.id,n.name" %(self.name) 
-        result = graph.cypher.execute(query)
-        return pandas.DataFrame(result.records, columns=result.columns)
+        query = "MATCH (n:%s) RETURN n.id,n.name" %self.name
 
+        if order_by != None:
+            query = "%s ORDER BY n.%s" %(query,order_by)      
+            if desc==True:
+                query = "%s desc" %(query)
+
+        if limit != None:
+            query = "%s LIMIT %s" %(query,limit) 
+
+        result = graph.cypher.execute(query)
+        df = pandas.DataFrame(result.records, columns=result.columns)
+        if format == "df":
+            return df
+        else:
+            return map(tuple,df.values)
 
 
     def get(self,params,field="id"):

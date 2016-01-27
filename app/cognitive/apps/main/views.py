@@ -5,8 +5,7 @@ from django.template import loader
 Concept = Concept()
 
 def index(request):
-    concepts = Concept.all()
-    concept_names = 
+    concepts = Concept.all(format="list",limit=10,order_by="last_updated")
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
                'active':'home'}

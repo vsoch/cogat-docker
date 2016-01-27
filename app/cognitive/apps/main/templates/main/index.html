@@ -27,8 +27,11 @@
                 <div class="superbox conceptbox">
                     <small>Recently updated mental</small> <b>CONCEPTS</b>
                     <ul class="superlist">
-                        <li><a href="/term/id/trm_5521a2aa5b127" class="concept">conceptual priming</a></li><li><a href="/term/id/trm_5519b5f181edd" class="concept">goal selection</a></li><li><a href="/term/id/trm_557b4817db34d" class="concept">economic value processing</a></li><li><a href="/term/id/trm_55c298bbe56d5" class="concept">high energy density food recognition</a></li><li><a href="/term/id/trm_5521a45a397a6" class="concept">Repetition priming</a></li><li><a href="/term/id/trm_5595bda0c5dc3" class="concept">facial trustworthiness recognition</a></li><li><a href="/term/id/trm_5595be14a57c5" class="concept">social inference</a></li><li><a href="/term/id/trm_557b482a7c62b" class="concept">emotional face recognition</a></li>                    </ul>
-          <a href="/concepts/a" class="superbutton wideload concept">BROWSE ALL 803 <b>CONCEPTS</b></a>
+                        {% for concept in concepts %}
+                        <li><a href="/term/id/{{ concept.id }}" class="concept">{{ concept.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+          <a href="/concepts/a" class="superbutton wideload concept">BROWSE ALL {{ number_concpets }} <b>CONCEPTS</b></a>
         </div>
         <div class="superbox taskbox">
           <small>Recently updated experimental</small> <b>TASKS</b>

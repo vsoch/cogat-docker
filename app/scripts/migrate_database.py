@@ -18,7 +18,8 @@ def make_node(nodetype,uid,name,properties=None,property_key="id"):
     node = None
     if graph.find_one(nodetype,property_key='id', property_value=uid) == None:
         print("Creating %s:%s, %s" %(nodetype,name,uid))
-        node = Node(nodetype, name=name,id=uid)
+        timestamp = graph.cypher.execute("RETURN timestamp()").one
+        node = Node(nodetype, name=name,id=uid,creation_time=timestamp,last_updated=timestamp)
         graph.create(node)
         if properties != None:
             for property_name in properties.keys():
