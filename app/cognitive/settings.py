@@ -11,6 +11,13 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from py2neo import Graph
+from py2neo.neo4j import authenticate
+#graph = Graph("http://graphdb:7474/db/data/")
+
+# Just for local development - will read this from secrets
+authenticate("localhost:7474", "neo4j", "noodles")
+graph = Graph()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
