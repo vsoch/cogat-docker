@@ -1,0 +1,289 @@
+
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class=""> <!--<![endif]-->
+			<head>
+				<meta http-equiv="Content-Type" content="text/html;charset=utf-8" ><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgUHWVBQGwIGUlNVDgE="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o||e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({QJf3ax:[function(t,e){function n(){}function r(t){function e(t){return t&&t instanceof n?t:t?a(t,i,o):o()}function s(n,r,o){t&&t(n,r,o);for(var i=e(o),a=f(n),s=a.length,c=0;s>c;c++)a[c].apply(i,r);return i}function c(t,e){d[t]=f(t).concat(e)}function f(t){return d[t]||[]}function u(){return r(s)}var d={};return{on:c,emit:s,create:u,listeners:f,context:e,_events:d}}function o(){return new n}var i="nr@context",a=t("gos");e.exports=r()},{gos:"7eSDFh"}],ee:[function(t,e){e.exports=t("QJf3ax")},{}],3:[function(t){function e(t){try{i.console&&console.log(t)}catch(e){}}var n,r=t("ee"),o=t(1),i={};try{n=localStorage.getItem("__nr_flags").split(","),console&&"function"==typeof console.log&&(i.console=!0,-1!==n.indexOf("dev")&&(i.dev=!0),-1!==n.indexOf("nr_dev")&&(i.nrDev=!0))}catch(a){}i.nrDev&&r.on("internal-error",function(t){e(t.stack)}),i.dev&&r.on("fn-err",function(t,n,r){e(r.stack)}),i.dev&&(e("NR AGENT IN DEVELOPMENT MODE"),e("flags: "+o(i,function(t){return t}).join(", ")))},{1:21,ee:"QJf3ax"}],4:[function(t){function e(t,e,n,i,a){try{f?f-=1:r("err",[a||new UncaughtException(t,e,n)])}catch(c){try{r("ierr",[c,(new Date).getTime(),!0])}catch(u){}}return"function"==typeof s?s.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t("ee"),a=t("loader"),s=window.onerror,c=!1,f=0;a.features.err=!0,t(3),window.onerror=e;try{throw new Error}catch(u){"stack"in u&&(t(4),t(5),"addEventListener"in window&&t(1),a.xhrWrappable&&t(2),c=!0)}i.on("fn-start",function(){c&&(f+=1)}),i.on("fn-err",function(t,e,r){c&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){c&&!this.thrown&&f>0&&(f-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:5,2:8,3:3,4:7,5:6,6:22,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],5:[function(t,e){function n(t){for(var e=t;e&&!e.hasOwnProperty("addEventListener");)e=Object.getPrototypeOf(e);e&&r(e)}function r(t){a.inPlace(t,["addEventListener","removeEventListener"],"-",o)}function o(t){return t[1]}var i=t("ee").create(),a=t(1)(i),s=t("gos");e.exports=i,r(window),"getPrototypeOf"in Object?(n(document),n(XMLHttpRequest.prototype)):XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&r(XMLHttpRequest.prototype),i.on("addEventListener-start",function(t){if(t[1]){var e=t[1];if("function"==typeof e){var n=s(e,"nr@wrapped",function(){return a(e,"fn-",null,e.name||"anonymous")});this.wrapped=t[1]=n}else"function"==typeof e.handleEvent&&a.inPlace(e,["handleEvent"],"fn-")}}),i.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:23,ee:"QJf3ax",gos:"7eSDFh"}],6:[function(t,e){var n=t("ee").create(),r=t(1)(n);e.exports=n,r.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=r(t[0],"fn-")})},{1:23,ee:"QJf3ax"}],7:[function(t,e){function n(t,e,n){t[0]=i(t[0],"fn-",null,n)}function r(t,e,n){this.method=n,this.timerDuration="number"==typeof t[1]?t[1]:0,t[0]=i(t[0],"fn-",this,n)}var o=t("ee").create(),i=t(1)(o);e.exports=o,i.inPlace(window,["setTimeout","setImmediate"],"setTimer-"),i.inPlace(window,["setInterval"],"setInterval-"),i.inPlace(window,["clearTimeout","clearImmediate"],"clearTimeout-"),o.on("setInterval-start",n),o.on("setTimer-start",r)},{1:23,ee:"QJf3ax"}],8:[function(t,e){function n(){f.inPlace(this,l,"fn-",o)}function r(t,e){f.inPlace(e,["onreadystatechange"],"fn-",o)}function o(t,e){return e}function i(t,e){for(var n in t)e[n]=t[n];return e}var a=t("ee").create(),s=t(1),c=t(2),f=c(a),u=c(s),d=window.XMLHttpRequest,l=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];e.exports=a,window.XMLHttpRequest=function(t){var e=new d(t);try{a.emit("new-xhr",[e],e),e.hasOwnProperty("addEventListener")&&u.inPlace(e,["addEventListener","removeEventListener"],"-",o),e.addEventListener("readystatechange",n,!1)}catch(r){try{a.emit("internal-error",[r])}catch(i){}}return e},i(d,XMLHttpRequest),XMLHttpRequest.prototype=d.prototype,f.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",o),a.on("send-xhr-start",r),a.on("open-xhr-start",r)},{1:5,2:23,ee:"QJf3ax"}],9:[function(t){function e(t){var e=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var o=0;u>o;o++)t.removeEventListener(f[o],this.listener,!1);if(!e.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){e.status=t.status;var i=this.lastSize||n(t);if(i&&(r.rxSize=i),this.sameOrigin){var s=t.getResponseHeader("X-NewRelic-App-Data");s&&(e.cat=s.split(", ").pop())}}else e.status=0;r.cbTime=this.cbTime,c.emit("xhr-done",[t],t),a("xhr",[e,r,this.startTime])}}}function n(t){var e=t.responseType,n="arraybuffer"===e||"blob"===e||"json"===e?t.response:t.responseText;return r(n)}function r(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function o(t,e){var n=s(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}var i=t("loader");if(i.xhrWrappable){var a=t("handle"),s=t(2),c=t("ee"),f=["load","error","abort","timeout"],u=f.length,d=t(1),l=t(3),p=window.XMLHttpRequest;i.features.xhr=!0,t(5),t(4),c.on("new-xhr",function(t){var n=this;n.totalCbs=0,n.called=0,n.cbTime=0,n.end=e,n.ended=!1,n.xhrGuids={},n.lastSize=0,l&&(l>34||10>l)||window.opera||t.addEventListener("progress",function(t){n.lastSize=t.loaded},!1)}),c.on("open-xhr-start",function(t){this.params={method:t[0]},o(this,t[1]),this.metrics={}}),c.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),c.on("send-xhr-start",function(t,e){var n=this.metrics,o=t[0],i=this;if(n&&o){var a=r(o);a&&(n.txSize=a)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof e.onload))&&i.end(e)}catch(n){try{c.emit("internal-error",[n])}catch(r){}}};for(var s=0;u>s;s++)e.addEventListener(f[s],this.listener,!1)}),c.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),c.on("xhr-load-added",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),c.on("xhr-load-removed",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),c.on("addEventListener-end",function(t,e){e instanceof p&&"load"===t[0]&&c.emit("xhr-load-added",[t[1],t[2]],e)}),c.on("removeEventListener-end",function(t,e){e instanceof p&&"load"===t[0]&&c.emit("xhr-load-removed",[t[1],t[2]],e)}),c.on("fn-start",function(t,e,n){e instanceof p&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),c.on("fn-end",function(t,e){this.xhrCbStart&&c.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}},{1:"XL7HBI",2:10,3:12,4:8,5:5,ee:"QJf3ax",handle:"D5DuLP",loader:"G9z0Bl"}],10:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");!r.port&&o[1]&&(r.port=o[1].split("/")[0].split("@").pop().split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,r.protocol=o[0],"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname);var i=!e.protocol||":"===e.protocol||e.protocol===n.protocol,a=e.hostname===document.domain&&e.port===n.port;return r.sameOrigin=i&&(!e.hostname||a),r}},{}],11:[function(t,e){function n(t){return function(){r(t,[(new Date).getTime()].concat(i(arguments)))}}var r=t("handle"),o=t(1),i=t(2);"undefined"==typeof window.newrelic&&(newrelic=window.NREUM);var a=["setPageViewName","addPageAction","setCustomAttribute","finished","addToTrace","inlineHit","noticeError"];o(a,function(t,e){window.NREUM[e]=n("api-"+e)}),e.exports=window.NREUM},{1:21,2:22,handle:"D5DuLP"}],12:[function(t,e){var n=0,r=navigator.userAgent.match(/Firefox[\/\s](\d+\.\d+)/);r&&(n=+r[1]),e.exports=n},{}],gos:[function(t,e){e.exports=t("7eSDFh")},{}],"7eSDFh":[function(t,e){function n(t,e,n){if(r.call(t,e))return t[e];var o=n();if(Object.defineProperty&&Object.keys)try{return Object.defineProperty(t,e,{value:o,writable:!0,enumerable:!1}),o}catch(i){}return t[e]=o,o}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],D5DuLP:[function(t,e){function n(t,e,n){return r.listeners(t).length?r.emit(t,e,n):void(r.q&&(r.q[t]||(r.q[t]=[]),r.q[t].push(e)))}var r=t("ee").create();e.exports=n,n.ee=r,r.q={}},{ee:"QJf3ax"}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],XL7HBI:[function(t,e){function n(t){var e=typeof t;return!t||"object"!==e&&"function"!==e?-1:t===window?0:i(t,o,function(){return r++})}var r=1,o="nr@id",i=t("gos");e.exports=n},{gos:"7eSDFh"}],id:[function(t,e){e.exports=t("XL7HBI")},{}],G9z0Bl:[function(t,e){function n(){if(!h++){var t=p.info=NREUM.info,e=f.getElementsByTagName("script")[0];if(t&&t.licenseKey&&t.applicationID&&e){s(d,function(e,n){t[e]||(t[e]=n)});var n="https"===u.split(":")[0]||t.sslForHttp;p.proto=n?"https://":"http://",a("mark",["onload",i()]);var r=f.createElement("script");r.src=p.proto+t.agent,e.parentNode.insertBefore(r,e)}}}function r(){"complete"===f.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=t(1),c=window,f=c.document;t(2);var u=(""+location).split("?")[0],d={beacon:"bam.nr-data.net",errorBeacon:"bam.nr-data.net",agent:"js-agent.newrelic.com/nr-852.min.js"},l=window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent),p=e.exports={offset:i(),origin:u,features:{},xhrWrappable:l};f.addEventListener?(f.addEventListener("DOMContentLoaded",o,!1),c.addEventListener("load",n,!1)):(f.attachEvent("onreadystatechange",r),c.attachEvent("onload",n)),a("mark",["firstbyte",i()]);var h=0},{1:21,2:11,handle:"D5DuLP"}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],21:[function(t,e){function n(t,e){var n=[],o="",i=0;for(o in t)r.call(t,o)&&(n[i]=e(o,t[o]),i+=1);return n}var r=Object.prototype.hasOwnProperty;e.exports=n},{}],22:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],23:[function(t,e){function n(t){return!(t&&"function"==typeof t&&t.apply&&!t[i])}var r=t("ee"),o=t(1),i="nr@original",a=Object.prototype.hasOwnProperty,s=!1;e.exports=function(t){function e(t,e,r,a){function nrWrapper(){var n,i,s,c;try{i=this,n=o(arguments),s="function"==typeof r?r(n,i):r||{}}catch(u){d([u,"",[n,i,a],s])}f(e+"start",[n,i,a],s);try{return c=t.apply(i,n)}catch(l){throw f(e+"err",[n,i,l],s),l}finally{f(e+"end",[n,i,c],s)}}return n(t)?t:(e||(e=""),nrWrapper[i]=t,u(t,nrWrapper),nrWrapper)}function c(t,r,o,i){o||(o="");var a,s,c,f="-"===o.charAt(0);for(c=0;c<r.length;c++)s=r[c],a=t[s],n(a)||(t[s]=e(a,f?s+o:o,i,s))}function f(e,n,r){if(!s){s=!0;try{t.emit(e,n,r)}catch(o){d([o,e,n,r])}s=!1}}function u(t,e){if(Object.defineProperty&&Object.keys)try{var n=Object.keys(t);return n.forEach(function(n){Object.defineProperty(e,n,{get:function(){return t[n]},set:function(e){return t[n]=e,e}})}),e}catch(r){d([r])}for(var o in t)a.call(t,o)&&(e[o]=t[o]);return e}function d(e){try{t.emit("internal-error",e)}catch(n){}}return t||(t=r),e.inPlace=c,e.flag=i,e}},{1:22,ee:"QJf3ax"}]},{},["G9z0Bl",4,9]);</script>
+				<title>Cognitive Atlas</title>
+				<link rel="shortcut icon" href="/favicon.ico" />
+				<script src="/lib/validate/lib/jquery.js" type="text/javascript"></script>
+				<script type="text/javascript" src="/lib/validate/jquery.validate.js"></script>
+				<script src="/js/jquery.html5-placeholder-shim.js" type="text/javascript"></script>
+				<script src="/js/jquery.tools.min.js"></script>
+        <link type="text/css" href="/js/jquery-ui/css/ui-lightness/jquery-ui-1.8.14.custom.css" rel="stylesheet" media="screen" />
+        <script src="/js/jquery-ui/js/jquery-ui-1.8.14.custom.min.js" type="text/javascript"></script>
+				<script src="/js/dropdown/dd.js"></script>
+				<script src="/lib/glow/jquery.glow.js"></script>
+				<script src="/lib/tipsy/jquery.tipsy.js"></script>
+				<script src="/js/jquery.send.js?ver=1.0"></script>
+				<script src="/js/json2.js"></script>
+				<script src="/js/colorate.js" type="text/javascript"></script>
+				<link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+				<link href="http://fonts.googleapis.com/css?family=Crimson+Text:400,400italic,700,700italic" rel="stylesheet" type="text/css">
+				<link href="/lib/tipsy/tipsy.css" media="screen" rel="stylesheet" type="text/css"/>
+				<script type="text/javascript">
+					<!--
+					$(document).ready(function() {
+
+						$(function() {
+							$(".tooltip").tipsy({fade:false, gravity:"w", html:true});
+						});
+
+					});
+					-->
+				</script>
+		
+			<style>
+				.ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
+			</style>
+			<script>
+				$(function() {
+					$( "#searchterm_header" ).autocomplete({
+						source: "/url/autocomplete.php",
+						minLength: 2,
+						select: function( event, ui ) {
+							ui.item ? window.location.href = "/id/" + ui.item.id : "Nothing selected, input was " + this.value;
+						}
+					});
+				});
+			</script>
+		<link rel="stylesheet" type="text/css" href="/styles/cogat_app.css" /><link type="text/css" href="/styles/print.css" rel="stylesheet" media="print" /><!--[if lt IE 7 ]><link rel="stylesheet" type="text/css" media="all" href="/styles/ie6.css" /><![endif]--> <!--[if IE 7 ]> 	<link rel="stylesheet" type="text/css" href="/styles/ie7.css" /> <![endif]-->
+			<script type="text/javascript">
+				jQuery(function() {
+				    jQuery(".viewbar").click(function(evt) {
+				        var d = $(this).attr("blockdiv");
+				        jQuery(".togblock[blockdiv=" + d + "], .viewbar[blockdiv=" + d + "]").toggle();
+				    });
+				});
+				$(document).ready(function() {
+					$("#masker").fadeOut("fast");
+				});
+			</script>
+		<script src="/js/modal.js" type="text/javascript"></script><script src="/js/jquery.cluetip.js" type="text/javascript"></script>
+			<script src="/js/facebox.js" type="text/javascript"></script>
+			<script src="/js/diagrambox.js" type="text/javascript"></script>
+			<script type="text/javascript">
+				jQuery(document).ready(function() {
+ 					jQuery("a[rel*=facebox]").facebox();
+				})
+			</script>
+			<link href="/styles/facebox.css" media="screen" rel="stylesheet" type="text/css" />
+		<script src="/js/autosuggest/bsn.AutoSuggest_2.1.3_comp.js" type="text/javascript"></script><script type="text/javascript" src="/js/cluetip/jquery.hoverIntent.js"></script><script type="text/javascript" src="/js/cluetip/jquery.cluetip.js"></script><script type="text/javascript" src="/js/aover/jquery.easing.1.3.js"></script><script type="text/javascript" src="/js/aover/behavior.js"></script></head><body id="main">		<div class="fullwrap" id="utility">
+			<div class="container">
+        <div id="userbar">
+                  Welcome <a href="/user/id/usr_51bc76ae9636c">Vanessa</a> | <a href="/dashboard">Dashboard</a> |
+        
+                  <a href="/admin/">Administer</a> |
+        
+                  <a href="/curate/">Curate</a> |
+        
+                  <a href="/logout/">Logout</a>
+                </div><!-- #userbar -->
+
+				<div id="search-form-box" class=" pull-right">
+					<div id="searchformwrap">
+						<form method="post" action="/search/" name="searchform" id="searchform">
+							<input type="hidden" id="resmax" name="resmax" value="50">
+							<input type="hidden" id="ord" name="ord" value="alpha">
+							<input type="hidden" id="concepts" name="search_concepts" value="1">
+							<input type="hidden" id="tasks" name="search_tasks" value="1">
+							<input type="hidden" id="assertions" name="search_assertions" value="1">
+							<input type="hidden" id="batteries" name="search_batteries" value="1">
+							<input type="hidden" id="batteries" name="search_disorders" value="1">
+							<input type="hidden" id="theories" name="search_theories" value="1">
+							<input type="hidden" id="action_type" name="action_type" value="search">
+							<div class="ui-widget">
+								<input tabindex="1" type="text" class="fwidgettxt front searchterm" id="searchterm_header" size="20" name="searchterm" aria-label="Enter a search term" title="Enter a search term" placeholder="enter search term" />
+								<input tabindex="2" type="submit" value="Search" id="subji" class="button Search" title="submit search terms">
+							</div>
+						</form>
+					</div><!--/#sform -->
+				</div><!--/#search-form-box -->
+			</div><!--container-->
+		</div><!--/#utility-->
+
+    <div class="fullwrap" id="branding">
+        <div class="container">
+    			<div id="brand">
+    				<div id="logo">
+    					<a href="/">
+    					<img src="/images/logo-front.png" class="img" alt="Cognitive Atlas" width="485" height="168"></a>
+    				</div><!--logo-->
+    				<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span><!--tagline-->
+          </div><!--/#brand-->
+        </div><!--container-->
+    </div><!--/#branding-->
+
+    <div class="fullwrap section-tasks" id="nav">
+      <div id="navbar">
+    		<ul id="navbar-inner" class="section-tasks clearfix">
+    				<li class="navlink concept first-item">
+    					<a href="/concepts/a" class="btn">Concepts <span class="count">/ 803</span></a>
+    					<div class="active-arrow"></div>
+    					</li>
+    				<li class="navlink task">
+    					<a href="/tasks/a" class="btn">Tasks <span class="count">/ 693</span></a>
+    					<div class="active-arrow"></div>
+    					</li>
+    					<li class="navlink diso">
+    					<a href="/disorders/" class="btn">Disorders <span class="count">/ 217</span></a>
+    					<div class="active-arrow"></div>
+    					</li>	
+    				<li class="navlink coll">
+    					<a href="/collections/" class="btn">Collections <span class="count">/ 41</span></a>
+    					<div class="active-arrow"></div>
+    					</li>
+    				<li class="pull-right">
+    					<ul>
+    						<li class="navlink about quiet">
+    							<a href="/about/" class="btn">About</a></li>
+    						<li class="navlink blog quiet last-item">
+    							<a href="http://blog.cognitiveatlas.org/" class="btn" target="_blank">Blog</a></li>
+    					</ul>
+    				</li>
+    			</ul>
+        </div><!--navbar-->
+      </div><!--nav-->
+      
+      <div class="fullwrap section-tasks" id="content">
+        <div class="container" id="pagecontent">
+
+
+		<script type="text/javascript" src="/lib/validate/jquery.validate.js"></script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				jQuery("#searchstring").focus();
+				$("#dform").validate({
+					 errorPlacement: function(error, element) {
+				        if ( element.is(":radio") ) {
+					        error.prependTo("#radiomsg");
+					    }
+					    else { // This is the default behavior of the script
+					        error.insertAfter( element );
+					    }
+				    }
+				});
+				$("#contclicker").click(function(){
+					$("#contribution_block").toggle("fast");
+				});
+			});
+		</script>
+		<script>	function checkDef(){ 														var ma = document.getElementById("id_match"); 							var tr = document.getElementById("term_text"); 							var se = document.getElementById("searchstring"); 						var s  = se.value; 														var tb = document.getElementById("tblock"); 							var pb = document.getElementById("preblock"); 							var nt = document.getElementById("newterm"); 							var hb = document.getElementById("helpblock"); 							var dt = document.getElementById("definition_text"); 					var problems = 0;														if (ma.value != "") { problems++; alert("You cannot create a term that already exists."); return false; } 		if (se.value == "") { problems++; alert("You cannot define a term unless you enter one first!"); } 		if (s.substr(0, 4) == "The ") { problems++; alert("For consistency, the Atlas does not allow a term to begin with 'The'"); se.value = s.substr(4); } 
+			$.get("../url/checkterm.php", { term: se.value },
+  			function(data){
+    			if (data == 1)
+    			{
+    				problems++;
+    				alert("That term already exists.");
+    			}
+    			else
+    			{
+    				if (problems == 0)  { pb.style.display = "none"; tb.style.display = "inline"; tr.value = se.value; nt.innerHTML = "<strong>" + se.value + "</strong>"; dt.focus(); hb.style.display = "none"; } else { focus(se); return false; }
+    			}
+  			});
+			}													</script>												<script>	function revealCC(){ 										var ccb = document.getElementById("ccblock"); 			ccb.style.display = "inline"; 						}														function revealTT(){ 										var ccb = document.getElementById("ccblock"); 			ccb.style.display = "none"; 						}													</script>												<div class="pull-right"><a href="javascript:void(0)" class="actionator" id="contclicker">+ contribute new term</a></div><blockquote class="text" id="contribution_block" style="display:none"><div id="helpblock"><span class="sectionmed">Contribute New Term</span><br /><br />Terms are the basic building block of the Cognitive Atlas.<br />A term in the Atlas can either be a concept (e.g. 'episodic memory', 'acoustic reflex') or a task ('N-Back Test', 'Action Imitation Task')<br /><br />You may provide a term and definition only if the term is not already in the Atlas.</div><div id="preblock">1. Enter the term you wish to define:<br /><br /><style>.asholder {position:relative;}</style><form method="get" action="" class="asholder" id="suggestor" name="suggestor" onsubmit="return false;"><input type="text" name="searchstring" id="searchstring" size="40" />&nbsp;<input type="button" value="Continue" onclick="checkDef()" title="check definition" aria-label="check definition"> <input type="button" title="reset form" aria-label="reset form" value="Cancel" onclick="window.location.reload()"></form>
+			<script type="text/javascript">
+				$(function() {
+					var tlink 	= "";
+					var options = {
+						script:  "/url/autosuggest.php?searchtype=all&json=true&limit=9&", varname:"searchstring", json:true, cache:false, delay:100, shownoresults:false, maxresults: 9,
+						callback: function (obj)
+						{
+							var url = "The term <a href=/" + obj.info + "/id/" + obj.id + ">" + obj.value + "</a> already exists.";
+							var it = document.getElementById("id_exists");
+							var ma = document.getElementById("id_match");
+							it.innerHTML = url;
+							ma.value = obj.id;
+						}
+					};
+					var as1 = new bsn.AutoSuggest("searchstring", options);
+				});
+			</script><br /><br /><div id="id_exists"></div></div><form method="post" id="dform" action="/post/"><input type="hidden" name="form_type" value="term_form"><input type="hidden" name="return_page" value=""><input type="hidden" name="id_object" value=""><input type="hidden" name="id_match" id="id_match" value=""><input type="hidden" name="term_text" id="term_text" value=""><div id="tblock" style="display:none;">2. Enter your definition for <span id="newterm"></span>:<br /><br /><textarea name="definition_text" id="definition_text" rows="16" cols="100" title="definition of term" title="term definition" aria-label="term definition"></textarea><br /><small>If you wish to copy and paste text from a web site or document, please provide attribution to that site<br /> or document in parentheses - for example, (from Wikipedia.org)</small><br /><br />3. Select the type of term<br /><br /><div id='radiomsg'></div><div class="bgsep"><input type="radio" value="concept" name="term_type" onclick="revealCC()" class="required" title="You must select a term type!" aria-label="type of term is concept" />&nbsp;<label>Concept</label>&nbsp;<small>Defined as a mental function, representation, or process. Examples: "working memory", "lemma"</small><div id='ccblock' style='display:none;'><br /><br />In your opinion, does this concept belong to a larger class of concepts?<br />	<select name="id_concept_class" title='concept classification' aria-label='concept classification'>		<option value="">-no-</option>	<option value="ctp_C7">-yes- Action</option>	<option value="ctp_C2">-yes- Attention</option>	<option value="ctp_C8">-yes- Emotion</option>	<option value="ctp_C4">-yes- Executive/Cognitive Control</option>	<option value="ctp_C6">-yes- Language</option>	<option value="ctp_C5">-yes- Learning and Memory</option>	<option value="ctp_C1">-yes- Perception</option>	<option value="ctp_C3">-yes- Reasoning and Decision Making</option>	<option value="ctp_C9">-yes- Social Function</option>	<option value="ctp_C10">-yes- Motivation</option>	</select></div><br /><br /></div><div class="bgsep"><div id="ttblock"><input type="radio" value="task" name="term_type" onclick="revealTT()"  title='You must select a term type!' aria-label='type of term is task' />&nbsp;<label>Task</label>&nbsp;<small>A test that measures some aspect of mental function. Examples: "abuse risk inventory", "Derogatis stress profile"</small><br /></div></div><br /><br />4. Add any synonyms or acronym representations for this term (separated by comma):<br /><input type="text" name="term_alias" value="" id="term_alias" size="80" aria-label="Add an alias to this term." title="Add an alias to this term." /><br /><br />5. Add your term and definition to the database:<br /><br /><input type="submit" value="Add Definition" title="submit form" aria-label="submit form"> <input type="button" value="Reset" onclick="window.location.reload()" aria-label="cancel update" title="cancel submission" /></div></form></blockquote><br /><h1 class="CATitle">Browse <strong class="task">Tasks</strong></h1><div class='inset padtop charstring'><a href='/tasks/' class=' non-selected-letter '>ALL</a> <span class='finb'>&nbsp;</span> <a href='/tasks/a' class=' selected-letter '>A</a> <span class="finb">&nbsp;</span> <a href='/tasks/b' class=' non-selected-letter '>B</a> <span class="finb">&nbsp;</span> <a href='/tasks/c' class=' non-selected-letter '>C</a> <span class="finb">&nbsp;</span> <a href='/tasks/d' class=' non-selected-letter '>D</a> <span class="finb">&nbsp;</span> <a href='/tasks/e' class=' non-selected-letter '>E</a> <span class="finb">&nbsp;</span> <a href='/tasks/f' class=' non-selected-letter '>F</a> <span class="finb">&nbsp;</span> <a href='/tasks/g' class=' non-selected-letter '>G</a> <span class="finb">&nbsp;</span> <a href='/tasks/h' class=' non-selected-letter '>H</a> <span class="finb">&nbsp;</span> <a href='/tasks/i' class=' non-selected-letter '>I</a> <span class="finb">&nbsp;</span> <a href='/tasks/j' class=' non-selected-letter '>J</a> <span class="finb">&nbsp;</span> <a href='/tasks/k' class=' non-selected-letter '>K</a> <span class="finb">&nbsp;</span> <a href='/tasks/l' class=' non-selected-letter '>L</a> <span class="finb">&nbsp;</span> <a href='/tasks/m' class=' non-selected-letter '>M</a> <span class="finb">&nbsp;</span> <a href='/tasks/n' class=' non-selected-letter '>N</a> <span class="finb">&nbsp;</span> <a href='/tasks/o' class=' non-selected-letter '>O</a> <span class="finb">&nbsp;</span> <a href='/tasks/p' class=' non-selected-letter '>P</a> <span class="finb">&nbsp;</span>  <span class="finb">Q</span> <span class="finb">&nbsp;</span> <a href='/tasks/r' class=' non-selected-letter '>R</a> <span class="finb">&nbsp;</span> <a href='/tasks/s' class=' non-selected-letter '>S</a> <span class="finb">&nbsp;</span> <a href='/tasks/t' class=' non-selected-letter '>T</a> <span class="finb">&nbsp;</span> <a href='/tasks/u' class=' non-selected-letter '>U</a> <span class="finb">&nbsp;</span> <a href='/tasks/v' class=' non-selected-letter '>V</a> <span class="finb">&nbsp;</span> <a href='/tasks/w' class=' non-selected-letter '>W</a> <span class="finb">&nbsp;</span>  <span class="finb">X</span> <span class="finb">&nbsp;</span> <a href='/tasks/y' class=' non-selected-letter '>Y</a> <span class="finb">&nbsp;</span> <a href='/tasks/z' class=' non-selected-letter '>Z</a></div><br /><div style="float:right;width:250px;"><a href="/concepts/categories/all">Browse Concepts by Category</a></div><div class="stringer">Tasks beginning with "A" (43)</div><div class='nocss3-two-columns'><div style='float:left;width:450px;'><ul style='list-style-type: none;'><li><span class="task"><a href="/task/aberrant_behavior_checklist_-_community" class="task tooltip" title="<big><b>aberrant behavior checklist - community:</b></big><br /> The Aberrant Behavior Checklist- Community version (ABC-C) is a symptom checklist for assessing problem behaviors of children and adults with mental retardation, to be completed by a parent, educator, or care-giver.  The community version is specifically for individuals living at home. 
+
+The rater is asked to provide ratings for 58 specific symptoms to compute scores for the following subscales:
+
+  1. Irritability/Agitation
+​  2. Lethargy/Social Withdrawal
+  3. Stereotypic Behavior
+  4. Hyperactivity/Noncompliance
+  5. Inappropriate Speech
+
+http://www.slossonnews.com/ABC.html">aberrant behavior checklist - community</a></span></li><li><span class="task"><a href="/task/abstract/concrete_judgment:_bilingual" class="task tooltip" title="<big><b>abstract/concrete judgment: bilingual:</b></big><br /> Task in which subjects are presented with words that are either abstract or concrete nouns, and decide for each term whether it is abstract or concrete.">abstract/concrete judgment: bilingual</a></span></li><li><span class="task"><a href="/task/abstract/concrete_task" class="task tooltip" title="<big><b>abstract/concrete task:</b></big><br /> A task in which subjects decide whether words are abstract or concrete.">abstract/concrete task</a></span></li><li><span class="task"><a href="/task/Acquired_Equivalence" class="task tooltip" title="<big><b>Acquired Equivalence:</b></big><br /> Acquired equivalence is a paradigm in which generalization is increased between two superficially dissimilar stimuli (or antecedents) that have previously been associated with similar outcomes (or consequents).">Acquired Equivalence</a></span></li><li><span class="task"><a href="/task/action_imitation_task" class="task tooltip" title="<big><b>action imitation task:</b></big><br /> A task in which a participant sees another person perform an action and later performs the same action him/herself.  Imitation can be immediate or delayed.  It can be instructed or elicited implicitly (without the participant&#39;s conscious awareness).  The actions imitated can be familar/meaningful actions or unfamilar/meaningless actions.">action imitation task</a></span></li><li><span class="task"><a href="/task/action_observation_task" class="task tooltip" title="<big><b>action observation task:</b></big><br /> Subjects view images of actions in order to learn the action themselves. ">action observation task</a></span></li><li><span class="task"><a href="/task/action-perception_loop" class="task tooltip" title="<big><b>action-perception loop:</b></big><br /> ">action-perception loop</a></span></li><li><span class="task"><a href="/task/acupuncture_task" class="task tooltip" title="<big><b>acupuncture task:</b></big><br /> subjects are monitored for their cognitive, behavioral, and/or physiological responses to stimulation with filamentous needles">acupuncture task</a></span></li><li><span class="task"><a href="/task/Adaptation_of_marshmellow_test" class="task tooltip" title="<big><b>Adaptation of marshmellow test:</b></big><br /> Subjects are told that they have 10 minutes to gain as much money as possible by selling tokens and to adopt any strategy that they prefer.  Each trial begins with a circular token (green or purple) at the center of the screen.  After a random delay, the token turns blue and its value changes from 0 cents to 30 cents.  A white progress bar marks the amount of time the current token had been on the screen, with a maximum length corresponding to 100seconds.  Participants could sell the token at anytime by pressing a key.  Subjects were explicitly instructed that the green and purple tokens might differ in their timing, and to learn the nature of the differences from direct experience.  ">Adaptation of marshmellow test</a></span></li><li><span class="task"><a href="/task/adaptive_n-back_task" class="task tooltip" title="<big><b>adaptive n-back task:</b></big><br /> A variant of the n-back task, each trial consists of letters (b,d,g,t,v) presented in successive order.  Subjects must press a button if the current letter matches the letter that occurred n trials ago (regardless of capitalization).  N varies according to a staircase tracking method that increases as subjects accurately respond and decrease as subjects make errors. ">adaptive n-back task</a></span></li><li><span class="task"><a href="/task/adolescent_symptom_inventory" class="task tooltip" title="<big><b>adolescent symptom inventory:</b></big><br /> The Adolescent Symptom Inventory (4th version) is a 120 question rating scale that screens for 18 DSM-IV emotional and behavioral disorders in youths between 12 and 18 years old.  These scores have shown a high correspondence with psychiatric diagnoses.">adolescent symptom inventory</a></span></li><li><span class="task"><a href="/task/Adult_ADHD_Clinical_Diagnostic_Scale" class="task tooltip" title="<big><b>Adult ADHD Clinical Diagnostic Scale:</b></big><br /> A primary diagnostic measure developed to establish the presence of current adult symptoms of ADHD. This is an 18-item, clinician-based, semistructured interview hat employs adult-specific language to ensure adequate probing of adult manifestations of ADHD symptoms. The 18 items in the scale correspond to the 18 diagnostic criteria in the DSM criteria.
+
+From: http://www.adhdandyou.com/hcp/adult-adhd-screening.aspx">Adult ADHD Clinical Diagnostic Scale</a></span></li><li><span class="task"><a href="/task/Adult_ADHD_Self-Report_Scale" class="task tooltip" title="<big><b>Adult ADHD Self-Report Scale:</b></big><br /> The Adult ADHD Self-Report Scale (ASRS) Symptom Checklist is a self-reported questionnaire used to assist in the diagnosis of adult ADHD.
+
+https://en.wikipedia.org/wiki/Adult_ADHD_Self-Report_Scale">Adult ADHD Self-Report Scale</a></span></li><li><span class="task"><a href="/task/adult_attachment_interview" class="task tooltip" title="<big><b>adult attachment interview:</b></big><br /> Standardized interview used to assess developmental and attachment history.  ">adult attachment interview</a></span></li><li><span class="task"><a href="/task/adult_behavior_checklist" class="task tooltip" title="<big><b>adult behavior checklist:</b></big><br /> The Adult Behavior Checklist is a 126 item measure that assesses withdrawn, somatic, anxious/depressed, internalizing, intrusive, thought, attention, delinquent behavior, aggressive, and externalizing problems.">adult behavior checklist</a></span></li><li><span class="task"><a href="/task/Adult’s_Penn_Word_Memory_Test_Delayed_Memory" class="task tooltip" title="<big><b>Adult’s Penn Word Memory Test Delayed Memory:</b></big><br /> A measure of delayed word memory. In the first part of this test, participants are shown 20 words that they were asked to identify for immediate recall (CPW . Now, during the delayed recall, participants are shown a series, one at a time, of 40 words: the 20 study stimuli they were asked to memorize and 20 novel stimuli, completely different from the 20 distracters showed on the CPW. The participants’ task is to decide whether they have seen the word before by clicking one of four buttons, presented in a 4-point scale: “definitely yes”, “probably yes”, “probably no” and “definitely no,” using the mouse. There is one alternate form of the CPWd: the CPWd-b.
+">Adult’s Penn Word Memory Test Delayed Memory</a></span></li><li><span class="task"><a href="/task/alternating_runs_paradigm" class="task tooltip" title="<big><b>alternating runs paradigm:</b></big><br /> A type of task-switching paradigm in which two different tasks are presented in alternating runs or blocks">alternating runs paradigm</a></span></li><li><span class="task"><a href="/task/ambiguous_figure_task" class="task tooltip" title="<big><b>ambiguous figure task:</b></big><br /> a kind of psychophysical task, participants view a stimulus that can be perceived as oriented and/or moving in more than one way">ambiguous figure task</a></span></li><li><span class="task"><a href="/task/analogical_reasoning_task" class="task tooltip" title="<big><b>analogical reasoning task:</b></big><br /> any task investigating participant ability to find correspondences between structures of distinct mental representations">analogical reasoning task</a></span></li><li><span class="task"><a href="/task/Angling_Risk_Task" class="task tooltip" title="<big><b>Angling Risk Task:</b></big><br /> In this task subjects &#34;fish&#34; in rounds trying to accumulate as much money as possible. If they catch a red fish, they earn .05 cents. However, if they catch a blue fish they lose all the money earned on that round. They are able to stop any round at any time to collect that round&#39;s earnings into their &#34;tournament bank&#34;. There is one blue fish and many red fish. The subjects complete 4 tournaments of 30 rounds each. The tournaments differ in their weather condition: Sunny (subjects can see/know how many red/blue fish are in the pond) and cloudy (subjects cannot see the fish) and release law: catch N Keep (probability of catching a red fish goes down as they are taken out of the pond) and catch N Release (probability stays constant). ">Angling Risk Task</a></span></li><li><span class="task"><a href="/task/animal_naming_task" class="task tooltip" title="<big><b>animal naming task:</b></big><br /> animals are presented, usually pictorially, and participants are asked to name them aloud">animal naming task</a></span></li><li><span class="task"><a href="/task/ANT_task" class="task tooltip" title="<big><b>ANT task:</b></big><br /> The ANT is a task designed to test three attentional networks in children and adults: alerting, orienting, and executive control. Efficiency of the alerting network is examined by changes in reaction time resulting from a warning signal. Efficiency of orienting is examined by changes in the reaction time that accompany cues indicating where the target will occur. The efficiency of the executive network is examined by requiring the participant to respond by pressing two keys indicating the direction (left or right) of a central arrow surrounded by congruent, incongruent or neutral flankers.">ANT task</a></span></li></ul></div><div style='float:left;width:450px;'><ul style='list-style-type: none;'><li><span class="task"><a href="/task/antisaccade/prosaccade_task" class="task tooltip" title="<big><b>antisaccade/prosaccade task:</b></big><br /> Subjects view a fixation point and a visual target is presented.  Subjects are instructed to make a saccade away from the target (antisaccade) or to the target (prosaccade).">antisaccade/prosaccade task</a></span></li><li><span class="task"><a href="/task/apparent_verticality_judgment" class="task tooltip" title="<big><b>apparent verticality judgment:</b></big><br /> participants make judgments of their verticality after holding specific body orientations for some duration">apparent verticality judgment</a></span></li><li><span class="task"><a href="/task/articulatory_suppression_task" class="task tooltip" title="<big><b>articulatory suppression task:</b></big><br /> A short-term memory task in which the subject must produce irrelevant speech while maintaining information in memory.">articulatory suppression task</a></span></li><li><span class="task"><a href="/task/artificial_grammar_learning_task" class="task tooltip" title="<big><b>artificial grammar learning task:</b></big><br /> participant is presented with a series of letter strings constructed according to an artificial and finite set of rules, after which the participant must determine whether new strings follow or violate the grammar established by the first series.">artificial grammar learning task</a></span></li><li><span class="task"><a href="/task/associative_memory_encoding_task" class="task tooltip" title="<big><b>associative memory encoding task:</b></big><br /> Broadly, participants are taught to visually identify a facial feature or face, link a phonological cue or name to that feature or face, and either recall the associated name/cue or recognize it from a list
+
+Specifically, this is an associative memory encoding task for which participants are asked to remember names paired with pictures of faces, and rate their confidence on the assertion.">associative memory encoding task</a></span></li><li><span class="task"><a href="/task/Ataxia" class="task tooltip" title="<big><b>Ataxia:</b></big><br /> A measure for balance.
+
+Instructions:
+I want to see how well you can balance doing different things with your feet.  I don’t want you to fall, however, so if you feel as if you are going to fall, please step off the line and use  the wall for support.  If at any time you feel that you can’t do these balance tests, please tell me and we will stop.">Ataxia</a></span></li><li><span class="task"><a href="/task/attention_bias" class="task tooltip" title="<big><b>attention bias:</b></big><br /> Attention bias refers to the tendency for an emotional stimulus to influence attention.  The term is most typically used to refer to biases related to emotional content, typically in bottom-up-capture attention tasks.  ">attention bias</a></span></li><li><span class="task"><a href="/task/attention_networks_test" class="task tooltip" title="<big><b>attention networks test:</b></big><br /> a combination of the Posner cueing paradigm and the Eriksen flanker test, the ANT presents participants with a target item (>) surrounded by congruent (> > > > >), neutral (- - > - -), or incongruent flanker stimuli. Stimulus presentation is preceded by different cue conditions and the participant is instructed to identify the target stimulus.">attention networks test</a></span></li><li><span class="task"><a href="/task/attention_switching_task" class="task tooltip" title="<big><b>attention switching task:</b></big><br /> A paradigm requiring subjects to switch between performing multiple different individual tasks. AST is a test of the participant’s ability to switch attention between the direction or location of an arrow on screen. This test is a sensitive measure of frontal lobe and ‘executive’ dysfunction. The test begins with an arrow in the centre of the screen which points either to the left or to the right. The participant is introduced to two buttons, one on the left and one on the right, and is asked to press a button corresponding to the direction in which the arrow is pointing.
+
+After this initial training, the participant is then told that the arrow might appear on the left or the right side of the screen, and depending on the cue given at the top of the screen, the participant must either press  the left or right button to indicate on which side of the screen the arrow is displayed, or else press the left or right button to correspond with the direction in which the arrow is pointing.">attention switching task</a></span></li><li><span class="task"><a href="/task/attentional_blink_paradigm" class="task tooltip" title="<big><b>attentional blink paradigm:</b></big><br /> Attentional blink is a phenomenon observed in rapid serial visual presentation. When presented with a sequence of visual stimuli in rapid succession at the same spatial location on a screen, a participant will often fail to detect a second salient target occurring in succession if it is presented between 180-450 ms after the first one. ">attentional blink paradigm</a></span></li><li><span class="task"><a href="/task/audio_narrative" class="task tooltip" title="<big><b>audio narrative:</b></big><br /> Audio narratives tell stories through sound alone: narration, interviews, live and archival sound recordings, environmental soundscapes, sound effects, found sounds, etc. Audio narratives use storytelling along with other audio means to create intimate experiences through characters, plot, and setting.">audio narrative</a></span></li><li><span class="task"><a href="/task/audio-visual_target_detection_task" class="task tooltip" title="<big><b>audio-visual target detection task:</b></big><br /> This task pairs auditory and visual stimuli. Participants are asked to indicate when the paired stimuli are presented in synchrony, or to identify the locations of the stimuli among distracting visual and auditory information.">audio-visual target detection task</a></span></li><li><span class="task"><a href="/task/auditory_masking_task" class="task tooltip" title="<big><b>auditory masking task:</b></big><br /> Auditory masking occurs when the perception of one sound is affected by the presence of another sound.">auditory masking task</a></span></li><li><span class="task"><a href="/task/auditory_scene_perception" class="task tooltip" title="<big><b>auditory scene perception:</b></big><br /> Any task that requires the perception of complex auditory stimuli, such as music">auditory scene perception</a></span></li><li><span class="task"><a href="/task/auditory_temporal_discrimination_task" class="task tooltip" title="<big><b>auditory temporal discrimination task:</b></big><br /> A task in which the subject discriminates auditory stimuli based on temporal characteristics.">auditory temporal discrimination task</a></span></li><li><span class="task"><a href="/task/autism_diagnostic_interview_-_revised" class="task tooltip" title="<big><b>autism diagnostic interview - revised:</b></big><br /> the ADI-R is a comprehensive interview that provides a thorough assessment of individuals suspected of having autism or other autism spectrum disorders. It has proven highly useful for formal diagnosis as well as treatment and educational planning.">autism diagnostic interview - revised</a></span></li><li><span class="task"><a href="/task/autism_diagnostic_observation_schedule" class="task tooltip" title="<big><b>autism diagnostic observation schedule:</b></big><br /> Series of structured and semi-structured tasks that involve social interaction between the examiner and the subject.  Subject is given opportunities to exhibit social and communication behaviors relevant to autism.">autism diagnostic observation schedule</a></span></li><li><span class="task"><a href="/task/autism_spectrum_quotient" class="task tooltip" title="<big><b>autism spectrum quotient:</b></big><br /> The Autism Spectrum Quotient (AQ) is used to assess if adults of average intelligent have symptoms typical of individuals in the autism spectrum.  Published by Simon Baron-Cohen at the Autism Research Centre in Cambridge in 2001, it consists of fifty questions to assess social and communication skills, as well as imagination, attention to detail, and attention switching.
+
+Subscales: social skill (items 1,11,13,15,22,36,44,45,47,48)
+attention switching (items 2,4,10,16,25,32,34,37,43,46) 
+attention to detail (items 5,6,9,12,19,23,28,29,30,49) 
+communication (items 7,17,18,26,27,31,33,35,38,39) 
+imagination (items 3,8,14,20,21,24,40,41,42,50) 
+
+Each of the items listed above scores 1 point if the respondent records the abnormal or autistic-like behavior either mildly or strongly.
+“Definitely agree” or “slightly agree” responses scored 1 point, on the following items: 1, 2, 4, 5, 6, 7, 9, 12, 13, 16, 18, 19, 20, 21, 22, 23, 26, 33, 35, 39, 41, 42, 43, 45, 46. 
+“Definitely disagree” or “slightly disagree” responses scored 1 point, on the following items: 3, 8, 10, 11, 14, 15, 17, 24, 25, 27, 28, 29, 30, 31, 32, 34, 36, 37, 38, 40, 44, 47, 48, 49, 50.
+
+Baron-Cohen, S., et al. (2001). &#34;The Autism-Spectrum Quotient (AQ): Evidence from Asperger Syndrome/High-Functioning Autism, Malesand Females, Scientists and Mathematicians.&#34; Journal of Autism & Developmental Disorders 31(1): 5-17.">autism spectrum quotient</a></span></li><li><span class="task"><a href="/task/autobiographical_memory_task" class="task tooltip" title="<big><b>autobiographical memory task:</b></big><br /> in a semi-structured interview a participant is asked to recall recent events (within one week, within one month) in his or her own life, and this recollection is compared with report(s) from a &#34;collateral source,&#34; a person close to the participant">autobiographical memory task</a></span></li><li><span class="task"><a href="/task/AX-CPT_task" class="task tooltip" title="<big><b>AX-CPT task:</b></big><br /> A version of the continuous performance task in which subjects are told to make one response for the letter X when it was preceded by the letter A, and another response for all other stimuli. AX trials are &#34;target trials&#34;; in these types of trials a valid cue is followed by a valid probe. The 3 other trial types are &#34;Non-target trials&#34; in which either a valid cue is followed by an invalid probe (&#34;AY&#34; type trials) or an invalid cue is followed by either a valid or invalid probe (&#34;BX&#34; or &#34;BY&#34; probes, respectively). ">AX-CPT task</a></span></li><li><span class="task"><a href="/task/AX-DPX" class="task tooltip" title="<big><b>AX-DPX:</b></big><br /> An alternative version of the AX-CPT in which the letter stimuli are replaced with simple dot patterns derived from Braille language. Dot patterns are more easily parametrically manipulated, and require less time between stimuli presentations because they are not as easily stored in working memory as letters, thus increasing the proportion of errors.">AX-DPX</a></span></li></ul></div><div style='float:left;width:450px;'><ul style='list-style-type: none;'></ul></div><div class="clear_all"></div></div><!-- .nocss3-two-columns -->    </div><!-- #pagecontent.container -->
+  </div><!-- .fullwrap#content-->
+<div id="foot" class="fullwrap">
+  <div id="navbar">
+		<ul id="navbar-inner" class="clearfix footlinks">
+			<li class="navlink footlogo first-item">
+				<a href="/" class="embiggen">cognitive<span id="logo-last">atlas</span><span id="address" class="small quiet pull-right"> NIMH Grant RO1MH082795, Russell Poldrack, PI.</span></a>
+		</li>
+			<li class="navlink concept">
+				<a href="/concepts/a" class="btn"><strong>Concepts</strong></a>
+		</li>
+			<li class="navlink task">
+				<a href="/tasks/a" class="btn"><strong>Tasks</strong></a>
+		</li>
+			<li class="navlink diso">
+				<a href="/disorders/" class="btn"><strong>Disorders</strong></a>
+		</li>	
+		<li class="navlink coll">
+				<a href="/collections/" class="btn"><strong>Collections</strong></a>
+		</li>
+			<li class="navlink about">
+				<a href="/about/" class="btn quiet"><strong>About</strong></a>
+		</li>
+			<li class="navlink blog">
+				<a href="http://blog.cognitiveatlas.org/" class="btn quiet" target="_blank"><strong>Blog</strong></a>
+		</li>
+			<ul class="pull-right">
+			<li class="navlink sparql">
+				<a href="/rdf/endpoint/" class="btn quiet" style="margin-left: 80px;">SPARQL Endpoint</a>
+		</li>
+			</ul>
+		</ul>
+	</div><!-- #navbar-->
+	<div class="container">
+			<div class="pull-left cclink">
+				<a href="http://creativecommons.org/licenses/by-sa/3.0/us/" title="Creative Commons Attribution Share Alike license"><img src="/images/cc_by_sa_88x31.png" alt="Creative Commons by-sa 3.0 us" width="71" height="25"/></a>
+			</div>
+			<div class="pull-right small"> Development partner: <a href="http://www.squishymedia.com" target="_blank" class="">Squishymedia</a></div>
+	</div><!--.container-->
+</div><!--#foot-->
+	<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+	</script>
+	<script type="text/javascript">
+		try {
+			var pageTracker = _gat._getTracker("UA-11124332-1");
+			pageTracker._trackPageview();
+		} catch(err) {}
+	</script>
+	<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"bam.nr-data.net","licenseKey":"1029e6f06b","applicationID":"1662790","transactionName":"ZAFTMEcDDxUDUxAMV11LZBZcTRMDFUINEV0dFFkU","queueTime":0,"applicationTime":150,"atts":"SEZQRg8ZHBs=","errorBeacon":"bam.nr-data.net","agent":""}</script></body>
+</html>

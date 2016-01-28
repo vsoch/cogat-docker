@@ -1,0 +1,89 @@
+{% extends "main/base.html" %}
+{% block head %}
+<style>
+.ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
+.asholder {position:relative;}
+</style>
+{% endblock %}
+{% load staticfiles %}
+{% block functions %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $(function() {
+       $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
+       $("#masker").fadeOut("fast");
+    });
+});
+</script>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div id="userbar">
+            Welcome <a href="/user/id/usr_51bc76ae9636c">Vanessa</a> | <a href="/dashboard">Dashboard</a> |
+        
+            <a href="/admin/">Administer</a> |
+            <a href="/curate/">Curate</a> |
+            <a href="/logout/">Logout</a>
+        </div><!-- #userbar -->
+
+	<div id="search-form-box" class=" pull-right">
+	    <div id="searchformwrap">
+                <form method="post" action="/search/" name="searchform" id="searchform">
+		    <input type="hidden" id="resmax" name="resmax" value="50">
+		    <input type="hidden" id="ord" name="ord" value="alpha">
+		    <input type="hidden" id="concepts" name="search_concepts" value="1">
+		    <input type="hidden" id="tasks" name="search_tasks" value="1">
+		    <input type="hidden" id="assertions" name="search_assertions" value="1">
+		    <input type="hidden" id="batteries" name="search_batteries" value="1">
+		    <input type="hidden" id="batteries" name="search_disorders" value="1">
+		    <input type="hidden" id="theories" name="search_theories" value="1">
+		    <input type="hidden" id="action_type" name="action_type" value="search">
+		    <div class="ui-widget">
+		        <input tabindex="1" type="text" class="fwidgettxt front searchterm" id="searchterm_header" size="20" name="searchterm" aria-label="Enter a search term" title="Enter a search term" placeholder="enter search term" />
+			<input tabindex="2" type="submit" value="Search" id="subji" class="button Search" title="submit search terms">
+		    </div>
+	        </form>
+            </div><!--/#sform -->
+	</div><!--/#search-form-box -->
+    </div><!--container-->
+</div><!--/#utility-->
+
+
+{% block branding %}
+<div class="container">
+    <div id="brand">
+        <div id="logo">
+    	    <a href="/">
+                <img src="/images/logo-front.png" class="img" alt="Cognitive Atlas" width="485" height="168"></a>
+    	</div><!--logo-->
+    	<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span><!--tagline-->
+    </div><!--/#brand-->
+</div><!--container-->
+{% endblock %}
+
+{% include "middle_navigation.html" %}
+      
+<div class="fullwrap section-concepts" id="content">
+    <div class="container" id="pagecontent">
+
+       <div class="pull-right">
+           <a href="javascript:void(0)" class="actionator" id="contclicker">+ contribute new term</a>
+       </div><br/>
+       <div class="stringer">Concepts beginning with "{{ letter }}" {{ nodes_count }}</div>
+       <div class='nocss3-three-columns'>
+           <div style='float:left;width:300px;'>
+               <ul style='list-style-type: none;'>
+                   {% for node in nodes %}
+                   <li>
+                       <span class="concept">
+                           <a href="/concepts/id/{{ node.id }}" class="concept tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a>
+                       </span>
+                   </li>
+                   {% endfor %}
+               </ul>
+           </div>
+           <div class="clear_all"></div>
+       </div><!-- .nocss3-three-columns -->    
+    </div><!-- #pagecontent.container -->
+</div><!-- .fullwrap#content-->
+{% endblock %}

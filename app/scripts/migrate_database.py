@@ -2,6 +2,7 @@
 # see russ_ubergraph.pdf and quasi models below
 
 from py2neo import Graph, Path, Node, Relationship, authenticate
+from cognitiveatlas.api import get_task, get_concept
 import pandas
 import os
 import re
@@ -86,8 +87,14 @@ contrastnodes={}
 for row in tasks.iterrows():
     name = row[1].term
     uid = row[1].url.split("/")[-1]
+    try:
+        task = get_task(id=uid,silent=True).json
+        definition = task[0]["definition_text"]
+    except:
+        definition = ""
     if not str(name) =="nan":
-        node = make_node("task",uid,name)
+        properties = {"definition":definition}
+        node = make_node("task",uid,name,properties)
 
 #class Condition(models.NodeModel):
 #    name = models.StringProperty()
@@ -102,7 +109,7 @@ for row in conditions.iterrows():
     description = row[1].condition_description
     timestamp = row[1].event_stamp    
     if not str(name) =="nan":
-        properties = {"user_id":user,"description":description,"timestamp":timestamp}
+        properties = {"description":description}
         node = make_node("condition",uid,name,properties)
         tasknode = find_node("task",property_value=task)
         # If the tasknode is node found, then we do not create the relation, and we delete the condition
@@ -135,8 +142,7 @@ for row in contrasts.iterrows():
     user = row[1].id_user
     name = row[1].contrast_text
     timestamp = row[1].event_stamp
-    properties = {"user_id":user,"timestamp":timestamp}
-    node = make_node("contrast",uid,name,properties)
+    node = make_node("contrast",uid,name)
 
 #class Concept(models.NodeModel):
 #    name = models.StringProperty()
@@ -151,7 +157,13 @@ for row in contrasts.iterrows():
 for row in concepts.iterrows():
     uid = row[1].url.split("/")[-1]
     name = row[1].term
-    node = make_node("concept",uid,name)
+    try:
+        concept = get_concept(id=uid,silent=True).json
+        definition = concept[0]["definition_text"]
+    except:
+        definition = ""
+    properties={"definition":definition}
+    node = make_node("concept",uid,name,properties)
 
 # Assertions!
 # We will store the old uid as a property, in case we need to map back to original data
