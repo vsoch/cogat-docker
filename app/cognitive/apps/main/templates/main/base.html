@@ -27,7 +27,8 @@
 
 </head>
 {% block body %}
-<body id="main" class="homepage">
+<body id="main" class="{{ active }}">
+
     <div class="fullwrap" id="utility">
     <div class="container">
             <div id="userbar">
@@ -62,40 +63,9 @@
     {% block branding %}
     {% endblock %}
     </div><!--/#branding-->
-    <div class="fullwrap " id="nav">
 
-    <!-- Navigation -->
-    <div id="navbar">
-    <ul id="navbar-inner" class=" clearfix">
-        <li class="navlink concept first-item">
-             <a href="/concepts/a" class="btn">Concepts <span class="count">/ 803</span></a>
-             <div class="active-arrow"></div>
-        </li>
-        <li class="navlink task">
-             <a href="/tasks/a" class="btn">Tasks <span class="count">/ 655</span></a>
-             <div class="active-arrow"></div>
-         </li>
-         <li class="navlink diso">
-             <a href="/disorders/" class="btn">Disorders <span class="count">/ 217</span></a>
-             <div class="active-arrow"></div>
-         </li>    
-         <li class="navlink coll">
-             <a href="/collections/" class="btn">Collections <span class="count">/ 22</span></a>
-             <div class="active-arrow"></div>
-         </li>
-         <li class="pull-right">
-             <ul>
-                 <li class="navlink about quiet">
-                     <a href="/about/" class="btn">About</a>
-                 </li>
-                 <li class="navlink blog quiet last-item">
-                     <a href="http://blog.cognitiveatlas.org/" class="btn" target="_blank">Blog</a>
-                 </li>
-            </ul>
-         </li>
-     </ul>
-    </div><!--navbar-->
-    </div><!--nav-->
+    {% block navigavtion %}
+    {% endblock %}
       
     <!-- Content -->
     <div class="fullwrap " id="content">
@@ -122,7 +92,7 @@
                <a href="/disorders" class="btn"><strong>Disorders</strong></a>
            </li>    
            <li class="navlink coll">
-               <a href="/collections" class="btn"><strong>Collections</strong></a>
+               <a href="/contrasts" class="btn"><strong>Contrasts</strong></a>
            </li>
            <li class="navlink about">
                <a href="/about" class="btn quiet"><strong>About</strong></a>
@@ -132,7 +102,7 @@
            </li>
            <ul class="pull-right">
                <li class="navlink sparql">
-                   <a href="/rdf/endpoint/" class="btn quiet" style="margin-left: 80px;">SPARQL Endpoint</a>
+                   <a href="/api/" class="btn quiet" style="margin-left: 80px;">REST API</a>
                </li>
            </ul>
         </ul>

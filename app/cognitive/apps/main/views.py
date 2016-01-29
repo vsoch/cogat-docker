@@ -21,12 +21,12 @@ def index(request):
     disorders = Disorder.all(limit=10,order_by="last_updated",fields=fields)
     disorders_count = Disorder.count()
 
-    contrasts = Contrast.all(limit=10,order_by="last_updated",fields=fields)
+    contrasts = Contrast.all(limit=7,order_by="last_updated",fields=fields)
     contrasts_count = Contrast.count()
     
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
-               'active':'home',
+               'active':'homepage',
                'concepts':concepts,
                'concepts_count':concepts_count,
                'tasks':tasks,

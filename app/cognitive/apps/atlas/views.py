@@ -7,17 +7,27 @@ Task = Task()
 Disorder = Disorder()
 Contrast = Contrast()
 
+# Needed on all pages
+concepts_count = Concept.count()
+tasks_count = Task.count()
+disorders_count = Disorder.count()
+contrasts_count = Contrast.count()
+
 # VIEWS FOR ALL NODES #############################################################
 
-def all_nodes(request,nodes,node_count,node_type):
+def all_nodes(request,nodes,nodes_count,node_type):
     '''all_nodes returns view with all nodes for node_type'''
 
     template = "atlas/all_%s.html" %node_type
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
                'active':node_type,
-               'nodes',nodes,
-               'concepts_count':node_count}
+               'nodes':nodes,
+               'filtered_concepts_count':nodes_count,
+               'concepts_counts':concepts_count,
+               'disorders_counts':disorders_count,
+               'contrasts_counts':contrasts_count,
+               'tasks_counts':tasks_count}
 
     return render(request,template,context)
 
@@ -52,29 +62,32 @@ def all_contrasts(request):
 
 # VIEWS BY LETTER #############################################################
 
-def nodes_by_letter(request,letter,nodes,node_count,node_type):
+def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
     '''nodes_by_letter returns node view for a certain letter'''
 
     template = "atlas/%s_by_letter.html" %(node_type)
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
-               'active':node_type,
-               'nodes',nodes,
+               'nodes':nodes,
                'letter':letter,
-               'nodes_count':nodes_count}
+               'filtered_concepts_count':nodes_count,
+               'concepts_counts':concepts_count,
+               'disorders_counts':disorders_count,
+               'contrasts_counts':contrasts_count,
+               'tasks_counts':tasks_count}
 
     return render(request,template,context)
 
 def concepts_by_letter(request,letter):
     '''concepts_by_letter returns concept view for a certain letter'''
-    concepts = Concept.filter(filter=[("name","starts_with",letter)])
-    concepts_count = Concept.count()
+    concepts = Concept.filter(filters=[("name","starts_with",letter)])
+    concepts_count = len(concepts)
     return nodes_by_letter(request,letter,concepts,concepts_count,"concepts")
 
 def tasks_by_letter(request,letter):
     '''tasks_by_letter returns task view for a certain letter'''
-    tasks = Task.filter(filter=[("name","starts_with",letter)])
-    tasks_count = Task.count()
+    tasks = Task.filter(filters=[("name","starts_with",letter)])
+    tasks_count = len(tasks)
     return nodes_by_letter(request,letter,tasks,tasks_count,"tasks")
 
 

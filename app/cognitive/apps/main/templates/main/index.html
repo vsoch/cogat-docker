@@ -12,12 +12,19 @@
             <span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span><!--tagline-->
             </div><!--/#brand-->
         </div><!--container-->
+
+{% block navigation %}
+{% include "atlas/middle_navigation.html" %}
 {% endblock %}
+{% endblock %}
+
 {% block content %}
+
         <div id="tbox">
             <h1>Welcome to Cognitive Atlas</h1><br />
             <span class="tblock">The Cognitive Atlas is a collaborative knowledge building project that aims to develop a knowledge base (or ontology) that characterizes the state of current thought in cognitive science. The project is led by Russell Poldrack, Professor of Psychology at Stanford University. Development of the project was supported by grant RO1MH082795 from the National Institute of Mental Health. </span>
            </div><!-- close tbox -->
+
            <div id="aform" class="login-box">
 
                <!-- Sign In-->

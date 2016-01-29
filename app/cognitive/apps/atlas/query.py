@@ -16,19 +16,24 @@ class Node:
         return graph.cypher.execute(query).one
 
 
-    def filter(self,filters,format="dict"):
+    def filter(self,filters,format="dict",fields=None):
         '''filter will filter a node based on some set of filters
         :param filters: a list of tuples with [(field,filter,value)], eg [("name","starts_with","a")]. 
         ::note_ 
        
              Currently supported filters are "starts_with"
         '''
+        if fields == None:
+            fields = self.fields
+        return_fields = ",".join(["n.%s" %(x) for x in fields])
+
         query = "MATCH (n)"
-        for filter_name,filter_field in fields.iteritems():
+        for tup in filters:
+            filter_field,filter_name,filter_value = tup
             if filter_name == "starts_with":
                 query = "%s WHERE n.%s =~ '(?i)%s.*'" %(query,filter_field,filter_value)
-        query = "%s RETURN n" %query
-        return do_query(query,output_format=format)
+        query = "%s RETURN %s" %(query,return_fields)
+        return do_query(query,output_format=format,fields=fields)
 
 
     def all(self,fields=None,limit=None,format="dict",order_by=None,desc=True):
