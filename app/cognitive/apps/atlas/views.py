@@ -92,3 +92,23 @@ def tasks_by_letter(request,letter):
 
 
 # VIEWS FOR SINGLE NODES ##########################################################
+
+def view_concept(request):
+    return render(request,'atlas/view_concept.html',context)
+
+
+def view_task(request):
+    return render(request,'atlas/view_task.html',context)
+
+
+def view_battery(request):
+    return render(request,'atlas/view_battery.html',context)
+
+
+def view_disorder(request):
+    return render(request,'atlas/view_disorder.html',context)
+
+
+def view_theory(request):
+    return render(request,'atlas/view_theory.html',context)
+

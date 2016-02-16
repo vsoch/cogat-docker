@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+{% block head %}
+<style>
+.ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
+.asholder {position:relative;}
+</style>
+{% endblock %}
+{% load staticfiles %}
+
+{% block branding %}
+<div class="container">
+    <div id="brand">
+        <div id="logo">
+    	    <a href="/">
+                <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" style="width:400px;height:100px"></a>
+    	</div><!--logo-->
+    	<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
+    </div>
+</div>
+{% block navigation %}
+{% include "atlas/middle_navigation.html" %}
+{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+
+
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $(function() {
+       $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
+       $("#masker").fadeOut("fast");
+    });
+});
+</script>
+{% endblock %}
