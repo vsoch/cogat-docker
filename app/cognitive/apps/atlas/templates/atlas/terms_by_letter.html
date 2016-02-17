@@ -31,22 +31,22 @@
        <!-- Contribute New Term Form -->
        {% include "atlas/_contribute_term.html" %}
 
-       <h1 class="CATitle">Browse <strong class="concept">Concepts</strong></h1>
-       <div class='inset padtop charstring'><a href='/concepts/' class=' non-selected-letter '>ALL</a>
+       <h1 class="CATitle">Browse <strong class="{{ term_type }}">{{ term_type|capfirst }}s</strong></h1>
+       <div class='inset padtop charstring'><a href='/{{ term_type }}s/' class=' non-selected-letter '>ALL</a>
        {% for let in "abcdefghijklmnopqrstuvwxyz"|make_list %}
             <span class='finb'>&nbsp;</span>
             {% if let = letter %}
-            <a href='/concepts/{{ let|capfirst }}' class=' selected-letter '>{{ let|capfirst }}</a>
+            <a href='/{{ term_type }}s/{{ let|capfirst }}' class=' selected-letter '>{{ let|capfirst }}</a>
             {% else %}
-             <a href='/concepts/{{ let|capfirst }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
+             <a href='/{{ term_type }}s/{{ let|capfirst }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
             {% endif %}
        {% endfor %}
        </div><br>
  
-       <div class="stringer">Concepts beginning with "{{ letter|capfirst }}" {{ filtered_concepts_count }}</div>
+       <div class="stringer">{{ term_type|capfirst }}s beginning with "{{ letter|capfirst }}" {{ filtered_nodes_count }}</div>
        <div style='float:left;width:300px;'>
            <ul class="columns" id="triple">
-               {% for node in nodes %}<li><span class="concept"><a href="/concepts/id/{{ node.id }}" class="concept tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
+               {% for node in nodes %}<li><span class="{{ term_type }}"><a href="/{{ term_type }}s/id/{{ node.id }}" class="{{ term_type }} tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
            </ul>
        </div>
        <div class="clear_all"></div>

@@ -65,18 +65,18 @@ def all_contrasts(request):
 def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
     '''nodes_by_letter returns node view for a certain letter'''
 
-    template = "atlas/%s_by_letter.html" %(node_type)
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
                'nodes':nodes,
                'letter':letter,
-               'filtered_concepts_count':nodes_count,
+               'term_type':node_type[:-1],
+               'filtered_nodes_count':nodes_count,
                'concepts_counts':concepts_count,
                'disorders_counts':disorders_count,
                'contrasts_counts':contrasts_count,
                'tasks_counts':tasks_count}
 
-    return render(request,template,context)
+    return render(request,"atlas/terms_by_letter.html",context)
 
 def concepts_by_letter(request,letter):
     '''concepts_by_letter returns concept view for a certain letter'''
