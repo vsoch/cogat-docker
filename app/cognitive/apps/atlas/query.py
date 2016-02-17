@@ -27,7 +27,7 @@ class Node:
             fields = self.fields
         return_fields = ",".join(["n.%s" %(x) for x in fields])
 
-        query = "MATCH (n)"
+        query = "MATCH (n:%s)" %self.name
         for tup in filters:
             filter_field,filter_name,filter_value = tup
             if filter_name == "starts_with":
