@@ -30,8 +30,38 @@
 
 
        <div class="pull-right">
-           <a href="javascript:void(0)" class="actionator" id="contclicker">+ contribute new term</a>
-       </div><br/>
+           <a class="actionator" id="contclicker">+ contribute new term</a>
+       </div>
+
+       <!-- Contribute term form -->
+       <form method="post" id="dform" action="post" hidden>
+           <input type="hidden" name="form_type" value="term_form">
+           <input type="hidden" name="return_page" value="">
+           <input type="hidden" name="id_object" value="">
+           <input type="hidden" name="id_match" id="id_match" value="">
+           <input type="hidden" name="term_text" id="term_text" value="">
+           <div id="tblock">2. Enter your definition for <span id="newterm"></span>:<br /><br />
+               <textarea name="definition_text" id="definition_text" rows="16" cols="100" title="definition of term" title="term definition" aria-label="term definition"></textarea><br/>
+               <small>If you wish to copy and paste text from a web site or document, please provide attribution to that site<br /> or document in parentheses - for example, (from Wikipedia.org)</small><br/><br/>3. Select the type of term<br/><br/>
+               <div id='radiomsg'></div>
+               <div class="bgsep">
+                   <input type="radio" value="concept" name="term_type" onclick="revealCC()" class="required" title="You must select a term type!" aria-label="type of term is concept" />&nbsp;
+                   <label>Concept</label>&nbsp;
+                   <small>Defined as a mental function, representation, or process. Examples: "working memory", "lemma"</small><br/><br/>
+               </div>
+               <div class="bgsep">
+                   <div id="ttblock">
+                       <input type="radio" value="task" name="term_type" onclick="revealTT()" title='You must select a term type!' aria-label='type of term is task' />&nbsp;
+                       <label>Task</label>&nbsp;
+                       <small>A test that measures some aspect of mental function. Examples: "abuse risk inventory", "Derogatis stress profile"</small><br/>
+                   </div>
+               </div><br/><br/>4. Add any synonyms or acronym representations for this term (separated by comma):<br/>
+               <input type="text" name="term_alias" value="" id="term_alias" size="80" aria-label="Add an alias to this term." title="Add an alias to this term." /><br/><br/>5. Add your term and definition to the database:<br/><br/>
+               <input type="submit" value="Add Definition" title="submit form" aria-label="submit form">
+               <input type="button" value="Reset" onclick="window.location.reload()" aria-label="cancel update" title="cancel submission" />
+           </div>
+       </form><br/>
+
        <h1 class="CATitle">Browse <strong class="concept">Concepts</strong></h1>
        <div class='inset padtop charstring'><a href='/concepts/' class=' non-selected-letter '>ALL</a>
        {% for let in "abcdefghijklmnopqrstuvwxyz"|make_list %}
@@ -59,6 +89,9 @@ $(document).ready(function() {
     $(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
+       $("#contclicker").click(function(){
+           $("#dform").show();
+       });
     });
 });
 </script>
