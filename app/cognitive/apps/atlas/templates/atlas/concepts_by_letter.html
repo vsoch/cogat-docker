@@ -3,6 +3,9 @@
 <style>
 .ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
 .asholder {position:relative;}
+
+{% include "atlas/multicolumn_lists.css" %}
+
 </style>
 {% endblock %}
 {% load staticfiles %}
@@ -25,6 +28,7 @@
 
 {% block content %}
 
+
        <div class="pull-right">
            <a href="javascript:void(0)" class="actionator" id="contclicker">+ contribute new term</a>
        </div><br/>
@@ -41,15 +45,13 @@
        </div><br>
  
        <div class="stringer">Concepts beginning with "{{ letter|capfirst }}" {{ filtered_concepts_count }}</div>
-       <div class='nocss3-three-columns'>
-           <div style='float:left;width:300px;'>
-               <ul style='list-style-type: none;'>
-                   {% for node in nodes %}<li><span class="concept"><a href="/concepts/id/{{ node.id }}" class="concept tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
-               </ul>
-           </div>
-           <div class="clear_all"></div>
-       </div><!-- .nocss3-three-columns -->    
-
+       <div style='float:left;width:300px;'>
+           <ul class="columns" id="triple">
+               {% for node in nodes %}<li><span class="concept"><a href="/concepts/id/{{ node.id }}" class="concept tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
+           </ul>
+       </div>
+       <div class="clear_all"></div>
+      
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">

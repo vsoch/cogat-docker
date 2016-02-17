@@ -1,0 +1,16 @@
+ul.columns {
+  width:900px;
+  margin-bottom:20px;
+  overflow:hidden;
+  border-top:1px solid #ccc;
+}
+.columns li{
+  line-height:1.5em;
+  float:left;
+  display:inline;
+}
+#double li  { width:50%;} 
+#triple li  { width:33.333%; } 
+#quad li    { width:25%; } 
+#six li     { width:16.666%; }
+
