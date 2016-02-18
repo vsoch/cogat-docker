@@ -112,3 +112,19 @@ def view_disorder(request):
 def view_theory(request):
     return render(request,'atlas/view_theory.html',context)
 
+
+# ADD NEW TERMS ###################################################################
+
+def contribute_term(request):
+    # Get form data from post, check if term exist,
+    # if term exists, define already_exists, and add to context
+    term_name = "hello!"
+    message = "message"
+
+    context = {"message":message,
+              "term_name":term_name}
+    
+    if 1==1:
+        context["already_exists"] = "anything"
+
+    return render(request,'atlas/contribute_term.html',context)
