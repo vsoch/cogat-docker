@@ -10,9 +10,21 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
+import sys
 import os
+from os.path import join, abspath, dirname
+
 from py2neo import Graph
 from py2neo.neo4j import authenticate
+
+
+# PATH vars
+here = lambda *x: join(abspath(dirname(__file__)), *x)
+PROJECT_ROOT = here(".")
+root = lambda *x: join(abspath(PROJECT_ROOT), *x)
+
+sys.path.insert(0, root('apps'))
+
 #graph = Graph("http://graphdb:7474/db/data/")
 
 # Just for local development - will read this from secrets
@@ -41,6 +53,12 @@ INSTALLED_APPS = [
     'cognitive.apps.atlas',
     'cognitive.apps.users',
 ]
+
+THIRD_PARTY_APPS = [
+    'rest_framework'
+]
+
+INSTALLED_APPS += THIRD_PARTY_APPS
 
 MIDDLEWARE_CLASSES = [
     'django.middleware.security.SecurityMiddleware',
