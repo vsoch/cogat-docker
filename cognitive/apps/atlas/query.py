@@ -79,12 +79,34 @@ class Node:
 
         # Return as pandas data frame
         results = tx.commit()
+        if not results:
+            return None
         df = pandas.DataFrame(columns=self.fields)
         df.columns = self.fields
         for r in range(len(results)):       
             df.loc[r] = [x for x in results[r].one]
         return df
 
+    def get_by_relation(self, head_params, field="id", tail_name='*', relationship='*', 
+                        format="dict"):
+        '''get_by_relation will search for nodes that have a specific 
+        relationship with other nodes.
+        :param filters: a tuples with elements (field, relationship, value)
+        '''
+        if isinstance(head_params,str):
+            params = [head_params]
+        
+        query = "MATCH (head:%s)-[:%s]->(tail:%s) WHERE head.%s = {A} RETURN tail" % (self.name, relationship, tail_name, field)
+
+        tx = graph.cypher.begin()
+
+        for param in params:
+            tx.append(query, {"A": param})
+
+        results = tx.commit()
+        return results
+       
+        
 
 
 # Each type of Cognitive Atlas Class extends Node class
