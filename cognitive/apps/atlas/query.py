@@ -91,7 +91,12 @@ class Node:
                         format="dict"):
         '''get_by_relation will search for nodes that have a specific 
         relationship with other nodes.
-        :param filters: a tuples with elements (field, relationship, value)
+        :param head_params list of parameters to search on, eg [trm_123]
+        :param field field in node to search for parameters in
+        :param tail_name node label of the tail end of the relationship
+        :param relationship between calling node and tail_name.
+        
+        Default parameters are currently not working.
         '''
         if isinstance(head_params,str):
             params = [head_params]
