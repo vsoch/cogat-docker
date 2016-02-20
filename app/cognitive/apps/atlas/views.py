@@ -23,7 +23,7 @@ def all_nodes(request,nodes,nodes_count,node_type):
     context = {'appname': appname,
                'active':node_type,
                'nodes':nodes,
-               'filtered_concepts_count':nodes_count,
+               'filtered_nodes_count':nodes_count,
                'concepts_counts':concepts_count,
                'disorders_counts':disorders_count,
                'contrasts_counts':contrasts_count,
@@ -48,9 +48,24 @@ def all_tasks(request):
 def all_disorders(request):
     '''all_disorders returns page with list of all disorders'''
 
-    disorders = Disorder.all(limit=10,order_by="last_updated",fields=fields)
+    disorders = Disorder.all(order_by="last_updated")
+
+    # Group by classification
+    classifications = numpy.unique([x["classification"] for x in disorders if x["classification"]]).tolist()
+    disorder_by_class = dict()
+    disorders_without_class = []
+    for disorder in disorders:
+        if disorder["classification"] == None:
+            disorders_without_class.append(disorder)
+        elif disorder["classification"] in disorder_by_class:
+            disorder_by_class[disorder["classification"]].append(disorder)
+        else:
+            disorder_by_class[disorder["classification"]] = [disorder]
+
+    disorder_by_class["None"] = disorders_without_class
+    
     disorders_count = Disorder.count()
-    return all_nodes(request,disorders,disorders_count,"disorders")
+    return all_nodes(request,disorders_by_class,disorders_count,"disorders")
 
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
@@ -128,3 +143,7 @@ def contribute_term(request):
         context["already_exists"] = "anything"
 
     return render(request,'atlas/contribute_term.html',context)
+
+def contribute_disorder(request):
+
+    return render(request,'atlas/contribute_disorder.html',context)

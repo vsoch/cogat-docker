@@ -108,6 +108,7 @@ class Disorder(Node):
     def __init__(self):
         self.name = "disorder"
         self.fields = ["id","name","classification"]
+    
 
 class Condition(Node):
 
