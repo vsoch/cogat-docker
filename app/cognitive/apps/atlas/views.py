@@ -48,24 +48,22 @@ def all_tasks(request):
 def all_disorders(request):
     '''all_disorders returns page with list of all disorders'''
 
-    disorders = Disorder.all(order_by="last_updated")
-
-    # Group by classification
-    classifications = numpy.unique([x["classification"] for x in disorders if x["classification"]]).tolist()
-    disorder_by_class = dict()
-    disorders_without_class = []
-    for disorder in disorders:
+    disorders = Disorder.all(order_by="last_updated")    
+    for d in range(len(disorders)):
+        disorder = disorders[d]
         if disorder["classification"] == None:
-            disorders_without_class.append(disorder)
-        elif disorder["classification"] in disorder_by_class:
-            disorder_by_class[disorder["classification"]].append(disorder)
-        else:
-            disorder_by_class[disorder["classification"]] = [disorder]
+            disorder["classification"] = "None"
+            disorders[d] = disorder
 
-    disorder_by_class["None"] = disorders_without_class
-    
-    disorders_count = Disorder.count()
-    return all_nodes(request,disorders_by_class,disorders_count,"disorders")
+    context = {'appname': "The Cognitive Atlas",
+               'active':"disorders",
+               'nodes':disorders,
+               'concepts_counts':concepts_count,
+               'disorders_counts':disorders_count,
+               'contrasts_counts':contrasts_count,
+               'tasks_counts':tasks_count}
+
+    return render(request,"atlas/all_disorders.html",context)
 
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
