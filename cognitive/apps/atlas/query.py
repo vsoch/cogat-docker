@@ -79,7 +79,7 @@ class Node:
 
         # Return as pandas data frame
         results = tx.commit()
-        if not results:
+        if not results or sum(len(res) for res in results) == 0:
             return None
         df = pandas.DataFrame(columns=self.fields)
         df.columns = self.fields
