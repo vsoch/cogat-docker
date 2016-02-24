@@ -3,16 +3,12 @@ import pandas
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .query import Concept, Contrast, Disorder, Task
+from .query import Concept, Contrast, Disorder, Task, do_query
 
 Concept = Concept()
 Contrast = Contrast()
 Disorder = Disorder()
 Task = Task()
-
-class SearchAPI(APIView):
-    def get(self, request, format=None):
-        return Response()
 
 class ConceptAPI(APIView):
     def get(self, request, format=None):
@@ -30,7 +26,7 @@ class ConceptAPI(APIView):
         else:
             concept = Concept.all()
         
-        return Response(concept())
+        return Response(concept)
 
 class TaskAPI(APIView):
     def get(self, request, format=None):
@@ -61,3 +57,12 @@ class DisorderAPI(APIView):
         return Response(disorder)
 
 
+class SearchAPI(APIView):
+    def get(self, request, format=None):
+        search_classes = [Concept, Contrast, Disorder, Task]
+        queries = request.GET.get("q", "")
+        results = {}
+        for cls in search_classes:
+            result = cls.search_all_fields(queries)
+            results = {**results, **result}
+        return Response(results)
