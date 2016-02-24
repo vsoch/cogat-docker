@@ -111,8 +111,38 @@ class Node:
         results = tx.commit()
         return results
        
+    def search_all_fields(self, params):
+        if isinstance(params,str):
+            params = [params]
+        return_fields = ",".join(["c.%s" %(x) for x in self.fields])
+        query = "MATCH (c:%s) WHERE c.{0} =~ '(?i).*{1}.*$' RETURN %s;" %(self.name,return_fields)
+        queries = []
+        for field in self.fields:
+            for param in params:
+               queries.append(query.format(field, param))
         
+        # Combine queries into transaction
+        tx = graph.cypher.begin()
 
+        for query in queries:
+            tx.append(query)
+
+        # Return as pandas data frame
+        results = tx.commit()
+        if not results or sum(len(res) for res in results) == 0:
+            return {}
+        
+        df = pandas.DataFrame(columns=self.fields)
+        i = 0
+        for result in results:
+            for record in result.records:
+                attr_values = []
+                for field in self.fields:
+                    attr_name = "c.%s" %(field)
+                    attr_values.append(getattr(record, attr_name, ""))
+                df.loc[i] = attr_values
+                i += 1
+        return df.to_dict(orient="records")
 
 # Each type of Cognitive Atlas Class extends Node class
 

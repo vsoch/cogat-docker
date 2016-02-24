@@ -1,5 +1,3 @@
-import pandas
-
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -61,8 +59,9 @@ class SearchAPI(APIView):
     def get(self, request, format=None):
         search_classes = [Concept, Contrast, Disorder, Task]
         queries = request.GET.get("q", "")
-        results = {}
+        results = []
         for cls in search_classes:
             result = cls.search_all_fields(queries)
-            results = {**results, **result}
+            results += result
+        print(results)
         return Response(results)
