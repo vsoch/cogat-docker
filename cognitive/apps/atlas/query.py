@@ -87,6 +87,7 @@ class Node:
             df.loc[r] = [x for x in results[r].one]
         return df
 
+
     def get_by_relation(self, head_params, field="id", tail_name='*', relationship='*', 
                         format="dict"):
         '''get_by_relation will search for nodes that have a specific 
@@ -163,7 +164,38 @@ class Concept(Node):
     def __init__(self):
         self.name = "concept"
         self.fields = ["id","name","definition"]
+
+    def get_full(self, param, field="id"):
+        concept_nodes = graph.find(self.name, field, param)
+        concepts = []
+        for concept_node in concept_nodes:
+            concept_dict = {}
+            concept_dict.update(concept_node.properties)
             
+            # relationships. There is a naming conflict here. I've been using 
+            # rel to refer to a relationship object from neo4j, and cogat uses
+            # relationship to refer to how a concept relates to another concept
+            relationships = []
+            for rel_type in ["PARTOF", "KINDOF"]:
+                relationship_rels = graph.match(concept_node, rel_type, bidirectional=True)
+                relationship_rels = [x for x in relationship_rels]
+                for relationship_rel in relationship_rels:
+                    relationship = {}
+                    relationship.update({"relationship": rel_type})
+                    if relationship_rel.start_node != concept_node:
+                        relationship.update({"direction": "child of"})
+                        relationship.update({"id": relationship_rel.start_node.properties['id']})
+                    elif relationship_rel.end_node != concept_node:
+                        relationship.update({"direction": "parent of"})
+                        relationship.update({"id": relationship_rel.end_node.properties['id']})
+                    else:
+                        # the node is referring to itself, should it raise
+                        # an exception?
+                        pass
+                    relationships.append(relationship)
+            concept_dict.update({"relationships": relationships})
+            concepts.append(concept_dict)
+        return concepts
 
 class Task(Node):
 
@@ -184,18 +216,18 @@ class Task(Node):
         for task_node in task_nodes:
             task_dict = {}
             task_dict.update(task_node.properties)
-            
+
             # conditions
             condition_rels = graph.match(task_node, "HASCONDITION")
             condition_nodes = [x.end_node for x in condition_rels]
             conditions = [x.properties for x in condition_nodes]
             task_dict.update({"conditions": conditions})
-            
+
             # concepts
             concept_rels = graph.match(task_node, "ASSERTS", bidirectional=True)
             concepts = [x.end_node.properties for x in concept_rels]
             task_dict.update({"concepts": concepts})
-            
+
             # contrasts, traverse condition nodes to their contrasts 
             contrasts = []
             for condition in condition_nodes:

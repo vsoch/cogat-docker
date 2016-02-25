@@ -17,9 +17,9 @@ class ConceptAPI(APIView):
         contrast_id = request.GET.get("contrast_id", "")
         print(len(request.GET))
         if id:
-            concept = Concept.get(id, 'id')
+            concept = Concept.get_full(id, 'id')
         elif name:
-            concept = Concept.get(name, 'name')
+            concept = Concept.get_full(name, 'name')
         elif contrast_id:
             concept = Contrast.get_by_relation(contrast_id, "id", "concept", "MEASUREDBY")
         else:
