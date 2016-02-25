@@ -101,7 +101,8 @@ class Node:
         if isinstance(head_params,str):
             params = [head_params]
         
-        query = "MATCH (head:%s)-[:%s]->(tail:%s) WHERE head.%s = {A} RETURN tail" % (self.name, relationship, tail_name, field)
+        return_fields = ",".join(["tail.%s" %(x) for x in self.fields])
+        query = "MATCH (head:%s)-[:%s]->(tail:%s) WHERE head.%s = {A} RETURN %s" % (self.name, relationship, tail_name, field, return_fields)
 
         tx = graph.cypher.begin()
 
@@ -109,7 +110,18 @@ class Node:
             tx.append(query, {"A": param})
 
         results = tx.commit()
-        return results
+        
+        df = pandas.DataFrame(columns=self.fields)
+        i = 0
+        for result in results:
+            for record in result.records:
+                attr_values = []
+                for field in self.fields:
+                    attr_name = "tail.%s" %(field)
+                    attr_values.append(getattr(record, attr_name, ""))
+                df.loc[i] = attr_values
+                i += 1
+        return df.to_dict(orient="records")
        
     def search_all_fields(self, params):
         if isinstance(params,str):
