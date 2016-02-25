@@ -35,9 +35,9 @@ class TaskAPI(APIView):
         name = request.GET.get("name", "")
         
         if id:
-            task = Task.get(id, 'id')
+            task = Task.get_full(id, 'id')
         elif name:
-            task = Task.get(name, 'name')
+            task = Task.get_full(name, 'name')
         else:
             task = Task.all()
         

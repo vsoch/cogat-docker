@@ -170,6 +170,45 @@ class Task(Node):
     def __init__(self):
         self.name = "task"
         self.fields = ["id","name","definition"]
+    
+    def node_to_df(self, node):
+        return None
+
+    def get_full(self,param,field="id"):
+        '''get returns one or more nodes based on a field of interest
+        :param param: single parameter to search for, eg [trm_123]
+        :param field: field to search (default id)
+        '''
+        task_nodes = graph.find("task", field, param)
+        tasks = []
+        for task_node in task_nodes:
+            task_dict = {}
+            task_dict.update(task_node.properties)
+            
+            # conditions
+            condition_rels = graph.match(task_node, "HASCONDITION")
+            condition_nodes = [x.end_node for x in condition_rels]
+            conditions = [x.properties for x in condition_nodes]
+            task_dict.update({"conditions": conditions})
+            
+            # concepts
+            concept_rels = graph.match(task_node, "ASSERTS", bidirectional=True)
+            concepts = [x.end_node.properties for x in concept_rels]
+            task_dict.update({"concepts": concepts})
+            
+            # contrasts, traverse condition nodes to their contrasts 
+            contrasts = []
+            for condition in condition_nodes:
+                contrast_rels = graph.match(condition, "HASCONTRAST")
+                new_contrasts = [x.end_node.properties for x in contrast_rels]
+                for new_contrast in new_contrasts:
+                    if new_contrast not in contrasts:
+                        contrasts.append(new_contrast)
+            if contrasts:
+                task_dict.update({"contrasts": contrasts})
+            
+            tasks.append(task_dict)
+        return tasks
 
 
 class Disorder(Node):
