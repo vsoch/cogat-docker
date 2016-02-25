@@ -214,7 +214,7 @@ for row in assertions.iterrows():
             make_relation(tasknode,"ASSERTS", conceptnode)
         # We do not model task --> contrast, this comes by way of conditions (task --> conditions --> contrasts)
 
-    elif id_type == "contrast-contrast":
+    elif id_type == "concept-concept":
         conceptnode1 = find_node("concept",property_value=subject)
         conceptnode2 = find_node("concept",property_value=predicate)
 
