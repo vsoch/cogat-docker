@@ -1,3 +1,4 @@
+from rest_framework.exceptions import NotFound
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -14,7 +15,7 @@ class ConceptAPI(APIView):
         id = request.GET.get("id", "")
         name = request.GET.get("name", "")
         contrast_id = request.GET.get("contrast_id", "")
-        
+        print(len(request.GET))
         if id:
             concept = Concept.get(id, 'id')
         elif name:
@@ -24,6 +25,8 @@ class ConceptAPI(APIView):
         else:
             concept = Concept.all()
         
+        if concept is None:
+            raise NotFound('Concept not found')
         return Response(concept)
 
 class TaskAPI(APIView):
@@ -38,6 +41,9 @@ class TaskAPI(APIView):
         else:
             task = Task.all()
         
+        print(task)
+        if task is None:
+            raise NotFound('Task not found')
         return Response(task)
 
 class DisorderAPI(APIView):
@@ -52,6 +58,8 @@ class DisorderAPI(APIView):
         else:
             disorder = Disorder.all()
         
+        if disorder is None:
+            raise NotFound('Disorder not found')
         return Response(disorder)
 
 
@@ -63,5 +71,6 @@ class SearchAPI(APIView):
         for cls in search_classes:
             result = cls.search_all_fields(queries)
             results += result
-        print(results)
+        if not results:
+            raise NotFound('No results found')
         return Response(results)
