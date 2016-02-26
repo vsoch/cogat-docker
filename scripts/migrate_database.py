@@ -61,11 +61,11 @@ disorders = cleancolumns(pandas.read_csv("data/Dump_disorder_2015-12-26_567f2164
 assertions = cleancolumns(pandas.read_csv("data/Dump_assertion_2015-12-25_567dd9cd411c5.csv",sep=";"))
 
 # connect to graph database
-#graph = Graph("http://graphdb:7474/db/data/")
+graph = Graph("http://graphdb:7474/db/data/")
 
 # Just for local development
-authenticate("localhost:7474", "neo4j", "noodles")
-graph = Graph()
+#authenticate("localhost:7474", "neo4j", "noodles")
+#graph = Graph()
 
 # clear database
 graph.delete_all()
@@ -141,8 +141,17 @@ for row in contrasts.iterrows():
     uid = row[1].id
     user = row[1].id_user
     name = row[1].contrast_text
+    id_term = row[1].id_term
     timestamp = row[1].event_stamp
     node = make_node("contrast",uid,name)
+    
+    # id_term in the database dumps appears to point at a task, where should 
+    # that relation be mapped?
+    for condition in conditions.iterrows():
+        if id_term == condition[1].id_term:
+            condition_node = find_node("condition", property_value=condition[1].id)
+            if condition_node is not None:
+                make_relation(condition_node, "HASCONTRAST", node)
 
 #class Concept(models.NodeModel):
 #    name = models.StringProperty()
@@ -199,11 +208,13 @@ for row in assertions.iterrows():
 
         # Contrast is measured by contrast
         if contrastnode != None and conceptnode != None:
-            relation = make_relation(contrastnode,"MEASUREDBY",conceptnode,properties)
+            relation = make_relation(conceptnode,"MEASUREDBY",contrastnode,properties)
     
+        if tasknode and conceptnode:
+            make_relation(tasknode,"ASSERTS", conceptnode)
         # We do not model task --> contrast, this comes by way of conditions (task --> conditions --> contrasts)
 
-    elif id_type == "contrast-contrast":
+    elif id_type == "concept-concept":
         conceptnode1 = find_node("concept",property_value=subject)
         conceptnode2 = find_node("concept",property_value=predicate)
 
