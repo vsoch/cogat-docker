@@ -55,7 +55,7 @@ def find_node(nodetype,property_value,property_key='id'):
 concepts = cleancolumns(pandas.read_csv("data/Dump_concept_2015-12-25_567dd9b28fabb.csv",sep=";"))
 tasks = cleancolumns(pandas.read_csv("data/Dump_task_2015-12-25_567dd9bb7ff74.csv",sep=";"))
 contrasts = cleancolumns(pandas.read_csv("data/Dump_contrast_2015-12-25_567dd9c4b46c4.csv",sep=";"))
-battery = cleancolumns(pandas.read_csv("data/Dump_battery_2015-12-25_567dd9d2866fd.csv",sep=";"))
+battery = cleancolumns(pandas.read_csv("data/Dump_battery_2015-12-25_567dd9d2866fd.csv",sep=";")) # These are collections
 conditions = cleancolumns(pandas.read_csv("data/Dump_condition_2015-12-25_567dd9bf079bb.csv",sep=";"))
 disorders = cleancolumns(pandas.read_csv("data/Dump_disorder_2015-12-26_567f21649c2cb.csv",sep=";"))
 assertions = cleancolumns(pandas.read_csv("data/Dump_assertion_2015-12-25_567dd9cd411c5.csv",sep=";"))
