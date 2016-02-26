@@ -89,7 +89,7 @@ class Node:
 
 
     def get_by_relation(self, param, field="id",  tail_type=None,
-                        relationship=None, 
+                        relationship=None, )
         '''get_by_relation will search for nodes that have a specific 
         relationship with other nodes.
         :param parameter to search on, eg [trm_123]
