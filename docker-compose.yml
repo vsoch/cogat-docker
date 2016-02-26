@@ -43,16 +43,16 @@ uwsgi:
     build: .
     restart: always
     volumes:
-        - .:/app
+        - .:/code
         - /var/www/static
     links:
         - postgres
         - graphdb
     env_file: .env
-    command: /app/uwsgi.sh
+    command: /code/uwsgi.sh
     expose:
         - "4000"
-    working_dir: /app
+    working_dir: /code
 
 nginx:
     image: nginx:latest
