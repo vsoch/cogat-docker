@@ -23,7 +23,7 @@ def all_nodes(request,nodes,nodes_count,node_type):
     context = {'appname': appname,
                'active':node_type,
                'nodes':nodes,
-               'filtered_concepts_count':nodes_count,
+               'filtered_nodes_count':nodes_count,
                'concepts_counts':concepts_count,
                'disorders_counts':disorders_count,
                'contrasts_counts':contrasts_count,
@@ -48,9 +48,22 @@ def all_tasks(request):
 def all_disorders(request):
     '''all_disorders returns page with list of all disorders'''
 
-    disorders = Disorder.all(limit=10,order_by="last_updated",fields=fields)
-    disorders_count = Disorder.count()
-    return all_nodes(request,disorders,disorders_count,"disorders")
+    disorders = Disorder.all(order_by="last_updated")    
+    for d in range(len(disorders)):
+        disorder = disorders[d]
+        if disorder["classification"] == None:
+            disorder["classification"] = "None"
+            disorders[d] = disorder
+
+    context = {'appname': "The Cognitive Atlas",
+               'active':"disorders",
+               'nodes':disorders,
+               'concepts_counts':concepts_count,
+               'disorders_counts':disorders_count,
+               'contrasts_counts':contrasts_count,
+               'tasks_counts':tasks_count}
+
+    return render(request,"atlas/all_disorders.html",context)
 
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
@@ -65,18 +78,18 @@ def all_contrasts(request):
 def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
     '''nodes_by_letter returns node view for a certain letter'''
 
-    template = "atlas/%s_by_letter.html" %(node_type)
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
                'nodes':nodes,
                'letter':letter,
-               'filtered_concepts_count':nodes_count,
+               'term_type':node_type[:-1],
+               'filtered_nodes_count':nodes_count,
                'concepts_counts':concepts_count,
                'disorders_counts':disorders_count,
                'contrasts_counts':contrasts_count,
                'tasks_counts':tasks_count}
 
-    return render(request,template,context)
+    return render(request,"atlas/terms_by_letter.html",context)
 
 def concepts_by_letter(request,letter):
     '''concepts_by_letter returns concept view for a certain letter'''
@@ -112,3 +125,23 @@ def view_disorder(request):
 def view_theory(request):
     return render(request,'atlas/view_theory.html',context)
 
+
+# ADD NEW TERMS ###################################################################
+
+def contribute_term(request):
+    # Get form data from post, check if term exist,
+    # if term exists, define already_exists, and add to context
+    term_name = "hello!"
+    message = "message"
+
+    context = {"message":message,
+              "term_name":term_name}
+    
+    if 1==1:
+        context["already_exists"] = "anything"
+
+    return render(request,'atlas/contribute_term.html',context)
+
+def contribute_disorder(request):
+
+    return render(request,'atlas/contribute_disorder.html',context)

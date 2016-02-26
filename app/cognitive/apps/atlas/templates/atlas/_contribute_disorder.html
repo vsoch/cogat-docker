@@ -1,0 +1,18 @@
+<div class="pull-right">
+    <a class="actionator" id="contclicker">+ contribute new disorder</a>
+</div>
+    
+<blockquote class="text" id="contribution_block" style="display:none;">
+    <span class="sectionmed">Contribute New Disorder</span><br /><br />
+    <form method="post" id="dform" action="/post/">
+        <div class="dblock">  
+            <label for="disorder_name">Disorder Name</label><br>
+                <input type="text" name="disorder_name" id="disorder_name" value="" size="58"><br></div><br>
+                <div class="dblock">  
+                    <label for="disorder_definition">Definition</label><br>
+                        <textarea name="disorder_definition" id="disorder_definition" rows="12" cols="60"></textarea>
+                </div><br>
+                <input type="button" value="Add Disorder" id="submittor" title="submit form" aria-label="submit form"> 
+                <input type="button" value="Cancel" onclick="window.location.reload()" aria-label="cancel update" title="cancel submission" />
+    </form><br><br><br><br>
+</blockquote>

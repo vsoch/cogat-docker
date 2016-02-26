@@ -361,7 +361,7 @@ body {
     font-weight: normal;
     color: #777;
     line-height: 1.3;
-    background: url('/images/newimages2013/bodyBG.png') repeat 0 0 #000
+    background: url('/static/img/bodyBG.png') repeat 0 0 #000
 }
 
 body #pagecontent {
@@ -538,19 +538,19 @@ a.superbutton strong {
 
 .fullwrap#branding {
     background: #505050;
-    background-image: url('../images/newimages2013/headerBG2.png');
-    background-image: url('../images/newimages2013/headerBG2.png'), -moz-linear-gradient(top, #303030 0, #0a0a0a 100%);
-    background-image: url('../images/newimages2013/headerBG2.png'), -webkit-gradient(linear, left top, left bottom, color-stop(0%, #303030), color-stop(100%, #0a0a0a));
-    background-image: url('../images/newimages2013/headerBG2.png'), -webkit-linear-gradient(top, #303030 0, #0a0a0a 100%);
-    background-image: url('../images/newimages2013/headerBG2.png'), -o-linear-gradient(top, #303030 0, #0a0a0a 100%);
-    background-image: url('../images/newimages2013/headerBG2.png'), -ms-linear-gradient(top, #303030 0, #0a0a0a 100%);
-    background-image: url('../images/newimages2013/headerBG2.png'), linear-gradient(to bottom, #303030 0, #0a0a0a 100%);
+    background-image: url('/static/img/headerBG2.png');
+    background-image: url('/static/img/headerBG2.png'), -moz-linear-gradient(top, #303030 0, #0a0a0a 100%);
+    background-image: url('/static/img/headerBG2.png'), -webkit-gradient(linear, left top, left bottom, color-stop(0%, #303030), color-stop(100%, #0a0a0a));
+    background-image: url('/static/img/headerBG2.png'), -webkit-linear-gradient(top, #303030 0, #0a0a0a 100%);
+    background-image: url('/static/img/headerBG2.png'), -o-linear-gradient(top, #303030 0, #0a0a0a 100%);
+    background-image: url('/static/img/headerBG2.png'), -ms-linear-gradient(top, #303030 0, #0a0a0a 100%);
+    background-image: url('/static/img/headerBG2.png'), linear-gradient(to bottom, #303030 0, #0a0a0a 100%);
     padding-bottom: 0
 }
 
 .ie7 .fullwrap#branding,
 .ie8 .fullwrap#branding {
-    background: url('../images/newimages2013/headerBG2.png') repeat 0 0 #333!important
+    background: url('/static/img/headerBG2.png') repeat 0 0 #333!important
 }
 
 .fullwrap#utility {
@@ -2331,100 +2331,6 @@ input[type=password] {
 
 #togglerem:hover {
     color: #d89013
-}
-
-#pubbrain-container #axi_container {
-    width: 100%;
-    text-align: center
-}
-
-#pubbrain-container a {
-    color: white;
-    text-decoration: none
-}
-
-#pubbrain-container a:hover {
-    color: orange;
-    text-decoration: none
-}
-
-#axi_image {
-    border: 0;
-    background-image: url('/pubrain/images/axi_74_2.png');
-    background-size: 120px 140px;
-    padding-top: 0
-}
-
-#sag_image {
-    border: 0;
-    background-image: url('/pubrain/images/sag_45_2.png');
-    background-size: 130px 130px;
-    padding-top: 12px
-}
-
-#cor_image {
-    border: 0;
-    background-image: url('/pubrain/images/cor_56_2.png');
-    background-size: 140px 140px;
-    padding-top: 12px
-}
-
-#axi_image,
-#sag_image,
-#cor_image {
-    background-repeat: no-repeat;
-    background-position: top center;
-    text-align: center
-}
-
-#pubbrain-container div.img_tab {
-    float: left;
-    width: 120px;
-    padding-right: 5px
-}
-
-#pubbrain-container #legend_low {
-    font-size: 9pt;
-    font-family: arial, helvetica, sans-serif;
-    color: white;
-    font-weight: bold
-}
-
-#pubbrain-container #legend_high {
-    font-size: 9pt;
-    font-family: arial, helvetica, sans-serif;
-    color: white;
-    font-weight: bold
-}
-
-#pubbrain-container .ilabs {
-    text-align: center;
-    background-color: #424242;
-    color: #fff;
-    font-family: arial, helvetica, sans-serif;
-    font-size: 10pt
-}
-
-#pubbrain-container {
-    margin: 0;
-    margin-top: 5px;
-    padding: 0;
-    background-color: #000;
-    width: 375px;
-    padding: 10px
-}
-
-#pubbrain-refresh-wrap {
-    margin: 5px 0;
-    display: block;
-    font-size: 12px
-}
-
-.pubbrain-legend {
-    width: 359px;
-    height: 5px;
-    margin: 1px 7px 0;
-    display: block
 }
 
 .discmsg {

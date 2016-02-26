@@ -1,0 +1,86 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block head %}
+<style>
+.ui-autocomplete-loading { background: white url("/img/facebox/loading.gif") right center no-repeat; }
+.asholder {position:relative;}
+</style>
+<link type="text/css" href="{% static "css/select2.min.css"%}" rel="stylesheet" media="screen">
+{% endblock %}
+
+{% block branding %}
+<div class="container">
+    <div id="brand">
+        <div id="logo">
+    	    <a href="/">
+                <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" style="width:400px;height:100px"></a>
+    	</div><!--logo-->
+    	<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
+    </div>
+</div>
+{% block navigation %}
+{% include "atlas/middle_navigation.html" %}
+{% endblock %}
+{% endblock %}
+
+{% block content %}
+
+       <script>
+       nodes = {{ nodes | safe }}
+       </script>
+
+       <!-- Contribute New Disorder Form -->
+       {% include "atlas/_contribute_disorder.html" %}
+        <div class="container" id="pagecontent">
+
+        <!-- Only rendered based on highest category -->
+        <h1 class="CATitle disorder">Browse <strong class="disorder">Disorders</strong></h1><br>
+
+        <select id="disorder_list"> 
+        {% for disorder in nodes %}
+            <option value="{{ disorder.id }}">{{ disorder.name }}</option>
+        {% endfor %}
+        </select>
+	<br><br><br><br><br><br>
+	<p><small>Data on Disorders has been provided by the <a href="http://disease-ontology.org/" target="_blank">Disease Ontology (DO) database</a>,
+read more at <a href="http://www.ncbi.nlm.nih.gov/pmc/articles/PMC3245088/" target="_blank">NAR</a>, reference: Schriml LM, Arze C, Nadendla S, Chang YW,
+Mazaitis M, Felix V, Feng G, Kibbe WA. <a href="http://www.ncbi.nlm.nih.gov/pubmed/22080554" target="_blank">Disease Ontology: a backbone for
+disease semantic integration</a>. Nucleic Acids Res, 40:D940-D946, 2012.
+22080554; PMC3245088; 10.1093/nar/gkr972.</small></p>		
+	</div><!-- #pagecontent.container -->
+
+      
+{% endblock %}
+{% block scripts %}
+<script src="{% static "js/select2.min.js"%}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(function() {
+       $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
+       $("#masker").fadeOut("fast");
+       $("#contclicker").click(function(){
+           $("#contribution_block").toggle();
+       });
+    });
+    $("#disorder_list").select2();
+
+    // On selection of a node, render in page
+    $("#disorder_list").change(function(e) {
+        var selection = $("#disorder_list").val()    
+        var text = $("#disorder_list option:selected").text()    
+        console.log(selection);
+        console.log(text);
+        var tree = []
+        // TODO: add classifications to list as we go, and continually add children until empty.
+        $.each(nodes, function(i, node) {
+            if (node.name == text){
+                tree.push(node);
+            }
+        });
+        // TODO: Add some dynamic rendering of tree to page
+        console.log(tree);
+    });
+
+});
+</script>
+{% endblock %}
