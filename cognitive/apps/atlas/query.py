@@ -88,41 +88,18 @@ class Node:
         return df
 
 
-    def get_by_relation(self, head_params, field="id", tail_name='*', relationship='*', 
-                        format="dict"):
+    def get_by_relation(self, param, field="id",  tail_type=None,
+                        relationship=None, 
         '''get_by_relation will search for nodes that have a specific 
         relationship with other nodes.
-        :param head_params list of parameters to search on, eg [trm_123]
-        :param field field in node to search for parameters in
-        :param tail_name node label of the tail end of the relationship
+        :param parameter to search on, eg [trm_123]
+        :param field field in node to search for parameter in
         :param relationship between calling node and tail_name.
         
         Default parameters are currently not working.
         '''
-        if isinstance(head_params,str):
-            params = [head_params]
         
-        return_fields = ",".join(["tail.%s" %(x) for x in self.fields])
-        query = "MATCH (head:%s)-[:%s]->(tail:%s) WHERE head.%s = {A} RETURN %s" % (self.name, relationship, tail_name, field, return_fields)
 
-        tx = graph.cypher.begin()
-
-        for param in params:
-            tx.append(query, {"A": param})
-
-        results = tx.commit()
-        
-        df = pandas.DataFrame(columns=self.fields)
-        i = 0
-        for result in results:
-            for record in result.records:
-                attr_values = []
-                for field in self.fields:
-                    attr_name = "tail.%s" %(field)
-                    attr_values.append(getattr(record, attr_name, ""))
-                df.loc[i] = attr_values
-                i += 1
-        return df.to_dict(orient="records")
        
     def search_all_fields(self, params):
         if isinstance(params,str):
