@@ -98,6 +98,7 @@ class Node:
         
         Default parameters are currently not working.
         '''
+        return None
         
 
        
