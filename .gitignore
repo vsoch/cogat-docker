@@ -2,15 +2,15 @@
 !/.gitignore
 !/.dockerignore
 
-neurovault/data/*/*/*
-/static/
-neurovault/reload.py
-neurovault/local_settings.py
-neurovault/secrets.py
-neurovault/static/
+cognitive/data/*/*/*
+cognitive/static/
+cognitive/reload.py
+cognitive/local_settings.py
+cognitive/secrets.py
+cognitive/static/
 
 # test data
-neurovault/apps/statmaps/tests/test_data/feat/*
+cognitive/apps/statmaps/tests/test_data/feat/*
 
 # celery generated schedule
 celerybeat-schedule
