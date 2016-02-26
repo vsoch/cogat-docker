@@ -17,3 +17,10 @@ STATIC_ROOT = 'static/'
 STATIC_URL = '/static/'
 MEDIA_ROOT = 'assets/'
 MEDIA_URL  = '/assets/'
+
+
+graph = Graph("http://graphdb:7474/db/data/")
+
+# Just for local development - will read this from secrets
+#authenticate("localhost:7474", "neo4j", "noodles")
+#graph = Graph()
