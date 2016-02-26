@@ -25,12 +25,6 @@ root = lambda *x: join(abspath(PROJECT_ROOT), *x)
 
 sys.path.insert(0, root('apps'))
 
-#graph = Graph("http://graphdb:7474/db/data/")
-
-# Just for local development - will read this from secrets
-authenticate("localhost:7474", "neo4j", "noodles")
-graph = Graph()
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
