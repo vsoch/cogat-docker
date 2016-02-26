@@ -14,10 +14,6 @@ import sys
 import os
 from os.path import join, abspath, dirname
 
-from py2neo import Graph
-from py2neo.neo4j import authenticate
-
-
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here(".")
@@ -32,7 +28,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -162,12 +157,11 @@ CACHES = {
 
 # Bogus secret key.
 try:
-    from .secrets import *
+    from env import *
 except ImportError:
-    from .bogus_secrets import *
+    from sample_env import *
 
-# Local settings
 try:
-    from .local_settings import *
+    from local_settings import *
 except ImportError:
     pass

@@ -35,27 +35,23 @@ postgres:
     image: postgres:9.4
     volumes_from:
         - postgres_data
-    env_file: .env
     expose:
         - "5432"
 
 uwsgi:
-    build: .
+    image: vanessa/cogatdocker
     restart: always
     volumes:
-        - .:/app
+        - .:/code
         - /var/www/static
     links:
         - postgres
         - graphdb
-    env_file: .env
-    command: /app/uwsgi.sh
-    expose:
-        - "4000"
-    working_dir: /app
+    command: /code/uwsgi.sh
 
 nginx:
     image: nginx:latest
+    restart: always
     volumes_from:
         - uwsgi
     volumes:
@@ -64,4 +60,4 @@ nginx:
     links:
         - uwsgi
     ports:
-        - "0.0.0.0:80:80"
+        - "80:80"
