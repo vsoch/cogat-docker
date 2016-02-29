@@ -1,11 +1,19 @@
-from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast
+from cognitive.apps.atlas.query import Concept, Task, Disorder, Theory, Battery
 from django.shortcuts import render
 from django.template import loader
 
 Concept = Concept()
 Task = Task()
 Disorder = Disorder()
-Contrast = Contrast()
+Theory = Theory()
+Battery = Battery()
+
+# Needed on all pages
+counts = {"disorders":Disorder.count(),
+          "tasks":Task.count(),
+          "concepts":Concept.count(),
+          "theories":Theory.count(),
+          "batteries":Battery.count()}
 
 def index(request):
 
@@ -13,27 +21,17 @@ def index(request):
     fields = ["id","name"]
 
     concepts = Concept.all(limit=10,order_by="last_updated",fields=fields)
-    concepts_count = Concept.count()
-
     tasks = Task.all(limit=10,order_by="last_updated",fields=fields)
-    tasks_count = Task.count()
-
     disorders = Disorder.all(limit=10,order_by="last_updated",fields=fields)
-    disorders_count = Disorder.count()
-
-    contrasts = Contrast.all(limit=7,order_by="last_updated",fields=fields)
-    contrasts_count = Contrast.count()
+    theories = Theory.all(limit=7,order_by="last_updated",fields=fields)
     
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
                'active':'homepage',
                'concepts':concepts,
-               'concepts_count':concepts_count,
                'tasks':tasks,
-               'tasks_count':tasks_count,
-               'contrasts':contrasts,
-               'contrasts_count':contrasts_count,
+               'theories':theories,
                'disorders':disorders,
-               'disorders_count':disorders_count}
+               'counts':counts}
 
     return render(request,'main/index.html',context)

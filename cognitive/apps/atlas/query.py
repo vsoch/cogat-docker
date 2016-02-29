@@ -241,6 +241,19 @@ class Contrast(Node):
         self.fields = ["id","name","description"]
 
 
+class Battery(Node):
+
+    def __init__(self):
+        self.name = "battery"
+        self.fields = ["id","name","collection"]
+
+
+class Theory(Node):
+
+    def __init__(self):
+        self.name = "theory"
+        self.fields = ["id","name"]
+
 
 # Query helper functions
 
