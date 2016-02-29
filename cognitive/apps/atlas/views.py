@@ -67,7 +67,7 @@ def all_disorders(request):
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
 
-    contrasts = Contrast.all(order_by="last_updated",fields=fields)
+    contrasts = Contrast.all(order_by="name",fields=fields)
     contrasts_count = Contrast.count()
     return all_nodes(request,contrasts,contrasts_count,"concepts")    
 

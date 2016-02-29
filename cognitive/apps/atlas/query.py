@@ -36,7 +36,7 @@ class Node:
         return do_query(query,output_format=format,fields=fields)
 
 
-    def all(self,fields=None,limit=None,format="dict",order_by=None,desc=True):
+    def all(self,fields=None,limit=None,format="dict",order_by=None,desc=False):
         '''all returns all concepts, or up to a limit
         :param fields: select a subset of fields to return, default None returns all fields
         :param limit: return N=limit concepts only (default None)
