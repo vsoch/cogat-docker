@@ -1,4 +1,5 @@
 from django.conf.urls import url,patterns
+from django.conf.urls.static import static
 
 from . import api_views, views
 
@@ -10,7 +11,7 @@ urlpatterns = [
     url(r'^tasks/(?P<letter>[a-z]|[A-Z]{1})/$', views.tasks_by_letter, name="tasks_by_letter"),
     url(r'^disorder/(?P<did>[a-z]|[A-Z]{1})/$', views.view_disorder, name="disorder"),
 
-]
+] 
 
 api_urls = [
     url(r'^api/search$', api_views.SearchAPI.as_view(), name='task_api_list'),

@@ -1,0 +1,47 @@
+hdfs:
+  image: sequenceiq/hadoop-docker:2.4.1
+  command: /etc/bootstrap.sh -d -bash
+
+mazerunner:
+  image: kbastani/neo4j-graph-analytics:latest
+  links:
+   - hdfs
+
+graphdb:
+  image: kbastani/docker-neo4j:latest
+  ports:
+   - "7474:7474"
+   - "1337:1337"
+  links:
+   - mazerunner
+   - hdfs
+
+postgres:
+    image: postgres:9.4
+    env_file: .env
+    expose:
+        - "5432"
+
+uwsgi:
+    image: vanessa/cogat-docker
+    command: /code/uwsgi.sh
+    restart: always
+    volumes:
+        - .:/code
+        - /var/www/static
+    links:
+        - postgres
+        - graphdb
+
+nginx:
+    restart: always
+    image: nginx
+    volumes_from:
+        - uwsgi
+    volumes:
+        - ./nginx.conf:/etc/nginx/nginx.conf:ro
+        - ./uwsgi_params.par:/etc/nginx/uwsgi_params.par:ro
+    links:
+        - uwsgi
+    ports:
+        - "80:80"
