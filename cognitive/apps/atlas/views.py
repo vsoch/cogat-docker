@@ -8,10 +8,10 @@ Disorder = Disorder()
 Contrast = Contrast()
 
 # Needed on all pages
-concepts_count = Concept.count()
-tasks_count = Task.count()
-disorders_count = Disorder.count()
-contrasts_count = Contrast.count()
+counts = {"disorders":Disorder.count(),
+          "tasks":Task.count(),
+          "contrasts":Contrast.count(),
+          "concepts":Concept.count()}
 
 # VIEWS FOR ALL NODES #############################################################
 
@@ -23,10 +23,7 @@ def all_nodes(request,nodes,nodes_count,node_type):
                'term_type':node_type[:-1],
                'nodes':nodes,
                'filtered_nodes_count':nodes_count,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'counts':counts}
 
     return render(request,"atlas/all_terms.html",context)
 
@@ -34,15 +31,13 @@ def all_concepts(request):
     '''all_concepts returns page with list of all concepts'''
 
     concepts = Concept.all(order_by="last_updated")
-    concepts_count = Concept.count()
-    return all_nodes(request,concepts,concepts_count,"concepts")
+    return all_nodes(request,concepts,counts["concepts"],"concepts")
     
 def all_tasks(request):
     '''all_tasks returns page with list of all tasks'''
 
     tasks = Task.all(order_by="last_updated",fields=fields)
-    tasks_count = Task.count()
-    return all_nodes(request,tasks,tasks_count,"task")    
+    return all_nodes(request,tasks,counts["tasks"],"task")    
 
 def all_disorders(request):
     '''all_disorders returns page with list of all disorders'''
@@ -57,10 +52,7 @@ def all_disorders(request):
     context = {'appname': "The Cognitive Atlas",
                'active':"disorders",
                'nodes':disorders,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'counts':counts}
 
     return render(request,"atlas/all_disorders.html",context)
 
@@ -68,8 +60,7 @@ def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
 
     contrasts = Contrast.all(order_by="name",fields=fields)
-    contrasts_count = Contrast.count()
-    return all_nodes(request,contrasts,contrasts_count,"concepts")    
+    return all_nodes(request,contrasts,counts["contrasts"],"contasts")    
 
 
 # VIEWS BY LETTER #############################################################
@@ -83,10 +74,7 @@ def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
                'letter':letter,
                'term_type':node_type[:-1],
                'filtered_nodes_count':nodes_count,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'counts':counts}
 
     return render(request,"atlas/terms_by_letter.html",context)
 
