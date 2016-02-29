@@ -32,13 +32,13 @@
        {% include "atlas/_contribute_term.html" %}
 
        <h1 class="CATitle">Browse <strong class="{{ term_type }}">{{ term_type|capfirst }}s</strong></h1>
-       <div class='inset padtop charstring'><a href='/{{ term_type }}s/' class=' non-selected-letter '>ALL</a>
+       <div class='inset padtop charstring'><a href='/{{ term_type }}s' class=' non-selected-letter '>ALL</a>
        {% for let in "abcdefghijklmnopqrstuvwxyz"|make_list %}
             <span class='finb'>&nbsp;</span>
             {% if let = letter %}
-            <a href='/{{ term_type }}s/{{ let|capfirst }}' class=' selected-letter '>{{ let|capfirst }}</a>
+            <a href='/{{ term_type }}s/{{ let }}' class=' selected-letter '>{{ let|capfirst }}</a>
             {% else %}
-             <a href='/{{ term_type }}s/{{ let|capfirst }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
+             <a href='/{{ term_type }}s/{{ let }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
             {% endif %}
        {% endfor %}
        </div><br>
