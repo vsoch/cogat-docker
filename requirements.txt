@@ -10,3 +10,5 @@ PyYAML==3.11
 requests==2.9.0
 simplegeneric==0.8.1
 six==1.10.0
+psycopg2
+uwsgi
