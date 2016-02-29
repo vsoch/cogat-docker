@@ -69,7 +69,7 @@
                        <li><a href="/term/id/{{ concept.id }}" class="concept">{{ concept.name }}</a></li>
                        {% endfor %}
                    </ul>
-                   <a href="/concepts" class="superbutton wideload concept">BROWSE ALL {{ concepts_count }} <b>CONCEPTS</b></a>
+                   <a href="/concepts" class="superbutton wideload concept">BROWSE ALL {{ counts.concepts }} <b>CONCEPTS</b></a>
            </div>
            <div class="superbox taskbox">
                <small>Recently updated experimental</small> <b>TASKS</b>
@@ -78,7 +78,7 @@
                        <li><a href="/term/id/{{ task.id }}" class="task">{{ task.name }}</a></li>
                    {% endfor %}
                    </ul>
-                   <a href="/tasks" class="superbutton wideload task">BROWSE ALL {{ tasks_count }} <b>TASKS</b></a>
+                   <a href="/tasks" class="superbutton wideload task">BROWSE ALL {{ counts.tasks }} <b>TASKS</b></a>
            </div>
            <div class="superbox disorderbox">
                <small>Recently updated </small> <b>DISORDERS</b>
@@ -87,16 +87,16 @@
                        <li><a href="/disorder/id/{{ disorder.id }}" class="disorder">{{ disorder.name }}</a></li>
                        {% endfor %}
                    </ul>
-                   <a href="/disorders/" class="superbutton wideload disorder">BROWSE ALL {{ disorders_count }} <b>DISORDERS</b></a>
+                   <a href="/disorders/" class="superbutton wideload disorder">BROWSE ALL {{ counts.disorders }} <b>DISORDERS</b></a>
            </div>
            <div class="superbox collectionbox last-item">
-               <small>Recently updated</small> <b>CONTRASTS</b>
+               <small>Recently updated</small> <b>THEORIES</b>
                    <ul class="superlist">
-                   {% for contrast in contrasts %}
-                       <li> <a href="/contrast/id/{{ contrast.id }}">{{ contrast.name }}</a></li>
+                   {% for theory in theories %}
+                       <li> <a href="/theory/id/{{ theory.id }}">{{ theory.name }}</a></li>
                    {% endfor %}
                    </ul>
-                   <a href="/collections/" class="superbutton wideload collection">BROWSE ALL {{ contrasts_count }} <b>CONTRASTS</b></a>
+                   <a href="/theories/" class="superbutton wideload collection">BROWSE ALL {{ counts.theories }} <b>THEORIES</b></a>
            </div>
        </div>
        <div id="iewarn" style="display:none;font-size:10pt;width:100%;">

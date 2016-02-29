@@ -28,26 +28,24 @@
 
 {% block content %}
 
+       <!-- Contribute New Term Form -->
+       {% include "atlas/_contribute_term.html" %}
 
-       <div class="pull-right">
-           <a href="javascript:void(0)" class="actionator" id="contclicker">+ contribute new term</a>
-       </div><br/>
-       <h1 class="CATitle">Browse <strong class="concept">Concepts</strong></h1>
-       <div class='inset padtop charstring'><a href='/concepts/' class=' non-selected-letter '>ALL</a>
+       <h1 class="CATitle">Browse <strong class="{{ term_type }}">{{ term_type|capfirst }}s</strong></h1>
+
+       {% if term_type != "theorie" %}
+       <div class='inset padtop charstring'><a href='/{{ term_type }}s' class=' selected-letter '>ALL</a>
        {% for let in "abcdefghijklmnopqrstuvwxyz"|make_list %}
             <span class='finb'>&nbsp;</span>
-            {% if let = letter %}
-            <a href='/concepts/{{ let|capfirst }}' class=' selected-letter '>{{ let|capfirst }}</a>
-            {% else %}
-             <a href='/concepts/{{ let|capfirst }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
-            {% endif %}
+             <a href='/{{ term_type }}s/{{ let }}' class=' non-selected-letter '>{{ let|capfirst }}</a>
        {% endfor %}
        </div><br>
+       {% endif %}
  
-       <div class="stringer">Concepts beginning with "{{ letter|capfirst }}" {{ filtered_concepts_count }}</div>
+       <div class="stringer">All {{ term_type|capfirst }}s {{ filtered_nodes_count }}</div>
        <div style='float:left;width:300px;'>
            <ul class="columns" id="triple">
-               {% for node in nodes %}<li><span class="concept"><a href="/concepts/id/{{ node.id }}" class="concept tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
+               {% for node in nodes %}<li><span class="{{ term_type }}"><a href="/{{ term_type }}s/id/{{ node.id }}" class="{{ term_type }} tooltip" title="<big><b>{{ node.name }}:</b></big><br/>{{ node.definition }}<br/><br/>">{{ node.name }}</a></span></li>{% endfor %}
            </ul>
        </div>
        <div class="clear_all"></div>
@@ -59,6 +57,9 @@ $(document).ready(function() {
     $(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
+       $("#contclicker").click(function(){
+           $("#contribution_block").toggle();
+       });
     });
 });
 </script>

@@ -1,7 +1,3 @@
-#import os
-from py2neo import Graph
-from py2neo.neo4j import authenticate
-
 DEBUG = True
 
 DOMAIN_NAME="http://127.0.0.1"

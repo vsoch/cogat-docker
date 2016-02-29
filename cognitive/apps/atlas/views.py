@@ -1,4 +1,4 @@
-from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast
+from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory
 from django.shortcuts import render
 from django.template import loader
 
@@ -6,49 +6,60 @@ Concept = Concept()
 Task = Task()
 Disorder = Disorder()
 Contrast = Contrast()
+Battery = Battery()
+Theory = Theory()
 
 # Needed on all pages
-concepts_count = Concept.count()
-tasks_count = Task.count()
-disorders_count = Disorder.count()
-contrasts_count = Contrast.count()
+counts = {"disorders":Disorder.count(),
+          "tasks":Task.count(),
+          "contrasts":Contrast.count(),
+          "concepts":Concept.count(),
+          "batteries":Battery.count(),
+          "theories":Theory.count()}
 
 # VIEWS FOR ALL NODES #############################################################
 
-def all_nodes(request,nodes,nodes_count,node_type):
+def all_nodes(request,nodes,node_type):
     '''all_nodes returns view with all nodes for node_type'''
 
-    template = "atlas/all_%s.html" %node_type
     appname = "The Cognitive Atlas"
     context = {'appname': appname,
-               'active':node_type,
+               'term_type':node_type[:-1],
                'nodes':nodes,
-               'filtered_nodes_count':nodes_count,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'filtered_nodes_count':counts[node_type],
+               'counts':counts}
 
-    return render(request,template,context)
+    return render(request,"atlas/all_terms.html",context)
 
 def all_concepts(request):
     '''all_concepts returns page with list of all concepts'''
 
-    concepts = Concept.all(limit=10,order_by="last_updated")
-    concepts_count = Concept.count()
-    return all_nodes(request,concepts,concepts_count,"concepts")
+    concepts = Concept.all(order_by="name")
+    return all_nodes(request,concepts,"concepts")
     
 def all_tasks(request):
     '''all_tasks returns page with list of all tasks'''
 
-    tasks = Task.all(limit=10,order_by="last_updated",fields=fields)
-    tasks_count = Task.count()
-    return all_nodes(request,tasks,tasks_count,"tasks")    
+    tasks = Task.all(order_by="name")
+    return all_nodes(request,tasks,"tasks")    
+
+def all_batteries(request):
+    '''all_collections returns page with list of all collections'''
+
+    batteries = Battery.all(order_by="name")
+    return all_nodes(request,tasks,"batteries")    
+
+
+def all_theories(request):
+    '''all_collections returns page with list of all collections'''
+
+    theories = Theory.all(order_by="name")
+    return all_nodes(request,theories,"theories")    
 
 def all_disorders(request):
     '''all_disorders returns page with list of all disorders'''
 
-    disorders = Disorder.all(order_by="last_updated")    
+    disorders = Disorder.all(order_by="name")    
     for d in range(len(disorders)):
         disorder = disorders[d]
         if disorder["classification"] == None:
@@ -58,19 +69,15 @@ def all_disorders(request):
     context = {'appname': "The Cognitive Atlas",
                'active':"disorders",
                'nodes':disorders,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'counts':counts}
 
     return render(request,"atlas/all_disorders.html",context)
 
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
 
-    contrasts = Contrast.all(limit=7,order_by="last_updated",fields=fields)
-    contrasts_count = Contrast.count()
-    return all_nodes(request,contrasts,contrasts_count,"concepts")    
+    contrasts = Contrast.all(order_by="name",fields=fields)
+    return all_nodes(request,contrasts,counts["contrasts"],"contasts")    
 
 
 # VIEWS BY LETTER #############################################################
@@ -84,10 +91,7 @@ def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
                'letter':letter,
                'term_type':node_type[:-1],
                'filtered_nodes_count':nodes_count,
-               'concepts_counts':concepts_count,
-               'disorders_counts':disorders_count,
-               'contrasts_counts':contrasts_count,
-               'tasks_counts':tasks_count}
+               'counts':counts}
 
     return render(request,"atlas/terms_by_letter.html",context)
 
@@ -106,23 +110,31 @@ def tasks_by_letter(request,letter):
 
 # VIEWS FOR SINGLE NODES ##########################################################
 
-def view_concept(request):
+def view_concept(request,uid):
     return render(request,'atlas/view_concept.html',context)
 
 
-def view_task(request):
+def view_task(request,uid):
     return render(request,'atlas/view_task.html',context)
 
 
-def view_battery(request):
+def view_contrast(request,uid):
+    return render(request,'atlas/view_contrast.html',context)
+
+
+def view_battery(request,uid):
     return render(request,'atlas/view_battery.html',context)
 
 
-def view_disorder(request):
+def view_theory(request,uid):
+    return render(request,'atlas/view_theory.html',context)
+
+
+def view_disorder(request,uid):
     return render(request,'atlas/view_disorder.html',context)
 
 
-def view_theory(request):
+def view_theory(request,uid):
     return render(request,'atlas/view_theory.html',context)
 
 

@@ -17,6 +17,10 @@ from os.path import join, abspath, dirname
 from py2neo import Graph
 from py2neo.neo4j import authenticate
 
+# Just for local development - will read this from secrets
+graph = Graph("http://graphdb:7474/db/data/")
+#authenticate("127.0.0.1:7474", "neo4j", "neo4j")
+#graph = Graph()
 
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
@@ -31,8 +35,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
+SITE_ID = 1
 
 # Application definition
 
@@ -96,10 +100,22 @@ WSGI_APPLICATION = 'cognitive.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.sqlite3',
+#        'NAME': os.path.join(BASE_DIR, 'cognitive.db'),
+#    }
+#}
+
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'cognitive.db'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'PASSWORD':'mysecretpass',
+        'USER': 'postgres',
+        'HOST': 'postgres',   # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '5432', # Set to empty string for default.
     }
 }
 
@@ -152,6 +168,10 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+STATICFILES_DIRS = (
+    "/var/www/static",
+)
+
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 CACHES = {
@@ -162,12 +182,11 @@ CACHES = {
 
 # Bogus secret key.
 try:
-    from .secrets import *
+    from cognitive.secrets import *
 except ImportError:
-    from .bogus_secrets import *
+    from cognitive.bogus_secrets import *
 
-# Local settings
 try:
-    from .local_settings import *
+    from cognitive.local_settings import *
 except ImportError:
     pass

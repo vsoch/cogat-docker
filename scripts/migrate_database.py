@@ -52,13 +52,14 @@ def find_node(nodetype,property_value,property_key='id'):
 
 
 # First we want to read in all of our data types
-concepts = cleancolumns(pandas.read_csv("data/Dump_concept_2015-12-25_567dd9b28fabb.csv",sep=";"))
-tasks = cleancolumns(pandas.read_csv("data/Dump_task_2015-12-25_567dd9bb7ff74.csv",sep=";"))
-contrasts = cleancolumns(pandas.read_csv("data/Dump_contrast_2015-12-25_567dd9c4b46c4.csv",sep=";"))
-battery = cleancolumns(pandas.read_csv("data/Dump_battery_2015-12-25_567dd9d2866fd.csv",sep=";"))
-conditions = cleancolumns(pandas.read_csv("data/Dump_condition_2015-12-25_567dd9bf079bb.csv",sep=";"))
-disorders = cleancolumns(pandas.read_csv("data/Dump_disorder_2015-12-26_567f21649c2cb.csv",sep=";"))
-assertions = cleancolumns(pandas.read_csv("data/Dump_assertion_2015-12-25_567dd9cd411c5.csv",sep=";"))
+concepts = cleancolumns(pandas.read_csv("scripts/data/Dump_concept_2015-12-25_567dd9b28fabb.csv",sep=";"))
+tasks = cleancolumns(pandas.read_csv("scripts/data/Dump_task_2015-12-25_567dd9bb7ff74.csv",sep=";"))
+contrasts = cleancolumns(pandas.read_csv("scripts/data/Dump_contrast_2015-12-25_567dd9c4b46c4.csv",sep=";"))
+batteries = cleancolumns(pandas.read_csv("scripts/data/Dump_battery_2015-12-25_567dd9d2866fd.csv",sep=";"))
+conditions = cleancolumns(pandas.read_csv("scripts/data/Dump_condition_2015-12-25_567dd9bf079bb.csv",sep=";"))
+disorders = cleancolumns(pandas.read_csv("scripts/data/Dump_disorder_2015-12-26_567f21649c2cb.csv",sep=";"))
+assertions = cleancolumns(pandas.read_csv("scripts/data/Dump_assertion_2015-12-25_567dd9cd411c5.csv",sep=";"))
+theories = cleancolumns(pandas.read_csv("scripts/data/Dump_theory_2015-12-25_567dd9d52f53b.csv",sep=";"))
 
 # connect to graph database
 graph = Graph("http://graphdb:7474/db/data/")
@@ -71,9 +72,6 @@ graph = Graph("http://graphdb:7474/db/data/")
 graph.delete_all()
 
 tx = graph.cypher.begin()
-conceptnodes={}
-tasknodes={}
-contrastnodes={}
 
 #class Task(models.NodeModel):
 #    name = models.StringProperty()
@@ -235,6 +233,30 @@ for row in assertions.iterrows():
         # Task is descended from task
         if tasknode1 and tasknode2:
             relation = make_relation(tasknode1,"DERIVEDFROM",tasknode2)
+
+
+#class Battery(models.NodeModel):
+#    name = models.StringProperty()
+#    uid = models.StringProperty(indexed=True)
+#    collection = models.StringProperty()
+
+for row in batteries.iterrows():
+    name = row[1].id
+    uid = row[1].alias.split("/")[-1]
+    battery = row[1].battery
+    properties = {"collection":battery}
+    node = make_node("battery",uid,name,properties)
+
+
+#class Theory(models.NodeModel):
+#    name = models.StringProperty()
+#    uid = models.StringProperty(indexed=True)
+#    battery = models.StringProperty()
+
+for row in theories.iterrows():
+    name = row[1].id
+    uid = row[1].alias.split("/")[-1]
+    node = make_node("theory",uid,name)
 
 
 # The following do not exist
