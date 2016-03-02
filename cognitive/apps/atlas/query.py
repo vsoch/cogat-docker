@@ -60,47 +60,36 @@ class Node:
 
         return do_query(query,fields=fields,output_format=format)
 
-    def get(self,params,field="id"):
-        '''get returns one or more nodes based on a field of interest
+    def get(self,uid,field="id",get_relations=True,relations=None):
+        '''get returns one or more nodes based on a field of interest. If get_relations is true, will also return
+        the default relations for the node, or those defined in the relations variable
         :param params: list of parameters to search for, eg [trm_123]
         :param field: field to search (default id)
+        :param get_relations: default True, return relationships
+        :param relations: list of relations to include. If not defined, will use default for task
         '''
-        if isinstance(params,str):
-            params = [params]
+        if get_relations == True:
+            if relations == None:
+                relations = self.relations
+        parents = graph.find(self.name, field, uid)
+        nodes = []
+        for parent in parents:
+            new_node = {}
+            new_node.update(parent.properties)
 
-        return_fields = ",".join(["c.%s" %(x) for x in self.fields])
-        query = 'MATCH (c:%s) WHERE c.%s = {A} RETURN %s;' %(self.name,field,return_fields)
-
-        # Combine queries into transaction
-        tx = graph.cypher.begin()
-
-        for param in params:
-            tx.append(query, {"A": param})
-
-        # Return as pandas data frame
-        results = tx.commit()
-        if not results or sum(len(res) for res in results) == 0:
-            return None
-        df = pandas.DataFrame(columns=self.fields)
-        df.columns = self.fields
-        for r in range(len(results)):       
-            df.loc[r] = [x for x in results[r].one]
-        return df
-
-
-    def get_by_relation(self, param, field="id",  tail_type=None, 
-                        relationship=None):
-        '''get_by_relation will search for nodes that have a specific 
-        relationship with other nodes.
-        :param parameter to search on, eg [trm_123]
-        :param field field in node to search for parameter in
-        :param relationship between calling node and tail_name.
+            if get_relations != None:
+                relation_nodes = []
+                for relation in relations:
+                    new_relations = graph.match(parent,relation)
+                    for new_relation in new_relations:
+                        new_relation_node = {}
+                        new_relation_node.update(new_relation.end_node.properties)
+                        new_relation_node["relationship_type"] = relation
+                        relation_nodes.append(new_relation_node)
+                new_node["relations"] = relation_nodes
+            nodes.append(new_node)
+        return nodes
         
-        Default parameters are currently not working.
-        '''
-        return None
-        
-
        
     def search_all_fields(self, params):
         if isinstance(params,str):
@@ -135,6 +124,7 @@ class Node:
                 i += 1
         return df.to_dict(orient="records")
 
+
 # Each type of Cognitive Atlas Class extends Node class
 
 class Concept(Node):
@@ -142,83 +132,15 @@ class Concept(Node):
     def __init__(self):
         self.name = "concept"
         self.fields = ["id","name","definition"]
+        self.relations = ["PARTOF","KINDOF"]
 
-    def get_full(self, param, field="id"):
-        concept_nodes = graph.find(self.name, field, param)
-        concepts = []
-        for concept_node in concept_nodes:
-            concept_dict = {}
-            concept_dict.update(concept_node.properties)
-            
-            # relationships. There is a naming conflict here. I've been using 
-            # rel to refer to a relationship object from neo4j, and cogat uses
-            # relationship to refer to how a concept relates to another concept
-            relationships = []
-            for rel_type in ["PARTOF", "KINDOF"]:
-                relationship_rels = graph.match(concept_node, rel_type, bidirectional=True)
-                relationship_rels = [x for x in relationship_rels]
-                for relationship_rel in relationship_rels:
-                    relationship = {}
-                    relationship.update({"relationship": rel_type})
-                    if relationship_rel.start_node != concept_node:
-                        relationship.update({"direction": "child of"})
-                        relationship.update({"id": relationship_rel.start_node.properties['id']})
-                    elif relationship_rel.end_node != concept_node:
-                        relationship.update({"direction": "parent of"})
-                        relationship.update({"id": relationship_rel.end_node.properties['id']})
-                    else:
-                        # the node is referring to itself, should it raise
-                        # an exception?
-                        pass
-                    relationships.append(relationship)
-            concept_dict.update({"relationships": relationships})
-            concepts.append(concept_dict)
-        return concepts
 
 class Task(Node):
 
     def __init__(self):
         self.name = "task"
         self.fields = ["id","name","definition"]
-    
-    def node_to_df(self, node):
-        return None
-
-    def get_full(self,param,field="id"):
-        '''get returns one or more nodes based on a field of interest
-        :param param: single parameter to search for, eg [trm_123]
-        :param field: field to search (default id)
-        '''
-        task_nodes = graph.find("task", field, param)
-        tasks = []
-        for task_node in task_nodes:
-            task_dict = {}
-            task_dict.update(task_node.properties)
-
-            # conditions
-            condition_rels = graph.match(task_node, "HASCONDITION")
-            condition_nodes = [x.end_node for x in condition_rels]
-            conditions = [x.properties for x in condition_nodes]
-            task_dict.update({"conditions": conditions})
-
-            # concepts
-            concept_rels = graph.match(task_node, "ASSERTS", bidirectional=True)
-            concepts = [x.end_node.properties for x in concept_rels]
-            task_dict.update({"concepts": concepts})
-
-            # contrasts, traverse condition nodes to their contrasts 
-            contrasts = []
-            for condition in condition_nodes:
-                contrast_rels = graph.match(condition, "HASCONTRAST")
-                new_contrasts = [x.end_node.properties for x in contrast_rels]
-                for new_contrast in new_contrasts:
-                    if new_contrast not in contrasts:
-                        contrasts.append(new_contrast)
-            if contrasts:
-                task_dict.update({"contrasts": contrasts})
-            
-            tasks.append(task_dict)
-        return tasks
+        self.relations = ["HASCONDITION","ASSERTS","HASCONTRAST"]    
 
 
 class Disorder(Node):
@@ -271,3 +193,42 @@ def do_query(query,fields,output_format="dict"):
         return df.values.tolist()
     elif output_format == "dict":
         return df.to_dict(orient="records")
+
+def do_transaction(tx=None,query=None,params=None):
+    '''do_transaction will return the result of a cypher transaction in the format specified (default is dict). If a transaction object is not supplied, query must be defined, and the function will call get_transactions first. If tx is defined and query is also defined, the query will be added to the transaction before running it.
+    :param tx: string of cypher query (optional) if provided, will first call get_transactions to 
+    :param query: string of cypher query (optional) if provided, will first call get_transactions to 
+    :param params: a list of dictionaries, each dictionary with keys as values to sub in the query, and values as the thing to substitute. Eg: [{"A":name,"B":classification}]
+    '''
+    if tx == None and query == None:
+        print("Please define either transaction or query.")
+        return None
+    if query != None:
+        tx = get_transactions(query,tx=tx,params=params)
+    # Return as pandas data frame
+    results = tx.commit()
+    if not results or sum(len(res) for res in results) == 0:
+        return None
+    # Return as pandas Data Frame
+    column_names = [x.split(".")[-1] for x in results[0].columns]
+    df = pandas.DataFrame(columns=column_names)
+    for r in range(len(results)):       
+        df.loc[r] = [x for x in results[r].one]
+    return df
+
+
+def get_transactions(query,tx=None,params=None):
+    '''get_transactions will append new transactions to a transaction object, or return a new transaction if one does not exist. 
+    :param query: string of cypher query
+    :param tx: a transaction object (optional)
+    :param params: a list of dictionaries, each dictionary with keys as values to sub in the query, and values as the thing to substitute. Eg: [{"A":name,"B":classification}]
+    '''
+    # Combine queries into transaction
+    if tx == None:
+       tx = graph.cypher.begin()
+    if params:
+        for param in params:
+            tx.append(query, param)
+    else:
+        tx.append(query)
+    return tx

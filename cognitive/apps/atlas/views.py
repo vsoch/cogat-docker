@@ -111,6 +111,8 @@ def tasks_by_letter(request,letter):
 # VIEWS FOR SINGLE NODES ##########################################################
 
 def view_concept(request,uid):
+    concept = Concept.get(uid)
+    context = {"concept":concept}
     return render(request,'atlas/view_concept.html',context)
 
 
