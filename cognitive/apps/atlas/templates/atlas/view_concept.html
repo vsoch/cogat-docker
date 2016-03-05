@@ -1,20 +1,21 @@
 {% extends "main/base.html" %}
+{% load staticfiles %}
 {% block head %}
+<!--TODO: Add title with term name -->
 <style>
-.ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
+.ui-autocomplete-loading { background: white url("{% static "images/facebox/loading.gif" %}") right center no-repeat; }
 .asholder {position:relative;}
 </style>
 {% endblock %}
-{% load staticfiles %}
 
 {% block branding %}
 <div class="container">
     <div id="brand">
         <div id="logo">
-    	    <a href="/">
+        <a href="/">
                 <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" style="width:400px;height:100px"></a>
-    	</div><!--logo-->
-    	<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
+    </div><!--logo-->
+    <span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
     </div>
 </div>
 {% block navigation %}
@@ -26,6 +27,116 @@
 {% block content %}
 
 {{ concept }}
+
+<div id="block-definition" class="block-full"><div class="assertion">
+    <div class="CATerm concept">
+        <h1 class="termtext">
+            <a class="color-concept" href="">
+                <em>decision making</em>
+            </a>
+            <span class="typebutton concept_type"><a href="/concepts/">CONCEPT</a></span>
+        </h1>
+    </div><!-- .CATerm.concept -->
+
+    <div class="defn">{{ concept.definition }}</div>
+</div><!-- .assertion -->
+
+<div><div id="slidetarget_def"  style="display:none;height:auto !important;" class="popstar">
+    <div class="formbucket">
+        <form method="post" action="#" name="definition_form" id="definition_form">
+            <input type="hidden" name="form_type" value="definition_form">
+            <input type="hidden" name="return_page" value="concept">
+            <input type="hidden" name="id_object" value="{{ concept.name }}">
+            <input type="hidden" name="id_term" value="{{ concept.id }}">
+            <h3 class=""><strong>Update Definition</strong></h3>
+            <div class="formline">
+               <label for="term_text">Term:</label>
+                   <input type="text" name="term_text" size="80" class="required" value="{{ concept.name }}" title="term text" aria-label="term text" />
+            </div>
+            <div class="formline">
+                <label for="definition_text">Your definition:</label>
+                <textarea name="definition_text" rows="6" cols="80" class="required" title="definition"  aria-label="definition">{{ concept.definition }}</textarea>
+            </div>
+            <div class='formline'>
+                <label for='term_alias'>(optional) Does this term have an acronym, synonym, or alternate spelling? Enter it here:</label>
+                <input type="text" name="term_alias" value="" size="90"  aria-label="Term alias" title="Term alias">
+                    <small>(multiple values separated by commas)</small>
+            </div>
+            <div class="formline">
+                <input type="button" value="Cancel" onclick="document.location.reload(true)" title="cancel submission" aria-label="cancel submission">
+                <input type="submit" value="Submit Definition" title="submit form" aria-label="submit form">
+            </div>
+        </form>
+    </div>
+</div>
+
+<div id="slidetarget_fork"  style="display:none;height:auto !important;" class="popstar">
+    <blockquote class="newtext">
+        <h2><strong>Fork</strong> this term</h2><br />Forking concepts is the process of separating the senses, or variations, in the meaning of a term.<br />This process should be used sparingly, and the ability to fork a term is the sole provenance of the curator.<br />
+        <form method="post" action="#">
+            <input type="hidden" name="form_type" value="fork_form">
+            <input type="hidden" name="return_page" value="/concept/id/">
+            <input type="hidden" name="id_object" value="{{ concept.id }}">
+            <input type="hidden" name="object_term_text" value="{{ concept.name }}"><br />
+            <span class="floatr">
+            <select name="target_dest" title="target destination for existing attributes" aria-label="target destination for existing attributes">
+                <option selected="selected" value="1">Apply existing attributes to Term 1</option>
+                <option value="2">Apply existing attributes to Term 2</option>
+            </select></span>
+            <div class="clear_all"></div>
+            <fieldset>
+                <legend class="fset">Term 1</legend><em>e.g. {{ concept.name }} (representation)</em><br />
+                <input type="text" size="30" name="term_text" aria-label="Term" title="term text" value="{{ concept.name }}" readonly>
+                <input type="text" size="20" name="term_text_spec" aria-label="Term" id="firstfocus" value=""><br />
+                <input type="hidden" name="id_user" value="{{ USERID }}">
+                <input type="hidden" name="event_stamp" value="{{ EVENTSTAMP }}">
+                <textarea name="definition_text" rows="8" cols="60" title="definition text" aria-label="definition text">{{ concept.definition }}
+                </textarea><br />
+            </fieldset><br /><br />
+            <fieldset><legend class="fset">Term 2</legend><em>e.g. {{ concept.name }} (process)</em><br />
+                <input type="hidden" name="id_user2" value="usr_51bc76ae9636c">
+                <input type="text" size="30" name="term_text2" value="decision making" readonly title="second term" aria-label="second term"> 
+                <input type="text" size="20" name="term_text_spec2" aria-label="Term" value=""><br />
+                <textarea name="definition_text2" rows="8" cols="60" aria-label="second definition" title="second definition">
+                </textarea><br />
+            </fieldset><br /><br />
+            <input type="button" value="Cancel" onclick="window.location.reload();" title="cancel submission" aria-label="cancel submission"  >
+            <input type="submit" value="Submit" title="submit form" aria-label="submit form"  >
+       </form>
+   </blockquote>
+</div>
+
+<div id='unterbutton_slide_def'>
+    <div class="defn">
+        <div class="unterbutton_left">
+            <a href="javascript:void(0)" class="slide_def ">Update definition</a> 
+        </div>  
+        <div class="unterbutton_left">
+            <a href="javascript:void(0)" class="slide_fork actionator">Fork definition</a>
+        </div>
+    </div><!-- .defn -->
+</div>
+<div class="clear_all"></div>
+</div><!-- #block-definition.block-full -->
+
+<div id="block-atlas" class="block-full">
+    <ul class="tabs">
+        <li><a href="#list-view">List View</a></li>
+    </ul>
+    <h2>Asserted <strong>relationships</strong> to other concepts</h2><div class="panes">
+
+    <div class="discdiv tablist"><table class='block-4t'><tr><td class="block-4td"><br /><b>decision making<br /><span class="connector-lite">is a kind of</span></b><hr class="dotty" /><div>No associations</div></td><td class="block-4td"><br /><b>decision making<br /><span class="connector-lite">is a part of</span></b><hr class="dotty" /><div><li class="hoverator-list" rel="trm_4a3fd79d0b607"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0b607"><a href="/assertion/id/ass_4ffe05ea588ba"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: decision making is a part of set shifting"></a></span><a href="/concept/id/trm_4a3fd79d0b607" id="options_trm_4a3fd79d0b607" class="optionator concept" title="Click to view the page for set shifting">set shifting</a></li></div></td><td class="block-4td"><br /><b><span class="connector-lite">kinds of</span><br />decision making</b><hr class="dotty" /><div><li class="hoverator-list" rel="trm_4a3fd79d0a5ed"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0a5ed"><a href="/assertion/id/ass_563fec7acf544"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: inference is a kind of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0a5ed" id="options_trm_4a3fd79d0a5ed" class="optionator concept" title="Click to view the page for inference">inference</a></li><li class="hoverator-list" rel="trm_4a3fd79d0a18b"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0a18b"><a href="/assertion/id/ass_4e485495240c6"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: emotional decision making is a kind of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0a18b" id="options_trm_4a3fd79d0a18b" class="optionator concept" title="Click to view the page for emotional decision making">emotional decision making</a></li><li class="hoverator-list" rel="trm_4a3fd79d0aec1"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0aec1"><a href="/assertion/id/ass_565bd199c3b41"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: reasoning is a kind of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0aec1" id="options_trm_4a3fd79d0aec1" class="optionator concept" title="Click to view the page for reasoning">reasoning</a></li><li class="hoverator-list" rel="trm_557b471bc6cd8"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_557b471bc6cd8"><a href="/assertion/id/ass_563fed66aae85"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: animacy decision is a kind of decision making"></a></span><a href="/concept/id/trm_557b471bc6cd8" id="options_trm_557b471bc6cd8" class="optionator concept" title="Click to view the page for animacy decision">animacy decision</a></li><li class="hoverator-list" rel="trm_558c73324a6ca"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_558c73324a6ca"><a href="/assertion/id/ass_563ff19e009f8"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: intertemporal choice is a kind of decision making"></a></span><a href="/concept/id/trm_558c73324a6ca" id="options_trm_558c73324a6ca" class="optionator concept" title="Click to view the page for intertemporal choice">intertemporal choice</a></li><li class="hoverator-list" rel="trm_4a3fd79d09c28"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d09c28"><a href="/assertion/id/ass_5652685979dbe"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: categorization is a kind of decision making"></a></span><a href="/concept/id/trm_4a3fd79d09c28" id="options_trm_4a3fd79d09c28" class="optionator concept" title="Click to view the page for categorization">categorization</a></li><li class="hoverator-list" rel="trm_557b4891e9265"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_557b4891e9265"><a href="/assertion/id/ass_563fdc4957c86"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: feature comparison is a kind of decision making"></a></span><a href="/concept/id/trm_557b4891e9265" id="options_trm_557b4891e9265" class="optionator concept" title="Click to view the page for feature comparison">feature comparison</a></li></div></td><td class="block-4td"><br /><b><span class="connector-lite">parts of</span><br />decision making</b><hr class="dotty" /><div><li class="hoverator-list" rel="trm_557b47abe9a34"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_557b47abe9a34"><a href="/assertion/id/ass_563fe0ee92305"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: decision certainty is a part of decision making"></a></span><a href="/concept/id/trm_557b47abe9a34" id="options_trm_557b47abe9a34" class="optionator concept" title="Click to view the page for decision certainty">decision certainty</a></li><li class="hoverator-list" rel="trm_4a3fd79d0b5a7"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0b5a7"><a href="/assertion/id/ass_4fe8c85d04c5f"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: working memory is a part of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0b5a7" id="options_trm_4a3fd79d0b5a7" class="optionator concept" title="Click to view the page for working memory">working memory</a></li><li class="hoverator-list" rel="trm_4a3fd79d0afcf"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0afcf"><a href="/assertion/id/ass_56797ff16d642"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: risk is a part of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0afcf" id="options_trm_4a3fd79d0afcf" class="optionator concept" title="Click to view the page for risk">risk</a></li><li class="hoverator-list" rel="trm_557b4993a0fdd"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_557b4993a0fdd"><a href="/assertion/id/ass_568402eedfc70"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: reinforcement learning is a part of decision making"></a></span><a href="/concept/id/trm_557b4993a0fdd" id="options_trm_557b4993a0fdd" class="optionator concept" title="Click to view the page for reinforcement learning">reinforcement learning</a></li><li class="hoverator-list" rel="trm_4a3fd79d0b3fa"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0b3fa"><a href="/assertion/id/ass_567981dcbd8be"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: uncertainty is a part of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0b3fa" id="options_trm_4a3fd79d0b3fa" class="optionator concept" title="Click to view the page for uncertainty">uncertainty</a></li><li class="hoverator-list" rel="trm_4a3fd79d0af71"><span style="float:right;width:10px;display:none;" id="list_hovercard_trm_4a3fd79d0af71"><a href="/assertion/id/ass_56528ec84be09"><img src="{% static "images/icons/assert.png"%}" title="Click to view assertion: response selection is a part of decision making"></a></span><a href="/concept/id/trm_4a3fd79d0af71" id="options_trm_4a3fd79d0af71" class="optionator concept" title="Click to view the page for response selection">response selection</a></li></div></td></tr></table></div></div></div></div><!-- #block-atlas.block-full --><div class="clear_all"></div><div id="block-holder" class="block-full"><div id="block-measurements" class="block-half">  <h2><strong>Tasks</strong> that are asserted to measure <em class="dictionary">decision making</em></h2><div class="panes"><div class="pane"><div class="discdiv"><script>                                    $(document).ready(function(){  $(".tclicker").click(function(){    $(".taskstar").slideToggle("fast");});              });                </script>            <table width='100%'><tr><td width='50%' valign='top'><b>Task</b></td><td width='50%' valign='top'><b>Contrast Measure</b></td></tr></table><table id="table_trm_4b1968619b00b" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_4b1968619b00b" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_4b1968619b00b" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_4b1968619b00b" class="task">color-word stroop task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_55ef1d94052c8'> (details)</a>&nbsp;</td></tr></table><table id="table_trm_5542841f3dcd5" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_5542841f3dcd5" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_5542841f3dcd5" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_5542841f3dcd5" class="task">color-word stroop with task switching</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_5542841f83374'> (details)</a>&nbsp;</td></tr></table><table id="table_trm_553fc858cacc5" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_553fc858cacc5" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_553fc858cacc5" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_553fc858cacc5" class="task">consensus decision-making task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_553fc873da3ab'> (details)</a>&nbsp;</td></tr></table><table id="table_trm_50f73d557c967" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_50f73d557c967" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_50f73d557c967" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_50f73d557c967" class="task">Information Sampling Task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'><li>probability of the participant&#39;s decision being correct based on the available evidence at the time of the decision</li></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_50f73df8ac25a'> (details)</a>&nbsp;</td></tr></table><table id="table_trm_50b40bca8cf83" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_50b40bca8cf83" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_50b40bca8cf83" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_50b40bca8cf83" class="task">Hungry Donkey Task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'><li>response time for &#34;bad&#34; or risky doors minus response time for &#34;good&#34; doors</li></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_50b40ce0060db'> (details)</a>&nbsp;</td></tr></table><table id="table_tsk_4a57abb949ae5" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="tsk_4a57abb949ae5" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_tsk_4a57abb949ae5" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/tsk_4a57abb949ae5" class="task">Iowa Gambling Task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'><li>&#34;safe&#34; deck versus &#34;risky&#34; deck choices</li></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_5021a047d6f9f'> (details)</a>&nbsp;</td></tr></table><table id="table_trm_4f242042e5805" cellpadding="0" cellspacing="0" width="100%"><tr><td colspan="3"><div class="dotholder"><hr class="dotty"></div></td></tr><tr><td colspan="3" valign="middle"><span id="trm_4f242042e5805" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td></tr><tr><td colspan="3"><div id="target_trm_4f242042e5805" style="display:none;padding-left:10px;"></div></td></tr><tr><td width='50%' valign='top'><span   class="task"> <a href="/task/id/trm_4f242042e5805" class="task">Cambridge risk task</a></span></td><td width='45%' valign='top'><ul style='list-style-image:url(/images/contrast-icon.jpg);'><li>reward probability-amount ratio</li></ul></td><td width='5%' valign='top'><a href='/assertion/id/ass_5005ca5852ee3'> (details)</a>&nbsp;</td></tr></table><table width='100%'><tr><td width='50%' valign='top'><div id="56da0f053e1fb" class="tbclick"><br><br> <span class="tclicker actionator" rev="56da0f053e137" rel=".foo-56da0f053e137" id="56da0f053e137-add">+ add task</span></div></td><td width='45%' valign='top'>&nbsp;</td><td width='5%' valign='top'>&nbsp;</td></tr></table><div id='left-t16-form' style='display:none;width:450px;' class='popstar taskstar'><form name="left-t16-form" id="left-t16-form" action="/url/submit.php" method="post"><input type='hidden' name='left-t16-hidden' id='left-t16-hidden' value='nodata' /><input type='hidden' name='left-t16-contrast' id='left-t16-contrast' value='' /><div style="width:350px;white-space:nowrap;text-align:left;"><input type='text' name='textfield' size='25' id='left-t16-field' placeholder='Click to select term' style='text-align:left;width:175px;' title='term selector' aria-label='term selector' /> <span class='connector'>measures <span class='concept'><a href='/concept/id/trm_4a3fd79d0a038'>decision making</a></span></span></div><div><table width='100%' class='add-modal-type2'><tr><td>High confidence</td><td>Some confidence</td><td>Conjecture</td></tr><tr><td><input type='radio' name='confidence_level' value='100' checked='checked' title='confidence level' aria-label='confidence level'></td><td><input type='radio' name='confidence_level' value='70' title='confidence level' aria-label='confidence level'></td><td><input type='radio' name='confidence_level' value='50' title='confidence level' aria-label='confidence level'></td></tr></table></div><div><input type='button' value='Cancel' onclick='document.location.reload(true)' class='nontext button' title='cancel submission' aria-label='cancel submission'>&nbsp;&nbsp;<input class='button submut' pos='left' rel='t16' rev='trm_4a3fd79d0a038' id='left-t16-submit' type='submit' value='add'  title='submit form' aria-label='submit form' /></div></form></div></div></div></div></div><!-- #block-measurements.block-half --><div id="block-appliances" class="block-half" style=""><a name="pbrainer"></a>
+
+<form method="post" action="/post/" name="frm_56da0f054a9db_uni" id="frm_56da0f054a9db_uni"><input type="hidden" name="form_type" value="create_notification"><input type="hidden" name="notification_text" value="decision making"><input type="hidden" name="return_page" value="id"><input type="hidden" name="id_object" value="trm_4a3fd79d0a038"><input type="hidden" name="notify_me" value="1"><table><tr><td><input type="checkbox"  name="submit_notify" id="submit_notify" aria-label="Notify me" title="Notify me"></td><td>&nbsp;Notify me of changes to this page</td></tr></table></form></div><div class="checkform">
+<script type="text/javascript">
+jQuery(document).ready(function() {
+jQuery("#flag_display").click(function(){
+jQuery("#comment_holder").show("fast");
+});
+});
+</script>
+<form method="post" action="/post/" name="frm_56da0f054ab50" id="frm_56da0f054ab50"><input type="hidden" name="form_type" value="create_curation_notification"><input type="hidden" name="return_page" value="id"><input type="hidden" name="table_name" value="table_term"><input type="hidden" name="id_object" value="trm_4a3fd79d0a038"><input type="checkbox"  name="flag_me" id="flag_display" title="Flag this item for review by the curator." aria-label="Flag this item for review by the curator." title="Flag this item for review by the curator." /></td><td>&nbsp;Flag this item for review by the curator.<div id="comment_holder" style="display:none"><input type="text" name="flag_comment" id="flag_comment" size="50" value="" placeholder="Describe your reason to flag this item" aria-label="describe your reason for flagging this item" title="describe your reason for flagging this item">&nbsp;<input type="button" value="Cancel" onclick="document.location.reload(true)" aria-label="cancel submission" title="cancel submission"> <input type="submit" value="Submit" aria-label="submit" title="submit" /></div></form></div><div class="formatopts"><span style="padding-top:4px;vertical-align:top;">This page also available as:&nbsp;&nbsp;</span><a href="/rdf/id/trm_4a3fd79d0a038" target="_blank" class="mbutton"><img src="/images/rdf.png" height="18" border="0"></a>&nbsp;&nbsp;<a href="/pdf/convert.php" class="mbutton"><img src="/images/pdf_icon.png" height="18" border="0"></a></div></div><!-- #block-ephemera.block-full -->
+
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
@@ -34,6 +145,221 @@ $(document).ready(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
     });
+
+    $(".slide_indi").click(function(){
+        $("#slidetarget_indi").slideToggle("slow");
+        $(this).toggleClass("active");
+        $("#unterbutton_slide_indi").hide("slow");
+    )}
+    $(".slide_def").click(function(){
+        $("#slidetarget_def").slideToggle("slow");
+        $(this).toggleClass("active");
+        $("#unterbutton_slide_def").hide("slow");
+    )}
+
+    $(".slide_fork").click(function(){
+        $("#slidetarget_fork").slideToggle("slow");
+        $("#unterbutton_slide_def").hide("slow");
+        $(this).toggleClass("active");
+        $("#firstfocus").focus();
+    )});
+    $('ul.tabs').tabs('.panes > div.pane')                         
+    $('#definition_form').validate();
+
+    $(function() {          
+        var availableTags = {{ available_concepts }}
+
+        function capture_id_left_t1(item_id) { 
+            $("#left-t1-hidden").val(item_id); $("#left-t1-field").val(item_id);
+        }  
+        $("#left-t1-field").autocomplete({ source: availableTags, select: function(event,ui) { 
+          capture_id_left_t1( ui.item.id ); 
+        }}); 
+               
+        function capture_id_left_t2(item_id) { 
+            $("#left-t2-hidden").val(item_id); $("#left-t2-field").val(item_id);
+        }                  
+        $("#left-t2-field").autocomplete({ source: availableTags, select: function(event,ui) { 
+            capture_id_left_t2( ui.item.id ); 
+        }});
+                
+        function capture_id_right_t1(item_id) { 
+            $("#right-t1-hidden").val(item_id); $("#right-t1-field").val(item_id);
+        }
+
+        $("#right-t1-field").autocomplete({ source: availableTags, select: function(event,ui) { 
+            capture_id_right_t1( ui.item.id ); 
+        }});
+                
+        function capture_id_right_t2(item_id) { 
+            $("#right-t2-hidden").val(item_id); $("#right-t2-field").val(item_id);
+        }
+        
+        $("#right-t2-field").autocomplete({ source: availableTags, select: function(event,ui) { 
+            capture_id_right_t2( ui.item.id ); 
+        }});
+                
+        var availTaskTags = {{ available_tasks }};
+
+        function capture_id_left_t16(item_id) { 
+            $("#left-t16-hidden").val(item_id); $("#left-t16-field").val(item_id);
+        } 
+                 
+        $("#left-t16-field").autocomplete({ source: availTaskTags, select: function(event,ui) { 
+            capture_id_left_t16( ui.item.id ); 
+        }});                
+
+    });
+                 
+    function hoveratorOpen(){     
+        var rel = $(this).attr('rel');   
+        var targid = "#hovercard_" + rel;  
+        $(targid).slideDown('fast');    
+     }                 
+    function hoveratorClose(){     
+        var rel = $(this).attr('rel');   
+        var targid = "#hovercard_" + rel;    
+        $(targid).slideUp('fast');      
+     }
+    var config = {            
+        over: hoveratorOpen,         
+        timeout: 300,           
+        out: hoveratorClose         
+    };           
+    $('.hoverator').hoverIntent(config);
+    function hoveratorListOpen(){   
+       var rel = $(this).attr('rel');   
+       var targid = "#list_hovercard_" + rel;  
+       $(targid).slideDown('fast');    
+     }
+    function hoveratorListClose(){   
+       var rel = $(this).attr('rel');   
+       var targid = "#list_hovercard_" + rel;  
+       $(targid).slideUp('fast');      
+     }            
+     var config = {            
+         over: hoveratorListOpen,       
+         timeout: 300,           
+         out: hoveratorListClose       
+     }; 
+     $('.hoverator-list').hoverIntent(config);
+     $('.submat').click(function(){  
+         var rel = $(this).attr('rel');  
+         var rev = $(this).attr('rev');  
+         var pos = $(this).attr('pos');  
+         var posrel = '#' + pos + '-' + rel;
+         var posrelhid = posrel + '-hidden'; 
+         var posrelfrm = posrel + '-form'; 
+         var posrelfld = posrel + '-field'; 
+         var posreladd = posrel + '-add';   
+         var posrelul  = posrel + '-ul';   
+         var hid = $(posrelhid).val();    
+         var con = $('input[name=confidence_level]:checked', posrelfrm).val();var emp = '#' + 'emptybox-' + pos + '-' + rel + '-li';
+         $(emp).hide();          
+         if (hid == 'nodata' || hid == '') { 
+             var con = confirm('You must select a term that exists in the Atlas. Click OK to go to the term creation page, or Cancel.'); 
+             if (con) { 
+                 window.location.href='/concepts/new'; 
+             } else {
+                 $(posrelhid).focus(); 
+             } 
+             return false;           
+         }       
+
+        $.post('/url/submit.php', { rel: rel, rev: rev, tid: hid, con: con, pos: pos },  
+
+       function(data) {          
+           $(posrelfrm).slideUp('fast');    
+           $(posrelfld).val();        
+           $(posrelul).append(data);      
+           $(posrel).slideDown('fast').appendTo(posrelul);
+       });                
+       return false;            
+     });
+                 
+     $('.submut').click(function(){  
+         var rel = $(this).attr('rel');  
+         var rev = $(this).attr('rev');  
+         var pos = $(this).attr('pos');  
+         var posrel = '#' + pos + '-' + rel;
+         var posrelhid = posrel + '-hidden'; 
+         var posrelctr = posrel + '-contrast'; 
+         var posrelfrm = posrel + '-form'; 
+         var posrelfld = posrel + '-field'; 
+         var posreladd = posrel + '-add';   
+         var posrelul  = posrel + '-ul';   
+         var tid = $(posrelhid).val();    
+         var ctr = $(posrelctr).val();    
+         var con = $('input[name=confidence_level]:checked', posrelfrm).val();
+         if (tid == 'nodata' || tid == '') { 
+             var con = confirm('You must select a term that exists in the Atlas. Click OK to go to the term creation page, or Cancel.'); 
+             if (con) { 
+                 window.location.href='/concepts/new'; 
+             } else {
+                 $(posrelhid).focus(); 
+             }
+        return false;           
+      }                  
+      $.post('/url/submit.php',{rel: rel, rev: rev, tid: tid, con: con, pos: pos, ctr: ctr},  
+
+      function(data) {          
+          $(posrelfrm).slideUp('fast');    
+          $(posrelfld).val();        
+          $('#nulltask').hide();       
+          $('#meas-table tr:first').after(data);  
+          window.location.reload();      
+      });                
+      return false;            
+    });
+                 
+    $('.block-clicker').click(function(){
+        var tid = this.id;         
+        var par = '#' + $(this).parent().attr('id');  
+        var frm = par + '-form';      
+        var fld = par + '-field';      
+        var rev = '+=' + $(this).attr('rev') * 6;
+        $(par).slideUp('fast');      
+        $(frm).css('zIndex', 10001).css('position','absolute');
+        if (tid.indexOf('right') == -1) {                
+            $(frm).animate({width: rev}, 500, function(){ $(fld).val('');          
+            $(fld).focus();          
+        });                
+     } else {              
+     $(frm).animate({ width: rev, right: '+=1'}, 500, function(){ $(fld).val('');            
+     $(fld).focus();          
+     });                
+     }                  
+    });
+                 
+    $('.task-block-clicker').click(function(){
+        var tid = this.id;         
+        var par = '#' + $(this).parent().attr('id');  
+        var frm = par + '-form';      
+        var fld = par + '-field';      
+        var rev = '+=' + $(this).attr('rev') * 6;
+        $(frm).css('zIndex', 10001).css('position','absolute');
+        if (tid.indexOf('right') == -1){                
+                $(frm).animate({width: rev, right: '+=10'}, 500, function(){ 
+                $(fld).val('');          
+                $(fld).focus();          
+            });                
+        } else {  
+            $(frm).animate({width: rev, right: '+=1'}, 500, function(){ 
+            $(fld).val('');            
+            $(fld).focus();          
+        });                
+      }                  
+     });                 
+$('.contrastor').live('click',function(){
+var tid = this.id; var tide = '#' + tid; var tidy = '#target_' + tid;
+var url = '/url/get.php?action=contrastor&id_object=trm_4a3fd79d0a038&id_predicate=' + tid;$.get(url,function(data) {    
+$(tide).slideUp('fast');      
+$(tidy).html(data);        
+$(tidy).slideDown('fast');    
+});                
+});                 
+});
+
 });
 </script>
 {% endblock %}

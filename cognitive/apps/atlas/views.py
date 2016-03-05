@@ -113,6 +113,10 @@ def tasks_by_letter(request,letter):
 def view_concept(request,uid):
     concept = Concept.get(uid)
     context = {"concept":concept}
+
+    # available_concepts variable needs to be list of other concepts like this [{"label":"abductive reasoning", "value":"abductive reasoning", "id": "trm_4a3fd79d096be"}...]
+    # available_tasks variable needs to be list of available tasks like this {"label":"2-stage decision task", "value":"2-stage decision task", "id": "trm_5667451917a34"}
+    # page is missing USERID and timestamp variables
     return render(request,'atlas/view_concept.html',context)
 
 

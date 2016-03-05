@@ -168,10 +168,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
-STATICFILES_DIRS = (
-    "/var/www/static",
-)
-
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 CACHES = {
