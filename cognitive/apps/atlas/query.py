@@ -77,15 +77,14 @@ class Node:
             new_node = {}
             new_node.update(parent.properties)
 
-            if get_relations != None:
+            if relations != None and get_relations == True:
                 relation_nodes = []
-                for relation in relations:
-                    new_relations = graph.match(parent,relation)
-                    for new_relation in new_relations:
-                        new_relation_node = {}
-                        new_relation_node.update(new_relation.end_node.properties)
-                        new_relation_node["relationship_type"] = relation
-                        relation_nodes.append(new_relation_node)
+                new_relations = graph.match(parent)
+                for new_relation in new_relations:
+                    new_relation_node = {}
+                    new_relation_node.update(new_relation.end_node.properties)
+                    new_relation_node["relationship_type"] = new_relation.type
+                    relation_nodes.append(new_relation_node)
                 new_node["relations"] = relation_nodes
             nodes.append(new_node)
         return nodes

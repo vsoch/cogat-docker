@@ -111,7 +111,7 @@ def tasks_by_letter(request,letter):
 # VIEWS FOR SINGLE NODES ##########################################################
 
 def view_concept(request,uid):
-    concept = Concept.get(uid)
+    concept = Concept.get(uid)[0]
     context = {"concept":concept}
 
     # available_concepts variable needs to be list of other concepts like this [{"label":"abductive reasoning", "value":"abductive reasoning", "id": "trm_4a3fd79d096be"}...]
@@ -121,6 +121,9 @@ def view_concept(request,uid):
 
 
 def view_task(request,uid):
+    task = Task.get(uid)
+    context = {"task":task}
+
     return render(request,'atlas/view_task.html',context)
 
 

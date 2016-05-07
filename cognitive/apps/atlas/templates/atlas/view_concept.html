@@ -32,7 +32,7 @@
     <div class="CATerm concept">
         <h1 class="termtext">
             <a class="color-concept" href="">
-                <em>decision making</em>
+                <em>{{ concept.name }}</em>
             </a>
             <span class="typebutton concept_type"><a href="/concepts/">CONCEPT</a></span>
         </h1>
@@ -40,35 +40,6 @@
 
     <div class="defn">{{ concept.definition }}</div>
 </div><!-- .assertion -->
-
-<div><div id="slidetarget_def"  style="display:none;height:auto !important;" class="popstar">
-    <div class="formbucket">
-        <form method="post" action="#" name="definition_form" id="definition_form">
-            <input type="hidden" name="form_type" value="definition_form">
-            <input type="hidden" name="return_page" value="concept">
-            <input type="hidden" name="id_object" value="{{ concept.name }}">
-            <input type="hidden" name="id_term" value="{{ concept.id }}">
-            <h3 class=""><strong>Update Definition</strong></h3>
-            <div class="formline">
-               <label for="term_text">Term:</label>
-                   <input type="text" name="term_text" size="80" class="required" value="{{ concept.name }}" title="term text" aria-label="term text" />
-            </div>
-            <div class="formline">
-                <label for="definition_text">Your definition:</label>
-                <textarea name="definition_text" rows="6" cols="80" class="required" title="definition"  aria-label="definition">{{ concept.definition }}</textarea>
-            </div>
-            <div class='formline'>
-                <label for='term_alias'>(optional) Does this term have an acronym, synonym, or alternate spelling? Enter it here:</label>
-                <input type="text" name="term_alias" value="" size="90"  aria-label="Term alias" title="Term alias">
-                    <small>(multiple values separated by commas)</small>
-            </div>
-            <div class="formline">
-                <input type="button" value="Cancel" onclick="document.location.reload(true)" title="cancel submission" aria-label="cancel submission">
-                <input type="submit" value="Submit Definition" title="submit form" aria-label="submit form">
-            </div>
-        </form>
-    </div>
-</div>
 
 <div id="slidetarget_fork"  style="display:none;height:auto !important;" class="popstar">
     <blockquote class="newtext">
