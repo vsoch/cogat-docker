@@ -26,8 +26,6 @@
 
 {% block content %}
 
-{{ concept }}
-
 <div id="block-definition" class="block-full"><div class="assertion">
     <div class="CATerm concept">
         <h1 class="termtext">
@@ -118,14 +116,12 @@
                         <td colspan="3"><div class="dotholder"><hr class="dotty"></div></td>
                     </tr>
                     <tr>
-                        <td colspan="3" valign="middle"><span id="{{ task.id }}" class="contrastor actionator mdfloating" title="add contrast">+ add</span></td>
-                    </tr>
-                    <tr>
-                        <td colspan="3"><div id="target_{{ task.id }}" style="display:none;padding-left:10px;"></div></td>
-                    </tr>
-                    <tr>
-                        <td width='50%' valign='top'><span class="task"> <a href="{% url 'task' task.id %}" class="task">{{ task.name }}</a></span></td>
-                         <td width='45%' valign='top'><ul style="list-style-image:url({% static "images/contrast-icon.jpg"%}" ></ul></td>
+                       {% if task.tasks|length > 0 %}
+                       <td width='50%' valign='top'><b><a href="{% url 'task' task.tasks.0.id %}" class="task">{{ task.tasks.0.name }}</a></b></td>
+                       {% else %}
+                       <td width='50%' valign='top'><b></b></td>
+                       {% endif %}
+                       <td width='50%' valign='top'>{{ task.name }}</td>
                     </tr>
                 </table>
                 {% endfor %}

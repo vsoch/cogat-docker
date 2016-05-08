@@ -174,9 +174,15 @@ class Contrast(Node):
         if fields == None:
             fields = ["creation_time","definition","id","last_updated","name"]
         
-        return_fields = ",".join(["n.%s" %f for f in fields])
-        query = '''MATCH (n:task)-[:ASSERTS]->(c:concept)-[:MEASUREDBY]->(co:contrast) 
-                   WHERE co.id='%s' 
+        # task --> [hascondition] --> condition
+        # condition -> [hascontrast] -> contrast
+
+        return_fields = ",".join(["task.%s" %f for f in fields])
+        query = '''MATCH (c:concept)-[:MEASUREDBY]->(co:contrast) 
+                   WHERE co.id='%s' WITH co as contrast 
+                   MATCH (c:condition)-[:HASCONTRAST]->(contrast) WITH c as condition 
+                   MATCH (t:task)-[:HASCONDITION]->(condition) 
+                   WITH DISTINCT t as task
                    RETURN %s''' %(contrast_id,return_fields)
 
         return do_query(query,fields=fields)
