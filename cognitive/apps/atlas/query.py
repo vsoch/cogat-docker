@@ -66,27 +66,33 @@ class Node:
         :param params: list of parameters to search for, eg [trm_123]
         :param field: field to search (default id)
         :param get_relations: default True, return relationships
-        :param relations: list of relations to include. If not defined, will use default for task
+        :param relations: list of relations to include. If not defined, will return all
         '''
-        if get_relations == True:
-            if relations == None:
-                relations = self.relations
         parents = graph.find(self.name, field, uid)
         nodes = []
         for parent in parents:
             new_node = {}
             new_node.update(parent.properties)
 
-            if relations != None and get_relations == True:
-                relation_nodes = []
+            if get_relations == True:
+                relation_nodes = dict()
                 new_relations = graph.match(parent)
                 for new_relation in new_relations:
                     new_relation_node = {}
                     new_relation_node.update(new_relation.end_node.properties)
                     new_relation_node["relationship_type"] = new_relation.type
-                    relation_nodes.append(new_relation_node)
+                    if new_relation.type in relation_nodes:
+                        relation_nodes[new_relation.type].append(new_relation_node)
+                    else:
+                        relation_nodes[new_relation.type] = [new_relation_node]
+
+                # Does the user want a filtered set?
+                if relations != None:
+                    relation_nodes = {k:v for k,v in relation_nodes.iteritems() if k in relations}
                 new_node["relations"] = relation_nodes
-            nodes.append(new_node)
+
+            nodes.append(new_node)            
+
         return nodes
         
        
@@ -141,7 +147,6 @@ class Task(Node):
         self.fields = ["id","name","definition"]
         self.relations = ["HASCONDITION","ASSERTS","HASCONTRAST"]    
 
-
 class Disorder(Node):
 
     def __init__(self):
@@ -161,6 +166,21 @@ class Contrast(Node):
         self.name = "contrast"
         self.fields = ["id","name","description"]
 
+    def get_tasks(self,contrast_id,fields=None):
+        '''get_task looks up the task(s) associated with a contrast
+        :param contrast_id: the contrast unique id (cnt) for the task
+        :param fields: task fields to return
+        '''
+        if fields == None:
+            fields = ["creation_time","definition","id","last_updated","name"]
+        
+        return_fields = ",".join(["n.%s" %f for f in fields])
+        query = '''MATCH (n:task)-[:ASSERTS]->(c:concept)-[:MEASUREDBY]->(co:contrast) 
+                   WHERE co.id='%s' 
+                   RETURN %s''' %(contrast_id,return_fields)
+
+        return do_query(query,fields=fields)
+        
 
 class Battery(Node):
 

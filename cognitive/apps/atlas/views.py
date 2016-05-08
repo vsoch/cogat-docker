@@ -112,6 +112,14 @@ def tasks_by_letter(request,letter):
 
 def view_concept(request,uid):
     concept = Concept.get(uid)[0]
+
+    # For each measured by (contrast), get the task
+    if "MEASUREDBY" in concept["relations"]:
+        for c in range(len(concept["relations"]["MEASUREDBY"])):
+            contrast = concept["relations"]["MEASUREDBY"][c]
+            tasks = Contrast.get_tasks(contrast["id"])
+            concept["relations"]["MEASUREDBY"][c]["tasks"] = tasks
+
     context = {"concept":concept}
 
     # available_concepts variable needs to be list of other concepts like this [{"label":"abductive reasoning", "value":"abductive reasoning", "id": "trm_4a3fd79d096be"}...]
