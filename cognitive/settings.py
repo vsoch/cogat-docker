@@ -22,11 +22,12 @@ graph = Graph("http://graphdb:7474/db/data/")
 #authenticate("127.0.0.1:7474", "neo4j", "neo4j")
 #graph = Graph()
 
+DOMAIN = "http://www.cognitiveatlas.org"
+
 # PATH vars
 here = lambda *x: join(abspath(dirname(__file__)), *x)
 PROJECT_ROOT = here(".")
 root = lambda *x: join(abspath(PROJECT_ROOT), *x)
-
 sys.path.insert(0, root('apps'))
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)

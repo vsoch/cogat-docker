@@ -1,4 +1,5 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Theory, Battery
+from cognitive.settings import DOMAIN
 from django.shortcuts import render
 from django.template import loader
 
@@ -15,7 +16,7 @@ counts = {"disorders":Disorder.count(),
           "theories":Theory.count(),
           "batteries":Battery.count()}
 
-def index(request):
+def base(request):
 
     # We only need id and name for the home page
     fields = ["id","name"]
@@ -34,4 +35,14 @@ def index(request):
                'disorders':disorders,
                'counts':counts}
 
+    return context
+
+def index(request):
+    context = base(request)
     return render(request,'main/index.html',context)
+
+
+def api(request):
+    context = base(request)
+    context["domain"] = DOMAIN
+    return render(request,'main/api.html',context)

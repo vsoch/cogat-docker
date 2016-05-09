@@ -29,18 +29,19 @@
 
 {{ task }} <br><br>
 {{ contrasts }}
-<div id="block-definition" class="block-full">	<div class="assertion">
-    <div class="CATerm task">
-        <h1 class="termtext">
-            <a class="color-task" href="">
+<div id="block-definition" class="block-full">	
+    <div class="assertion">
+        <div class="CATerm task">
+            <h1 class="termtext">
+                <a class="color-task" href="">
                 <em>{{ task.name }}</em>
-            </a>
-            <span class="typebutton task_type"><a href="{% url 'all_tasks' %}">TASK</a></span>
-        </h1>
-    </div><!-- .CATerm.task -->
+                </a>
+                <span class="typebutton task_type"><a href="{% url 'all_tasks' %}">TASK</a></span>
+            </h1>
+        </div><!-- .CATerm.task -->
 
-    <div class="defn">
-    {{ task.definition | safe }}
+        <div class="defn">
+        {{ task.definition | safe }}
     </div><!-- .defn -->
 
     <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->

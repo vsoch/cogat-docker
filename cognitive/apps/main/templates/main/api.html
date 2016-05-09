@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+{% block head %}
+{% endblock %}
+{% load staticfiles %}
+
+{% block branding %}
+<div class="container">
+       <h1 class="CATitle"><strong><a href="{% url 'index' %}">Cognitive Atlas</a> </strong><strong class="concept">API</strong></h1>
+</div>
+{% block navigation %}
+{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+<div id="block-measurements" class="block-back" style="padding-top:30px; padding-bottom:30px; margin-top:50px">
+    <em>The Cognitive Atlas RESTful API</em> provides programmatic access to concepts, tasks, disorders, and search defined in the Cognitive Atlas. You can use this interface to explore the data, or the <a href="http://cogat-python.readthedocs.io/" target="_blank">cognitiveatlas</a> python module.
+    <div class="panes">
+        <div class="pane">
+            <div class="discdiv">
+             <strong class="concept">Concepts</strong> <a href="{% url 'concept_api_list' %}" target="_blank">{{ domain }}/api/concept</a>
+            </div>
+            <div class="discdiv">
+             <strong class="task">Tasks</strong> <a href="{% url 'task_api_list' %}" target="_blank">{{ domain }}/api/task</a>
+            </div>
+            <div class="discdiv">
+             <strong class="disorder">Disorders</strong> <a href="{% url 'disorder_api_list' %}" target="_blank">{{ domain }}/api/disorder</a>
+            </div>
+            <div class="discdiv">
+             <strong class="search">Search</strong> <a href="{% url 'search_api_list' %}" target="_blank">{{ domain }}/api/search</a>
+            </div>
+        </div> 
+    </div>
+</div>     
+{% endblock %}
+{% block scripts %}
+{% endblock %}
