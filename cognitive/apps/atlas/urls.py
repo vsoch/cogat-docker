@@ -27,10 +27,10 @@ urlpatterns = [
 ] 
 
 api_urls = [
-    url(r'^api/search$', api_views.SearchAPI.as_view(), name='task_api_list'),
-    url(r'^api/concept$',api_views.ConceptAPI.as_view(), name='task_api_list'),
+    url(r'^api/search$', api_views.SearchAPI.as_view(), name='search_api_list'),
+    url(r'^api/concept$',api_views.ConceptAPI.as_view(), name='concept_api_list'),
     url(r'^api/task$', api_views.TaskAPI.as_view(), name='task_api_list'),
-    url(r'^api/disorder', api_views.DisorderAPI.as_view(), name='task_api_list'),
+    url(r'^api/disorder', api_views.DisorderAPI.as_view(), name='disorder_api_list'),
 ]
 
 urlpatterns += api_urls
