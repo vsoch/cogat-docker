@@ -25,35 +25,66 @@
 
 {% block content %}
 
+<div class="container" id="pagecontent">
 
+{{ task }} <br><br>
+{{ contrasts }}
+<div id="block-definition" class="block-full">	<div class="assertion">
+    <div class="CATerm task">
+        <h1 class="termtext">
+            <a class="color-task" href="">
+                <em>{{ task.name }}</em>
+            </a>
+            <span class="typebutton task_type"><a href="{% url 'all_tasks' %}">TASK</a></span>
+        </h1>
+    </div><!-- .CATerm.task -->
 
+    <div class="defn">
+    {{ task.definition | safe }}
+    </div><!-- .defn -->
 
+    <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->
 
-      
-      <div class="fullwrap section-tasks" id="content">
-        <div class="container" id="pagecontent">
+    <div class="clear_all"></div>
+</div><!-- #block-definition.block-full -->
 
-<script type="text/javascript" src="/lib/validate/jquery.validate.js"></script><script>$(document).ready(function(){							           	$(".slide_def").click(function(){					       	  $("#slidetarget_def").slideToggle("fast");	 	  $("#unterbutton_slide_def").hide("fast");		 	  $("#definition_form").value(p);					       	  $(this).toggleClass("active");					       	});													                       	$("#dataset_form").validate({
-					rules: {
-						dataset_uri: {
-							required: true,
-							url: true
-						},
-						dataset_name: {
-							required: true,
-						}
-					}
-				}); 												                           	$(".slide_fork").click(function(){				       	  $("#slidetarget_fork").slideToggle("slow");	 	  $("#unterbutton_slide_def").hide("slow");		 	  $(this).toggleClass("active");					       	  $("#firstfocus").focus(); 						         	});													                       	$(function() {										                 	  $('ul.tabs').tabs('.panes > div.pane'); 			   	});													                       });													                         </script>												                     <div id="block-definition" class="block-full">	<div class="assertion">
-<div class="CATerm task">
-  <h1 class="termtext">
-    <a class="color-task" href="">
-            <em>acupuncture task</em>
-          </a>
-    <span class="typebutton task_type"><a href="/tasks/">TASK</a></span>
-  </h1>
-</div><!-- .CATerm.task -->
-		<div class="defn"> 			subjects are monitored for their cognitive, behavioral, and/or physiological responses to stimulation with filamentous needles
-		</div><!-- .defn -->	</div><!-- .assertion --><div class="attribo"><small>Definition contributed by <a href="/user/id/usr_4f177506dde77">MLewis</a> about four years ago</small><br><small></small><br /><span class='noassoc'>No relations have yet been associated.</span><br /></div><div id="slidetarget_def"  style="display:none;height:auto !important;" class="popstar"></div><div id="slidetarget_fork"  style="display:none;height:auto !important;" class="popstar"><blockquote class="newtext"><h2>Fork this term</h2><br />Forking tasks is the process of separating the senses, or variations, in the meaning of a task.<br />This process should be used sparingly, and the ability to fork a term is the sole provenance of the curator.<br /><form method="post" action="/post/" id="forkform"><input type="hidden" name="form_type" value="fork_form"><input type="hidden" name="return_page" value="/task/id/"><input type="hidden" name="id_object" value="trm_4c8989e1f3df7"><input type="hidden" name="object_term_text" value="acupuncture task"><br /><span class="floatr"><select name="target_dest" title="target destination" aria-label="target destination" ><option selected="selected" value="1">Apply existing attributes to Term 1</option><option value="2">Apply existing attributes to Term 2</option></select></span><div class="clear_all"></div><fieldset><legend class="fset">Term 1</legend><em>e.g. acupuncture task (representation)</em><br /><input type="text" size="30" name="term_text" aria-label="term text" title="term text" value="acupuncture task" readonly class="required"> (<input type="text" size="20" name="term_text_spec" aria-label="term text disambiguator" title="term text disambiguator" id="firstfocus" value="" class="required">)<br /><input type="hidden" name="id_user" value="usr_4b9003ea0be96"><input type="hidden" name="event_stamp" value="2010-09-10 01:29:05"><textarea name="definition_text" rows="8" cols="60" class="required" title="definition text" aria-label="definition text" >subjects are monitored for their cognitive, behavioral, and/or physiological responses to stimulation with filamentous needles</textarea><br /></fieldset><br /><br /><fieldset><legend class="fset">Term 2</legend><em>e.g. acupuncture task (process)</em><br /><input type="hidden" name="id_user2" value=""><input type="text" aria-label="term text 2" title="term text 2" size="30" name="term_text2" value="acupuncture task" readonly class="required"> (<input type="text" size="20" name="term_text_spec2" aria-label="term text 2 disambiguator" title="term text 2 disambiguator" value="" class="required">)<br /><textarea name="definition_text2" rows="8" cols="60" class="required" title="definition text 2" aria-label="definition text 2" ></textarea><br /></fieldset><br /><br /><input type="button" value="Cancel" onclick="window.location.reload();" title="cancel submission" aria-label="cancel submission">&nbsp;&nbsp;<input type="submit" value="Submit" title="submit form" aria-label="submit form" ></form></blockquote></div>	<div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn --><div class="clear_all"></div></div><!-- #block-definition.block-full --><div id="block-measurements" class="block-halfwide block-back">	<em><a href="javascript:void(0)" class="task">acupuncture task</a></em> has been asserted to measure the following <strong>CONCEPTS</strong>		<div class="panes">			<div class="pane">				<div class="discdiv"><div id="table_trm_4a3fd79d0a22f" class="nullspace">	<div>		<div style='width:100%;height:1em'><a href="/concept/id/trm_4a3fd79d0a22f" class="concept">excitation</a>		</div>		<div style='width:40%;float:left'><div style="padding-left:10px;padding-top:5px;"><small>as measured by the contrast:</small></div>		</div>		<div style='width:60%;float:left;text-align:left;'>			<ul style="margin-left:30px;margin-top:8px;list-style-image:url('/images/contrast-icon.jpg');"><li class="contrastli"><a href="/assertion/id/ass_4e03836ce57b7" class="task">areas of activation during task minus baseline</a></li>			</ul>		</div>	</div>	<br clear='all'></div><br clear="all"><br clear="all"><div id="target_trm_4a3fd79d0a22f" style="display:none;padding-left:10px;"></div><div class="dotholder"><hr class="dotty"></div><div id="table_trm_4b65259eeee34" class="nullspace">	<div>		<div style='width:100%;height:1em'><a href="/concept/id/trm_4b65259eeee34" class="concept">pain</a>		</div>		<div style='width:40%;float:left'><div style="padding-left:10px;padding-top:5px;"><small>as measured by the contrast:</small></div>		</div>		<div style='width:60%;float:left;text-align:left;'>			<ul style="margin-left:30px;margin-top:8px;list-style-image:url('/images/contrast-icon.jpg');"><li class="contrastli"><a href="/assertion/id/ass_4e0382ff3b339" class="task">pain at baseline minus pain during acupuncture</a></li>			</ul>		</div>	</div>	<br clear='all'></div><br clear="all"><br clear="all"><div id="target_trm_4b65259eeee34" style="display:none;padding-left:10px;"></div><div class="dotholder"><hr class="dotty"></div><script>$(document).ready(function(){						$(".tbclicker").click(function(){					  $(".tstar").slideToggle("fast");				});												});												</script>														</div>			</div>		</div>	</div>	<div id="block-implementors" class="block-halfwide-rfloat block-back block-margin">		<div class="pane">			<div class="discdiv">	<b>DISORDERS</b> associated with <em><a href="javascript:void(0)" class="task">acupuncture task</a></em><br><span class="noassoc">No associations have been added.</span><br><br>		</div>	</div></div><br clear="all">	<div id="block-implementors" class="block-halfwide block-back ">		<div class="pane">			<div class="discdiv">	<b>IMPLEMENTATIONS</b> of <em><a href="javascript:void(0)" class="task">acupuncture task</a></em><br><div style="margin-top:10px;"><table style="cell-padding:10px;"></table></div><span class="noassoc">No implementations have been added.</span><br>		</div>	</div></div>		<div id="block-implementors" class="block-halfwide-rfloat block-back block-margin">			<div class="pane">				<div class="discdiv">					<b>EXTERNAL DATASETS</b> for <a href="javascript:void(0)" class="task">acupuncture task</a><br /><span class="noassoc">No external datasets have been added.</span><br />			</div>		</div>	</div><div class="clear_all"></div><script>                                              $(document).ready(function() {									  		$(".conditionblock").hover(function(){							var thisid = $(this).attr("id"); 									$(this).addClass("editblock"); 							 			var sel = "#span_" + thisid; 							   			$(sel).html("remove <img src='/images/icons/contradict.png' class='vmiddle'>");			},function() { $(this).find("span:last").html(""); 				$(this).removeClass("editblock"); 	}); 				$(".conditionblock").click(function(){							var thisid = $(this).attr("id"); 									var answer = confirm("Delete this item permanently?"); 			if(answer){												          				$(this).fadeOut(500, function() { $(this).remove(); });					$.get("../url/condition.php", { id_condition: thisid, action: "disable" },
+<div id="block-measurements" class="block-halfwide block-back">
+    <em><a href="javascript:void(0)" class="task">{{ task.name }}</a></em> has been asserted to measure the following <strong>CONCEPTS</strong>
+    <div class="panes">
+        <div class="pane">
+            <div class="discdiv">
+                {% if "ASSERTS" in task.relations %}
+                    {% for relation in task.relations.ASSERTS %}
+                    <div id="table_{{ relation.id }}" class="nullspace">
+                        <div>
+                            <div style='width:100%;height:1em'>
+                                <a href="{% url 'concept' relation.id %}" class="concept">{{ relation.name }}</a>
+                            </div>
+                            <div style='width:40%;float:left'>
+                                <div style="padding-left:10px;padding-top:5px;"><small>as measured by the contrast:</small></div>
+                            </div>
+                            <div style='width:60%;float:left;text-align:left;'>
+                            <ul style="margin-left:30px;margin-top:8px;list-style-image:url('/static/images/contrast-icon.jpg');">
+                                {% for concept_name,assertions in contrasts.items %}
+                                    {% for assertion in assertions %}
+                                    {% if assertion.concept_id = relation.id %}
+                                    <li class="contrastli">
+                                        <a href="#" class="task">{{ assertion.contrast_name }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>		
+                        </div>
+                    </div>
+                    <br clear='all'></div>
+                    <br clear="all"><br clear="all">
+                    <div id="target_{{ relation.id }}" style="display:none;padding-left:10px;"></div>
+                    <div class="dotholder"><hr class="dotty"></div>
+                    {% endfor %}
+                {% endif %}
+
+														</div>			</div>		</div>	</div>	<div id="block-implementors" class="block-halfwide-rfloat block-back block-margin">		<div class="pane">			<div class="discdiv">	<b>DISORDERS</b> associated with <em><a href="javascript:void(0)" class="task">acupuncture task</a></em><br><span class="noassoc">No associations have been added.</span><br><br>		</div>	</div></div><br clear="all">	<div id="block-implementors" class="block-halfwide block-back ">		<div class="pane">			<div class="discdiv">	<b>IMPLEMENTATIONS</b> of <em><a href="javascript:void(0)" class="task">acupuncture task</a></em><br><div style="margin-top:10px;"><table style="cell-padding:10px;"></table></div><span class="noassoc">No implementations have been added.</span><br>		</div>	</div></div>		<div id="block-implementors" class="block-halfwide-rfloat block-back block-margin">			<div class="pane">				<div class="discdiv">					<b>EXTERNAL DATASETS</b> for <a href="javascript:void(0)" class="task">acupuncture task</a><br /><span class="noassoc">No external datasets have been added.</span><br />			</div>		</div>	</div><div class="clear_all"></div><script>                                              $(document).ready(function() {									  		$(".conditionblock").hover(function(){							var thisid = $(this).attr("id"); 									$(this).addClass("editblock"); 							 			var sel = "#span_" + thisid; 							   			$(sel).html("remove <img src='/images/icons/contradict.png' class='vmiddle'>");			},function() { $(this).find("span:last").html(""); 				$(this).removeClass("editblock"); 	}); 				$(".conditionblock").click(function(){							var thisid = $(this).attr("id"); 									var answer = confirm("Delete this item permanently?"); 			if(answer){												          				$(this).fadeOut(500, function() { $(this).remove(); });					$.get("../url/condition.php", { id_condition: thisid, action: "disable" },
 								function(data){
 									// nothing for now
 								});
@@ -82,8 +113,7 @@
 			})
 		</script>
 		    </div><!-- #pagecontent.container -->
-  </div><!-- .fullwrap#content-->
-
+  
 
 
 

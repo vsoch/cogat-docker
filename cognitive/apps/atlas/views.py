@@ -1,4 +1,5 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory
+from cognitive.apps.atlas.utils import clean_html
 from django.shortcuts import render
 from django.template import loader
 
@@ -122,15 +123,27 @@ def view_concept(request,uid):
 
     context = {"concept":concept}
 
-    # available_concepts variable needs to be list of other concepts like this [{"label":"abductive reasoning", "value":"abductive reasoning", "id": "trm_4a3fd79d096be"}...]
-    # available_tasks variable needs to be list of available tasks like this {"label":"2-stage decision task", "value":"2-stage decision task", "id": "trm_5667451917a34"}
-    # page is missing USERID and timestamp variables
     return render(request,'atlas/view_concept.html',context)
 
 
 def view_task(request,uid):
-    task = Task.get(uid)
-    context = {"task":task}
+    task = Task.get(uid)[0]
+ 
+    # Replace newlines with <br>, etc.
+    task["definition"] = clean_html(task["definition"])
+    contrasts = Task.get_contrasts(task["id"])
+
+    # Make a lookup dictionary based on concept id
+    lookup = dict()
+    for contrast in contrasts:
+        concept_name = contrast["concept_id"]
+        if concept_name in lookup:
+            lookup[concept_name].append(contrast)
+        else:
+            lookup[concept_name] = [contrast]
+
+    context = {"task":task,
+               "contrasts":lookup}
 
     return render(request,'atlas/view_task.html',context)
 

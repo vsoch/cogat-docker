@@ -147,6 +147,28 @@ class Task(Node):
         self.fields = ["id","name","definition"]
         self.relations = ["HASCONDITION","ASSERTS","HASCONTRAST"]    
 
+    def get_contrasts(self,task_id):
+        '''get_contrasts looks up the contrasts(s) associated with a task, along with concepts
+        :param task_id: the task unique id (trm|tsk_*) for the task
+        '''
+        
+        fields = ["concept.id","concept.creation_time","concept.name","concept.last_updated","concept.definition",
+                  "contrast.id","contrast.creation_time","contrast.name","contrast.last_updated"]
+
+        return_fields = ",".join(fields)
+        query = '''MATCH (t:task)-[:HASCONDITION]->(c:condition) 
+                   WHERE t.id='%s'
+                   WITH c as condition
+                   MATCH (condition)-[:HASCONTRAST]->(con:contrast) 
+                   WITH con as contrast
+                   MATCH (c:concept)-[:MEASUREDBY]->(contrast)
+                   WITH c as concept, contrast as contrast
+                   RETURN %s''' %(task_id,return_fields)
+
+        fields = [x.replace(".","_") for x in fields]
+        return do_query(query,fields=fields)
+
+
 class Disorder(Node):
 
     def __init__(self):
