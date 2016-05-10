@@ -3,25 +3,25 @@
     <div id="navbar">
     <ul id="navbar-inner" class=" clearfix">
         <li class="navlink concept first-item">
-             <a href="/concepts/a" class="btn">Concepts <span class="count">/ {{ counts.concepts }}</span></a>
+             <a href="{% url 'all_concepts' %}/a" class="btn">Concepts <span class="count">/ {{ counts.concepts }}</span></a>
              <div class="active-arrow"></div>
         </li>
         <li class="navlink task">
-             <a href="/tasks/a" class="btn">Tasks <span class="count">/ {{ counts.tasks }}</span></a>
+             <a href="{% url 'all_tasks' %}/a" class="btn">Tasks <span class="count">/ {{ counts.tasks }}</span></a>
              <div class="active-arrow"></div>
          </li>
          <li class="navlink diso">
-             <a href="/disorders" class="btn">Disorders <span class="count">/ {{ counts.disorders }}</span></a>
+             <a href="{% url 'all_disorders' %}" class="btn">Disorders <span class="count">/ {{ counts.disorders }}</span></a>
              <div class="active-arrow"></div>
          </li>    
          <li class="navlink coll">
-             <a href="/theories" class="btn">Theories <span class="count">/ {{ counts.theories }}</span></a>
+             <a href="{% url 'all_theories' %}" class="btn">Theories <span class="count">/ {{ counts.theories }}</span></a>
              <div class="active-arrow"></div>
          </li>
          <li class="pull-right">
              <ul>
                  <li class="navlink about quiet">
-                     <a href="/about/" class="btn">About</a>
+                     <a href="{% url 'about' %}" class="btn">About</a>
                  </li>
                  <li class="navlink blog quiet last-item">
                      <a href="http://blog.cognitiveatlas.org/" class="btn" target="_blank">Blog</a>

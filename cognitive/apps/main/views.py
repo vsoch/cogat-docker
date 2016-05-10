@@ -42,6 +42,10 @@ def index(request):
     return render(request,'main/index.html',context)
 
 
+def about(request):
+    context = base(request)
+    return render(request,'main/about.html',context)
+
 def api(request):
     context = base(request)
     context["domain"] = DOMAIN

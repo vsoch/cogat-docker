@@ -84,19 +84,19 @@
                <a href="/" class="embiggen">cognitive<span id="logo-last">atlas</span><span id="address" class="small quiet pull-right"> NIMH Grant RO1MH082795, Russell Poldrack, PI.</span></a>
            </li>
            <li class="navlink concept">
-               <a href="/concepts" class="btn"><strong>Concepts</strong></a>
+               <a href="{% url 'all_concepts' %}" class="btn"><strong>Concepts</strong></a>
            </li>
            <li class="navlink task">
-               <a href="/tasks" class="btn"><strong>Tasks</strong></a>
+               <a href="{% url 'all_tasks' %}" class="btn"><strong>Tasks</strong></a>
            </li>
            <li class="navlink diso">
-               <a href="/disorders" class="btn"><strong>Disorders</strong></a>
+               <a href="{% url 'all_disorders' %}" class="btn"><strong>Disorders</strong></a>
            </li>    
            <li class="navlink coll">
-               <a href="/contrasts" class="btn"><strong>Contrasts</strong></a>
+               <a href="{% url 'all_theories' %}" class="btn"><strong>Theories</strong></a>
            </li>
            <li class="navlink about">
-               <a href="/about" class="btn quiet"><strong>About</strong></a>
+               <a href="{% url 'about' %}" class="btn quiet"><strong>About</strong></a>
            </li>
            <li class="navlink blog">
                <a href="http://blog.cognitiveatlas.org/" class="btn quiet" target="_blank"><strong>Blog</strong></a>
