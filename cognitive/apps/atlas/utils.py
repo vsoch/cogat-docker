@@ -14,3 +14,17 @@ def clean_html(html,replacements=None):
         replacement = replace_set[1]
         html = html.replace(text,replacement)
     return html
+
+
+def update_lookup(lookup,key,entry):
+    '''update_lookup will update a lookup dictionary with an entry. If the key exists, the entry is appended to 
+    the existing list. if not, it is added.
+    :param lookup: dictionary to update
+    :param entry: the entry to add to the list
+    '''
+    if key in lookup:
+        lookup[key].append(entry)
+    else:
+        lookup[key] = [entry]
+    return lookup
+

@@ -1,5 +1,5 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory
-from cognitive.apps.atlas.utils import clean_html
+from cognitive.apps.atlas.utils import clean_html, update_lookup
 from django.shortcuts import render
 from django.template import loader
 
@@ -134,16 +134,18 @@ def view_task(request,uid):
     contrasts = Task.get_contrasts(task["id"])
 
     # Make a lookup dictionary based on concept id
-    lookup = dict()
+    concept_lookup = dict()
+    contrast_lookup = dict()
     for contrast in contrasts:
-        concept_name = contrast["concept_id"]
-        if concept_name in lookup:
-            lookup[concept_name].append(contrast)
-        else:
-            lookup[concept_name] = [contrast]
+        concept_lookup = update_lookup(concept_lookup,contrast["concept_id"],contrast)
+        contrast_lookup = update_lookup(contrast_lookup,contrast["contrast_id"],contrast)
+
+    conditions = {x:Contrast.get_conditions(x) for x in list(contrast_lookup.keys())}
 
     context = {"task":task,
-               "contrasts":lookup}
+               "concepts":concept_lookup,
+               "contrasts":contrast_lookup,
+               "conditions":conditions}
 
     return render(request,'atlas/view_task.html',context)
 

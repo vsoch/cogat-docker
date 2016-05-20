@@ -162,11 +162,13 @@ class Task(Node):
                    MATCH (condition)-[:HASCONTRAST]->(con:contrast) 
                    WITH con as contrast
                    MATCH (c:concept)-[:MEASUREDBY]->(contrast)
-                   WITH c as concept, contrast as contrast
+                   WITH c as concept, contrast
                    RETURN %s''' %(task_id,return_fields)
 
         fields = [x.replace(".","_") for x in fields]
+        
         return do_query(query,fields=fields)
+            
 
 
 class Disorder(Node):
@@ -183,10 +185,31 @@ class Condition(Node):
 
 
 class Contrast(Node):
-
     def __init__(self):
         self.name = "contrast"
         self.fields = ["id","name","description"]
+
+    def get_conditions(self,contrast_id,fields=None):
+        '''get_conditions returns conditions associated with a contrast
+        :param contrast_id: the contrast unique id (cnt) for the task
+        :param fields: condition fields to return
+        '''
+
+        if fields == None:
+            fields = ["condition.creation_time","condition.id",
+                      "condition.last_updated","condition.name"]
+
+        return_fields = ",".join(fields)
+        query = '''MATCH (cond:condition)-[:HASCONTRAST]->(c:contrast) 
+                   WHERE c.id='%s'
+                   WITH cond as condition
+                   RETURN %s''' %(contrast_id,return_fields)
+
+        fields = [x.replace(".","_") for x in fields]
+        
+        return do_query(query,fields=fields)
+
+
 
     def get_tasks(self,contrast_id,fields=None):
         '''get_task looks up the task(s) associated with a contrast
@@ -234,6 +257,7 @@ def do_query(query,fields,output_format="dict"):
     result = graph.cypher.execute(query)
     df = pandas.DataFrame(result.records, columns=result.columns)
     df.columns = fields
+    df = df.drop_duplicates()
     if output_format == "df":
         return df
     elif output_format == "list":
