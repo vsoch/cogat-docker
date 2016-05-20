@@ -2,6 +2,7 @@ from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Batter
 from cognitive.apps.atlas.utils import clean_html, update_lookup
 from django.shortcuts import render
 from django.template import loader
+import numpy
 
 Concept = Concept()
 Task = Task()
@@ -140,7 +141,14 @@ def view_task(request,uid):
         concept_lookup = update_lookup(concept_lookup,contrast["concept_id"],contrast)
         contrast_lookup = update_lookup(contrast_lookup,contrast["contrast_id"],contrast)
 
-    conditions = {x:Contrast.get_conditions(x) for x in list(contrast_lookup.keys())}
+    # If we want association of conditions with contrasts
+    #conditions = {x:Contrast.get_conditions(x) for x in list(contrast_lookup.keys())}
+    conditions = dict()
+    for contrast_id in list(contrast_lookup.keys()):
+        new_conditions = Contrast.get_conditions(contrast_id)
+        for new_condition in new_conditions:
+            if new_condition["condition_id"] not in conditions:
+                conditions[new_condition["condition_id"]] = new_condition
 
     context = {"task":task,
                "concepts":concept_lookup,
