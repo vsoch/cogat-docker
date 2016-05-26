@@ -27,7 +27,9 @@
 
        <!-- Contribute New Term Forms -->
        {% if message %}
-           <h2 style="padding-bottom:50px">{{ message }}</h2> <!--this needs formatting -->
+       <div class="alert alert-info" role="alert" style="padding:10px;border-radius:2px; margin-bottom:50px;">
+           <strong>{{ message }}</strong>
+        </div>
        {% endif %}
 
        {% if already_exists %}
