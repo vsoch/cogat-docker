@@ -2,7 +2,8 @@
     <form role="form" method="post" action="{% url 'login' %}">
         {% csrf_token %}
 
-       <h2>Login</h2>
+       <h3>Sign In</h3>
+       <span style="font-size:8pt;color:#c0c0c0;">Registered users may edit and contribute to the Cognitive Atlas</span>
 
         <div class="form-group{% if form.errors %} has-error{% endif %}">
             {% if form.errors %}
@@ -23,6 +24,9 @@
             <button type="submit" class="btn btn-primary submit" data-disable-with="Logging In…">
               Log In
             </button>
+            <a href="{% url 'create_user' %}"><button type="button" class="btn btn-primary">
+              Sign Up
+            </button></a>
         </div>
 
         <input type="hidden" name="next" value="{{ next }}" />

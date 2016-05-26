@@ -33,7 +33,16 @@
     <div class="fullwrap" id="utility">
     <div class="container">
             <div id="userbar">
-                <input type="button" class="tsbutton" onclick="window.location.href=/login/" value="Login" title="Login" aria-label="Login"><small> to edit and comment </small>
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}"><input type="button" class="tsbutton" value="Logout" title="Logout" aria-label="Logout"></a><small> to end your session </small>
+                {% else %}
+                    <!--Don't show login on login pages-->
+                    {% if request.get_full_path == "/accounts/login/" %}
+                    {% elif request.get_full_path == "/accounts/create/" %}
+                    {% else %}
+                <a href="{% url 'login' %}"><input type="button" class="tsbutton" value="Login" title="Login" aria-label="Login"></a><small> to edit and comment </small>
+                    {% endif %}
+                {% endif %}
             </div>
 
             <!-- Search Form -->

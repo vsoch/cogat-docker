@@ -54,7 +54,8 @@ INSTALLED_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'rest_framework'
+    'rest_framework',
+    'crispy_forms',
 ]
 
 INSTALLED_APPS += THIRD_PARTY_APPS

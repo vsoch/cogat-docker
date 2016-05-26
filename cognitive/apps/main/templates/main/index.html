@@ -25,39 +25,17 @@
             <span class="tblock">The Cognitive Atlas is a collaborative knowledge building project that aims to develop a knowledge base (or ontology) that characterizes the state of current thought in cognitive science. The project is led by Russell Poldrack, Professor of Psychology at Stanford University. Development of the project was supported by grant RO1MH082795 from the National Institute of Mental Health. </span>
            </div><!-- close tbox -->
 
+           {% if not request.user.is_authenticated %}
            <div id="aform" class="login-box">
 
                <!-- Sign In-->
-               <h3>Sign In</h3>
-               <span style="font-size:8pt;color:#c0c0c0;">Registered users may edit and contribute to the Cognitive Atlas</span>
                <div id="showform">    
-                   <form name="login" method="post" action="obj/index.php" id="login_form">
-                       <div class="clearfix">
-                           <input tabindex="3" type="text" class="fwidgettxt" id="username" name="username" value="" size="30" aria-label="username" title="username" /><br />
-                           <input tabindex="4" type="password" class="fwidgettxt" id="password" name="password" value="" size="30" aria-label="password" title="password" /><br />
-                           <span class="sb">Keep me logged in</span>&nbsp;
-                           <input type="checkbox" class="no-outline" id="persistent" name="persistent" tabindex="5" aria-label=\"stay logged in for 2 weeks\" title=\"choose persistent login\" >    
-                           <input tabindex="6" type="submit" value="Sign in" class="btn" title="submit credentials">
-                       </div>
-                       <div style="text-align:right;">
-                           <span id="remind_me_link" class="sa">
-                               <a href="javascript:void(0)" name="remlink" class="sa">Forgotten password?  &raquo;</a>
-                           </span><br />    
-                           <a href="/usr/userreq.php">Request a contributor account &raquo;</a>
-                       </div>
-                   </form>
+                   {% include 'registration/_login.html' %}
                </div>
 
-               <!-- Password Reminder -->
-               <div id="reminder" style="display:none;"><br><br>
-                   <form name="reminder_form" method="post" action="url/blank.php" id="reminder_form">        
-                       <span class="er">
-                           <input tabindex="6" type="text" size="20" name="user_email" id="user_email" title="email for password reminder">&nbsp;
-                           <input tabindex="7" type="submit" id="remind_me" value="Reset Password" title="password reset submission" >
-                       </span><br />    
-                   </form>
-               </div>
            </div><!-- close aform -->
+           {% endif %}
+
            <br clear="all">
            
            <!-- CENTER CONTENT SECTION -->          
