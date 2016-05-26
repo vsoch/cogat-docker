@@ -11,9 +11,10 @@
           <style>
               .asholder {position:relative;}
           </style>
-      <form method="get" action="#" class="asholder" id="suggestor" name="suggestor" onsubmit="return false;">
-          <input type="text" name="searchstring" id="searchstring" size="40" autocomplete="off">&nbsp;
-          <input type="button" value="Continue" onclick="checkDef()" title="check definition" aria-label="check definition"> 
+      <form method="post" action="{% url 'contribute_term' %}" class="asholder" id="suggestor" name="suggestor">
+          {% csrf_token %}
+          <input type="text" name="newterm" id="newterm" size="40" autocomplete="off">&nbsp;
+          <input type="submit" value="Continue" title="check definition" aria-label="check definition"> 
           <input type="button" title="reset form" aria-label="reset form" value="Cancel" onclick="window.location.reload()">
       </form><br><br>
 </blockquote>

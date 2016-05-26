@@ -24,6 +24,9 @@ urlpatterns = [
     url(r'^tasks/id/(?P<uid>[\w\+%_& ]+)/$', views.view_task, name="task"),
     url(r'^contrasts/id/(?P<uid>[\w\+%_& ]+)/$', views.view_contrast, name="contrast"),
 
+    # Modify terms
+    url(r'^terms/new/$', views.contribute_term, name="contribute_term")
+
 ] 
 
 api_urls = [

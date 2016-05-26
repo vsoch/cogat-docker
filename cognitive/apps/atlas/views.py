@@ -1,4 +1,4 @@
-from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory
+from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory, search
 from cognitive.apps.atlas.utils import clean_html, update_lookup
 from django.shortcuts import render
 from django.template import loader
@@ -181,18 +181,30 @@ def view_theory(request,uid):
 # ADD NEW TERMS ###################################################################
 
 def contribute_term(request):
-    # Get form data from post, check if term exist,
-    # if term exists, define already_exists, and add to context
-    term_name = "hello!"
-    message = "message"
+    '''contribute_term will return the contribution detail page for a term that is
+    posted, or visiting the page without a POST will return the original form
+    '''
 
-    context = {"message":message,
-              "term_name":term_name}
-    
-    if 1==1:
-        context["already_exists"] = "anything"
+    context = {"message":"Please specify the term you want to contribute."}
+
+    if request.method == "POST":      
+        term_name = request.POST.get('newterm', '')
+
+        # Does the term exist in the atlas?
+        results = search(term_name)   
+        matches = [x["name"] for x in results if x["name"]==term_name]
+        message = "Please further define %s" %(term_name)
+
+        if len(matches) > 0:
+            message = "Term %s already exists in the Cognitive Atlas." %(term_name)
+            context["already_exists"] = "anything"
+
+        context["message"] = message
+        context["term_name"] = term_name
+        context["other_terms"] = results
 
     return render(request,'atlas/contribute_term.html',context)
+
 
 def contribute_disorder(request):
 

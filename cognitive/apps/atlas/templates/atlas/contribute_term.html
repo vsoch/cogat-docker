@@ -27,13 +27,17 @@
 
        <!-- Contribute New Term Forms -->
        {% if message %}
-           {{ message }} <!--this needs formatting -->
+           <h2 style="padding-bottom:50px">{{ message }}</h2> <!--this needs formatting -->
        {% endif %}
 
        {% if already_exists %}
            {% include "atlas/_contribute_term.html" %}
        {% else %}
-       {% include "atlas/_contribute_term_details.html" %}
+           {% if term_name %}
+               {% include "atlas/_contribute_term_details.html" %}
+           {% else %}
+               {% include "atlas/_contribute_term.html" %}
+           {% endif %}
        {% endif %}
 
        <div class="clear_all"></div>
@@ -41,13 +45,12 @@
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript">
+
 $(document).ready(function() {
     $(function() {
-       $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
-       $("#masker").fadeOut("fast");
-       $("#contclicker").click(function(){
-           $("#contribution_block").toggle();
-       });
+       $("#dform").show();
+       $("form").show();
+       $("#contribution_block").show()
     });
 });
 </script>

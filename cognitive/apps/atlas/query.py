@@ -288,6 +288,15 @@ def do_transaction(tx=None,query=None,params=None):
     return df
 
 
+# General search function across nodes
+def search(searchstring,fields="name"):
+    if isinstance(fields,str):
+        fields = [fields]
+    return_fields = ",".join(["n.%s" %x for x in fields])
+    query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s;''' %(searchstring,return_fields)
+    return do_query(query,fields=fields)
+
+
 def get_transactions(query,tx=None,params=None):
     '''get_transactions will append new transactions to a transaction object, or return a new transaction if one does not exist. 
     :param query: string of cypher query
