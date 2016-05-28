@@ -1,7 +1,7 @@
 from django.conf.urls import url,patterns
 from django.conf.urls.static import static
 
-from . import api_views, views
+from . import api_views, views, graph
 
 
 urlpatterns = [
@@ -25,7 +25,11 @@ urlpatterns = [
     url(r'^contrasts/id/(?P<uid>[\w\+%_& ]+)/$', views.view_contrast, name="contrast"),
 
     # Modify terms
-    url(r'^terms/new/$', views.contribute_term, name="contribute_term")
+    url(r'^terms/new/$', views.contribute_term, name="contribute_term"),
+
+    # Graph views
+    url(r'^graph/$', graph.test_graph, name="test_graph"),
+
 
 ] 
 
