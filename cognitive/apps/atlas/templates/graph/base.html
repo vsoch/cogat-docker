@@ -1,76 +1,11 @@
 <html>
-{% load staticfiles %}
 <head>
-    <script type="text/javascript" src="{% static "js/d3.js"%}"></script>
+   {% include 'graph/header.html' %}
 </head>
 
 <body>
-    <div id="graph"></div>
+  {% include 'graph/body.html' %}
 </body>
 
-<script>
-  var width = 800, height = 800;
-
-  var graph = {{ graph | safe }}
-  // force layout setup
-
-  var force = d3.layout.force()
-          .charge(-200).linkDistance(30).size([width, height]);
-
-  // setup svg div
-  var svg = d3.select("#graph").append("svg")
-          .attr("width", "100%").attr("height", "100%")
-          .attr("pointer-events", "all");
-
-  // By default, d3 force layout is based on index, but we want to use node id
-  // Process links to have correct reference
-  var edges = []
-  graph.links.forEach(function(e) { 
-  
-    // Get the source and target nodes
-    var source_node = graph.nodes.filter(function(n) { return n.id === e.source; })[0],
-        target_node = graph.nodes.filter(function(n) { return n.id === e.target; })[0];
-
-    // Add the edge to the array
-    edges.push({source: source_node, target: target_node});
-   });
-
-      force.nodes(graph.nodes).links(edges).start();
-
-      // render relationships as lines
-      var link = svg.selectAll(".link")
-          .data(edges).enter()
-          .append("line").attr("class", "link");
-
-
-      // render nodes as circles, css-class from label
-
-      var node = svg.selectAll(".node")
-          .data(graph.nodes).enter()
-          .append("circle")
-          .attr("class", function (d) { return "node "+d.label })
-          .attr("fill", function (d) { return d.color })
-          .attr("r", 10)
-          .call(force.drag);
-
-
-      // html title attribute for title node-attribute
-      node.append("title")
-              .text(function (d) { return d.label; })
-
-      // force feed algo ticks for coordinate computation
-
-      force.on("tick", function() {
-          link.attr("x1", function(d) { return d.source.x; })
-              .attr("y1", function(d) { return d.source.y; })
-              .attr("x2", function(d) { return d.target.x; })
-              .attr("y2", function(d) { return d.target.y; });
-
-
-
-          node.attr("cx", function(d) { return d.x; })
-              .attr("cy", function(d) { return d.y; });
-
-  });
-</script>
+  {% include 'graph/javascript.html' %}
 </html>

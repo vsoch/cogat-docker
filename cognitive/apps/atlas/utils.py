@@ -28,3 +28,18 @@ def update_lookup(lookup,key,entry):
         lookup[key] = [entry]
     return lookup
 
+def color_by_relation(relation_name):
+    '''color_by_relation returns node color based on relation type
+    :param relation_name: the name of the relation to look up color for
+    '''
+    colors = {"ASSERTS":"#3C7263", # task --asserts--> concept
+              "MEASUREDBY": "#D89013", # concept --measuredby--> contrast
+              "DERIVEDFROM": "#63506D", # task --derivedfrom--> task
+              "HASCONDITION":"#BC1079", # contrast --hascondition--> condition
+              "HASCONTRAST": "#D89013", # condition --hascontrast--> contrast
+              "PARTOF":"#3C7263",  # concept
+              "KINDOF":"#3C7263"}  # concept
+
+    if relation_name in colors:
+        return colors[relation_name]
+    return "#FFFFFF"

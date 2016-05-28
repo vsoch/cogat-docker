@@ -1,3 +1,4 @@
+from cognitive.apps.atlas.utils import color_by_relation
 from cognitive.settings import graph
 import pandas
 
@@ -59,6 +60,7 @@ class Node:
                         node = {field:relation[field] for field in minimum_fields if field in relation}
                         node["label"] = "%s: %s" %(relation_name,relation["name"])
                         node["id"] = lookup[relation["id"]]
+                        node["color"] = color_by_relation(relation_name)
                         link = {"source":lookup[entity["id"]],"target":lookup[relation["id"]],"type":relation_name}
                         links.append(link)
                         nodes.append(node)
