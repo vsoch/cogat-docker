@@ -33,7 +33,7 @@ class Node:
         nodes = []
         links = []
         for uu in uid:
-            entity = self.get(uid)        
+            entity = self.get(uu)[0]      
 
             # Entity node
             node = {field:entity[field] for field in minimum_fields if field in entity}

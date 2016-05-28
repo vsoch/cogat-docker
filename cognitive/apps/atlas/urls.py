@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^terms/new/$', views.contribute_term, name="contribute_term"),
 
     # Graph views
-    url(r'^graph/$', graph.test_graph, name="test_graph"),
+    url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),
 
 
 ] 
@@ -38,6 +38,8 @@ api_urls = [
     url(r'^api/concept$',api_views.ConceptAPI.as_view(), name='concept_api_list'),
     url(r'^api/task$', api_views.TaskAPI.as_view(), name='task_api_list'),
     url(r'^api/disorder', api_views.DisorderAPI.as_view(), name='disorder_api_list'),
+    url(r'^tasks/json/(?P<uid>[\w\+%_& ]+)/$', graph.task_json, name="task_json"),
+
 ]
 
 urlpatterns += api_urls
