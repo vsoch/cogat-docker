@@ -42,6 +42,7 @@
             {{ task.definition | safe }}<br><br>
         <a target="_blank" href="{% url 'task_graph' task.id %}"><button>graph</button></a>
         <a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
+        <a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
         </div><!-- .defn -->
 
         <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->

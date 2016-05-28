@@ -17,6 +17,17 @@ class Node:
         return graph.cypher.execute(query).one
 
 
+    def update(self,uid,updates):
+        '''update will update a particular field of a node with a new entry
+        :param uid: the unique id of the node
+        :param updates: a dictionary with {field:value} to update node with
+        '''
+        node = graph.find_one(self.name,'id', uid)
+        for field,update in updates.items():
+            node[field] = update
+        node.push()
+
+
     def graph(self,uid,fields=None):
         '''graph returns a graph representation of one or more nodes, meaning a dictionary of nodes/links with
         (minimally) fields name, label, and id. Additional fields are included that are defined in the Node

@@ -209,3 +209,13 @@ def contribute_term(request):
 def contribute_disorder(request):
 
     return render(request,'atlas/contribute_disorder.html',context)
+
+# UPDATE TERMS ####################################################################
+
+def update_concept(request,uid):
+    concept = Concept.get(uid)[0]
+
+    if request.method == "POST":
+        definition = request.POST.get('definition', '')
+        print(definition)
+    return view_concept(request,uid)
