@@ -40,10 +40,28 @@
 
         <div class="defn">
             {{ task.definition | safe }}<br><br>
+        {% if request.user.is_authenticated %}
+        <a id="update_definition_button"><button>update definition</button></a>
+        {% endif %}
         <a target="_blank" href="{% url 'task_graph' task.id %}"><button>graph</button></a>
         <a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
         <a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
         </div><!-- .defn -->
+
+    {% if request.user.is_authenticated %}
+    <!-- Update definition -->
+    <div id="update_definition" class="hidden">
+        <form method="POST" action="{% url 'update_task' task.id %}">
+            <div class="modal-body">
+                <textarea name="definition" rows="4" cols="50">{{ task.definition }}</textarea>
+            </div>
+            {% csrf_token %}
+            <button id="cancel_button" type="button" class="btn btn-primary">Cancel</button>
+            <input type="submit" value="submit" class="btn btn-primary"></input>
+        </form>
+    </div>
+    {% endif %}
+
 
         <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->
 
@@ -192,6 +210,15 @@ $(document).ready(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
     });
+
+    // Show form to update definition
+    $("#update_definition_button").click(function(){
+        $("#update_definition").removeClass('hidden');
+    })
+    $("#cancel_button").click(function(){
+        $("#update_definition").addClass('hidden');
+    })
+
 });
 </script>
 {% endblock %}

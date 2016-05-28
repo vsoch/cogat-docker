@@ -1,6 +1,8 @@
-from cognitive.apps.atlas.utils import color_by_relation
+from cognitive.apps.atlas.utils import color_by_relation, generate_uid, do_query
+from py2neo import Path, Node as NeoNode, Relationship
 from cognitive.settings import graph
 import pandas
+
 
 class Node:
 
@@ -17,15 +19,59 @@ class Node:
         return graph.cypher.execute(query).one
 
 
+    def create(self,name,properties=None,property_key="id"):
+        '''create will create a new node of nodetype with unique id uid, and properties
+        :param uid: the unique identifier
+        :param name: the name of the node
+        :param properties: a dictionary of properties with {field:value} for the node
+        '''
+        node = None
+        uid = generate_uid(self.name) # creation also checks for existence of uid
+        if graph.find_one(self.name,property_key='id',property_value=uid) == None:
+            timestamp = graph.cypher.execute("RETURN timestamp()").one
+            node = NeoNode(self.name, name=name,id=uid,creation_time=timestamp,last_updated=timestamp)
+            graph.create(node)
+            if properties != None:
+                for property_name in properties.keys():
+                    node.properties[property_name] = properties[property_name]
+                node.push()
+        return node
+
+
+    def link(self,uid,endnode_id,relation_type,properties=None):
+        '''link will create a new link (relation) from a uid to a relation, first confirming
+        that the relation is valid for the node
+        :param uid: the unique identifier for the source node
+        :param endnode_id: the unique identifier for the end node
+        :param relation_type: the relation type
+        :param properties: properties to add to the relation
+        '''
+        startnode = graph.find_one(self.name,property_key='id',property_value=uid)
+        endnode = graph.find_one(self.name,property_key='id',property_value=endnode_id)
+
+        if startnode != None and endnode != None:
+
+            # If the relation_type is allowed for the node type
+            if relation_type in self.relations:
+                if graph.match_one(start_node=startnode, rel_type=relation_type, end_node=endnode) == None:
+                    relation = Relationship(startnode, relation_type, endnode)
+                    graph.create(relation)
+                    if properties != None:
+                        for property_name in properties.keys():
+                            relation.properties[property_name] = properties[property_name]
+                        relation.push()
+            return relation
+
     def update(self,uid,updates):
         '''update will update a particular field of a node with a new entry
         :param uid: the unique id of the node
         :param updates: a dictionary with {field:value} to update node with
         '''
         node = graph.find_one(self.name,'id', uid)
-        for field,update in updates.items():
-            node[field] = update
-        node.push()
+        if node!= None:
+            for field,update in updates.items():
+                node[field] = update
+            node.push()
 
 
     def graph(self,uid,fields=None):
@@ -315,47 +361,6 @@ class Theory(Node):
         self.color = "#BE0000" # dark red
 
 
-# Query helper functions
-
-def do_query(query,fields,output_format="dict"):
-    '''do_query will return the result of a cypher query in the format specified (default is dict)
-    :param query: string of cypher query
-    :param output_format: desired output format. Default is "dict"
-    '''
-    result = graph.cypher.execute(query)
-    df = pandas.DataFrame(result.records, columns=result.columns)
-    df.columns = fields
-    df = df.drop_duplicates()
-    if output_format == "df":
-        return df
-    elif output_format == "list":
-        return df.values.tolist()
-    elif output_format == "dict":
-        return df.to_dict(orient="records")
-
-def do_transaction(tx=None,query=None,params=None):
-    '''do_transaction will return the result of a cypher transaction in the format specified (default is dict). If a transaction object is not supplied, query must be defined, and the function will call get_transactions first. If tx is defined and query is also defined, the query will be added to the transaction before running it.
-    :param tx: string of cypher query (optional) if provided, will first call get_transactions to 
-    :param query: string of cypher query (optional) if provided, will first call get_transactions to 
-    :param params: a list of dictionaries, each dictionary with keys as values to sub in the query, and values as the thing to substitute. Eg: [{"A":name,"B":classification}]
-    '''
-    if tx == None and query == None:
-        print("Please define either transaction or query.")
-        return None
-    if query != None:
-        tx = get_transactions(query,tx=tx,params=params)
-    # Return as pandas data frame
-    results = tx.commit()
-    if not results or sum(len(res) for res in results) == 0:
-        return None
-    # Return as pandas Data Frame
-    column_names = [x.split(".")[-1] for x in results[0].columns]
-    df = pandas.DataFrame(columns=column_names)
-    for r in range(len(results)):       
-        df.loc[r] = [x for x in results[r].one]
-    return df
-
-
 # General search function across nodes
 def search(searchstring,fields="name"):
     if isinstance(fields,str):
@@ -363,20 +368,3 @@ def search(searchstring,fields="name"):
     return_fields = ",".join(["n.%s" %x for x in fields])
     query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s;''' %(searchstring,return_fields)
     return do_query(query,fields=fields)
-
-
-def get_transactions(query,tx=None,params=None):
-    '''get_transactions will append new transactions to a transaction object, or return a new transaction if one does not exist. 
-    :param query: string of cypher query
-    :param tx: a transaction object (optional)
-    :param params: a list of dictionaries, each dictionary with keys as values to sub in the query, and values as the thing to substitute. Eg: [{"A":name,"B":classification}]
-    '''
-    # Combine queries into transaction
-    if tx == None:
-       tx = graph.cypher.begin()
-    if params:
-        for param in params:
-            tx.append(query, param)
-    else:
-        tx.append(query)
-    return tx

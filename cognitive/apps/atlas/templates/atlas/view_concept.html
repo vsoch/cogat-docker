@@ -38,9 +38,10 @@
 
     <div class="defn">{{ concept.definition }}</div><br>
 
+    {% if request.user.is_authenticated %}
     <!-- Update definition -->
     <div id="update_definition" class="hidden">
-            <form type="POST" href="{% url 'update_concept' concept.id %}">
+            <form method="POST" action="{% url 'update_concept' concept.id %}">
                 <div class="modal-body">
                     <textarea name="definition" rows="4" cols="50">{{ concept.definition }}</textarea>
                 </div>
@@ -49,7 +50,7 @@
                 <input type="submit" value="submit" class="btn btn-primary"></input>
             </form>
     </div>
-
+    {% endif %}
 
 </div><!-- .assertion -->
 
@@ -57,9 +58,11 @@
 
 <div id='unterbutton_slide_def'>
     <div class="defn">
+        {% if request.user.is_authenticated %}
         <div class="unterbutton_left">
             <a href="#" data-toggle="modal" id="update_definition_button" class="slide_def ">Update definition</a> 
         </div>  
+        {% endif %}
         <div class="unterbutton_left">
             <a target="_blank" href="{% url 'concept_graph' concept.id %}">graph</a>
         </div>

@@ -27,8 +27,9 @@ urlpatterns = [
 
     # Modify terms
     url(r'^terms/new/$', views.contribute_term, name="contribute_term"),
-    url(r'^concepts/update/(?P<uid>[\w\+%_& ]+)/$', views.update_concept, name="concept"),
-
+    url(r'^terms/add/$', views.add_term, name="add_term"),
+    url(r'^concepts/update/(?P<uid>[\w\+%_& ]+)/$', views.update_concept, name="update_concept"),
+    url(r'^tasks/update/(?P<uid>[\w\+%_& ]+)/$', views.update_task, name="update_task"),
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),

@@ -206,6 +206,28 @@ def contribute_term(request):
     return render(request,'atlas/contribute_term.html',context)
 
 
+def add_term(request):
+    '''add_term will add a new term to the atlas
+    '''
+
+    if request.method == "POST":
+        term_type = request.POST.get('term_type', '')
+        term_name = request.POST.get('term_name', '')
+        definition_text = request.POST.get('definition_text', '')
+
+        properties = None
+        if definition_text != '':
+            properties = {"definition":definition_text}
+
+        if term_type == "concept":
+            node = Concept.create(name=term_name,properties=properties)        
+            return view_concept(request,node["id"])
+
+        elif term_type == "task":
+            node = Task.create(name=term_name,properties=properties)        
+            return view_task(request,node["id"])
+
+
 def contribute_disorder(request):
 
     return render(request,'atlas/contribute_disorder.html',context)
@@ -213,9 +235,17 @@ def contribute_disorder(request):
 # UPDATE TERMS ####################################################################
 
 def update_concept(request,uid):
-    concept = Concept.get(uid)[0]
-
     if request.method == "POST":
         definition = request.POST.get('definition', '')
-        print(definition)
+        if definition != "":
+            updates = {"definition":definition}
+            Concept.update(uid,updates=updates)
     return view_concept(request,uid)
+
+def update_task(request,uid):
+    if request.method == "POST":
+        definition = request.POST.get('definition', '')
+        if definition != "":
+            updates = {"definition":definition}
+            Task.update(uid,updates=updates)
+    return view_task(request,uid)
