@@ -21,7 +21,7 @@ class Node:
         (minimally) fields name, label, and id. Additional fields are included that are defined in the Node
         objects fields
         '''
-        minimum_fields = ["name","id"]
+        minimum_fields = ["name"]
         if fields == None:
             fields = self.fields
             new_fields = [x for x in fields if x not in minimum_fields]
@@ -32,22 +32,34 @@ class Node:
 
         nodes = []
         links = []
+        lookup = dict()
+        count = 1
         for uu in uid:
             entity = self.get(uu)[0]      
 
             # Entity node
+            if entity["id"] not in lookup:
+                lookup[entity["id"]] = count
+                count+=1
+
             node = {field:entity[field] for field in minimum_fields if field in entity}
             node["label"] = "%s: %s" %(self.name,entity["name"])
             node["color"] = self.color
+            node["id"] = lookup[entity["id"]]
             nodes.append(node)
 
             # Relations
             if "relations" in entity:
                 for relation_name,relations in entity["relations"].items():
                     for relation in relations:
+                        if relation["id"] not in lookup:
+                            lookup[relation["id"]] = count
+                            count+=1
+
                         node = {field:relation[field] for field in minimum_fields if field in relation}
                         node["label"] = "%s: %s" %(relation_name,relation["name"])
-                        link = {"source":entity["id"],"target":relation["id"],"type":relation_name}
+                        node["id"] = lookup[relation["id"]]
+                        link = {"source":lookup[entity["id"]],"target":lookup[relation["id"]],"type":relation_name}
                         links.append(link)
                         nodes.append(node)
 

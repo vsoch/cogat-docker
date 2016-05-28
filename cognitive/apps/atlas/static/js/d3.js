@@ -6390,6 +6390,7 @@
       }
       for (i = 0; i < m; ++i) {
         o = links[i];
+        console.log(o)
         if (typeof o.source == "number") o.source = nodes[o.source];
         if (typeof o.target == "number") o.target = nodes[o.target];
         ++o.source.weight;
@@ -6416,6 +6417,8 @@
           }
           for (j = 0; j < m; ++j) {
             var o = links[j];
+            console.log(o)
+            console.log(neighbors)
             neighbors[o.source.index].push(o.target);
             neighbors[o.target.index].push(o.source);
           }

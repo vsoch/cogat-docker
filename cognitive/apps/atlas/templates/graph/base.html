@@ -9,7 +9,7 @@
 </body>
 
 <script>
- var width = 800, height = 800;
+  var width = 800, height = 800;
 
   var graph = {{ graph | safe }}
   // force layout setup
@@ -22,41 +22,54 @@
           .attr("width", "100%").attr("height", "100%")
           .attr("pointer-events", "all");
 
-  // load graph (nodes,links) json from /graph endpoint
-      force.nodes(graph.nodes).links(graph.links).start();
+  // By default, d3 force layout is based on index, but we want to use node id
+  // Process links to have correct reference
+  var edges = []
+  graph.links.forEach(function(e) { 
+  
+    // Get the source and target nodes
+    var source_node = graph.nodes.filter(function(n) { return n.id === e.source; })[0],
+        target_node = graph.nodes.filter(function(n) { return n.id === e.target; })[0];
+
+    // Add the edge to the array
+    edges.push({source: source_node, target: target_node});
+   });
+
+      force.nodes(graph.nodes).links(edges).start();
 
       // render relationships as lines
       var link = svg.selectAll(".link")
-              .data(graph.links).enter()
-              .append("line").attr("class", "link");
+          .data(edges).enter()
+          .append("line").attr("class", "link");
 
 
       // render nodes as circles, css-class from label
 
       var node = svg.selectAll(".node")
-              .data(graph.nodes).enter()
-              .append("circle")
-              .attr("class", function (d) { return "node "+d.label })
-              .attr("r", 10)
-              .call(force.drag);
+          .data(graph.nodes).enter()
+          .append("circle")
+          .attr("class", function (d) { return "node "+d.label })
+          .attr("fill", function (d) { return d.color })
+          .attr("r", 10)
+          .call(force.drag);
 
 
       // html title attribute for title node-attribute
       node.append("title")
-              .text(function (d) { return d.title; })
+              .text(function (d) { return d.label; })
 
       // force feed algo ticks for coordinate computation
 
       force.on("tick", function() {
           link.attr("x1", function(d) { return d.source.x; })
-                  .attr("y1", function(d) { return d.source.y; })
-                  .attr("x2", function(d) { return d.target.x; })
-                  .attr("y2", function(d) { return d.target.y; });
+              .attr("y1", function(d) { return d.source.y; })
+              .attr("x2", function(d) { return d.target.x; })
+              .attr("y2", function(d) { return d.target.y; });
 
 
 
           node.attr("cx", function(d) { return d.x; })
-                  .attr("cy", function(d) { return d.y; });
+              .attr("cy", function(d) { return d.y; });
 
   });
 </script>
