@@ -36,7 +36,8 @@
         </h1>
     </div><!-- .CATerm.concept -->
 
-    <div class="defn">{{ concept.definition }}</div>
+    <div class="defn">{{ concept.definition }}</div><br>
+
 </div><!-- .assertion -->
 
 <div>
@@ -48,6 +49,12 @@
         </div>  
         <div class="unterbutton_left">
             <a href="#" class="slide_fork actionator">Fork definition</a>
+        </div>
+        <div class="unterbutton_left">
+            <a target="_blank" href="{% url 'concept_graph' concept.id %}">graph</a>
+        </div>
+        <div class="unterbutton_left">
+            <a target="_blank" href="{% url 'concept_json' concept.id %}">json</a>
         </div>
     </div><!-- .defn -->
 </div>

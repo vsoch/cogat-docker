@@ -39,13 +39,15 @@
         </div><!-- .CATerm.task -->
 
         <div class="defn">
-        {{ task.definition | safe }}
-    </div><!-- .defn -->
+            {{ task.definition | safe }}<br><br>
+        <a target="_blank" href="{% url 'task_graph' task.id %}"><button>graph</button></a>
+        <a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
+        </div><!-- .defn -->
 
-    <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->
+        <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->
 
-    <div class="clear_all"></div>
-</div><!-- #block-definition.block-full -->
+        <div class="clear_all"></div>
+    </div><!-- #block-definition.block-full -->
 
 <!-- CONCEPTS -->
 <div id="block-measurements" class="block-halfwide block-back">

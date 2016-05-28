@@ -29,7 +29,7 @@ urlpatterns = [
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),
-    url(r'^graph/test/$', graph.test_graph, name="test_graph"),
+    url(r'^graph/concept/(?P<uid>[\w\+%_& ]+)/$', graph.concept_graph, name="concept_graph"),
 
 ] 
 
@@ -39,6 +39,7 @@ api_urls = [
     url(r'^api/task$', api_views.TaskAPI.as_view(), name='task_api_list'),
     url(r'^api/disorder', api_views.DisorderAPI.as_view(), name='disorder_api_list'),
     url(r'^tasks/json/(?P<uid>[\w\+%_& ]+)/$', graph.task_json, name="task_json"),
+    url(r'^concepts/json/(?P<uid>[\w\+%_& ]+)/$', graph.concept_json, name="concept_json"),
 
 ]
 
