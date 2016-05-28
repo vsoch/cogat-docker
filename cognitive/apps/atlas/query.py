@@ -16,6 +16,45 @@ class Node:
         return graph.cypher.execute(query).one
 
 
+    def graph(self,uid,fields=None):
+        '''graph returns a graph representation of one or more nodes, meaning a dictionary of nodes/links with
+        (minimally) fields name, label, and id. Additional fields are included that are defined in the Node
+        objects fields
+        '''
+        minimum_fields = ["name","id"]
+        if fields == None:
+            fields = self.fields
+            new_fields = [x for x in fields if x not in minimum_fields]
+            minimum_fields = minimum_fields + new_fields
+
+        if isinstance(uid,str):
+            uid = [uid]
+
+        nodes = []
+        links = []
+        for uu in uid:
+            entity = self.get(uid)        
+
+            # Entity node
+            node = {field:entity[field] for field in minimum_fields if field in entity}
+            node["label"] = "%s: %s" %(self.name,entity["name"])
+            node["color"] = self.color
+            nodes.append(node)
+
+            # Relations
+            if "relations" in entity:
+                for relation_name,relations in entity["relations"].items():
+                    for relation in relations:
+                        node = {field:relation[field] for field in minimum_fields if field in relation}
+                        node["label"] = "%s: %s" %(relation_name,relation["name"])
+                        link = {"source":entity["id"],"target":relation["id"],"type":relation_name}
+                        links.append(link)
+                        nodes.append(node)
+
+        result = {"nodes":nodes,"links":links}
+        return result
+
+
     def filter(self,filters,format="dict",fields=None):
         '''filter will filter a node based on some set of filters
         :param filters: a list of tuples with [(field,filter,value)], eg [("name","starts_with","a")]. 
@@ -138,7 +177,7 @@ class Concept(Node):
         self.name = "concept"
         self.fields = ["id","name","definition"]
         self.relations = ["PARTOF","KINDOF"]
-
+        self.color = "#3C7263" # sea green
 
 class Task(Node):
 
@@ -146,6 +185,7 @@ class Task(Node):
         self.name = "task"
         self.fields = ["id","name","definition"]
         self.relations = ["HASCONDITION","ASSERTS","HASCONTRAST"]    
+        self.color = "#63506D" #purple
 
     def get_contrasts(self,task_id):
         '''get_contrasts looks up the contrasts(s) associated with a task, along with concepts
@@ -176,18 +216,20 @@ class Disorder(Node):
     def __init__(self):
         self.name = "disorder"
         self.fields = ["id","name","classification"]
+        self.color = "#337AB7" # neurovault blue
 
 class Condition(Node):
 
     def __init__(self):
         self.name = "condition"
         self.fields = ["id","name","description"]
-
+        self.color = "#BC1079" # dark pink
 
 class Contrast(Node):
     def __init__(self):
         self.name = "contrast"
         self.fields = ["id","name","description"]
+        self.color = "#D89013" #gold
 
     def get_conditions(self,contrast_id,fields=None):
         '''get_conditions returns conditions associated with a contrast
@@ -238,13 +280,14 @@ class Battery(Node):
     def __init__(self):
         self.name = "battery"
         self.fields = ["id","name","collection"]
-
+        self.color = "#4BBE00" # bright green
 
 class Theory(Node):
 
     def __init__(self):
         self.name = "theory"
         self.fields = ["id","name"]
+        self.color = "#BE0000" # dark red
 
 
 # Query helper functions
