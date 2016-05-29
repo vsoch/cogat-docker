@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^terms/add/$', views.add_term, name="add_term"),
     url(r'^concepts/update/(?P<uid>[\w\+%_& ]+)/$', views.update_concept, name="update_concept"),
     url(r'^tasks/update/(?P<uid>[\w\+%_& ]+)/$', views.update_task, name="update_task"),
+    url(r'^disorders/update/(?P<uid>[\w\+%_& ]+)/$', views.update_disorder, name="update_disorder"),
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),

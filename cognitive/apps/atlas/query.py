@@ -286,7 +286,7 @@ class Disorder(Node):
 
     def __init__(self):
         self.name = "disorder"
-        self.fields = ["id","name","classification"]
+        self.fields = ["id","name","classification","definition"]
         self.color = "#337AB7" # neurovault blue
 
 class Condition(Node):

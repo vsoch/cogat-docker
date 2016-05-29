@@ -8,15 +8,7 @@
 {% load staticfiles %}
 
 {% block branding %}
-<div class="container">
-    <div id="brand">
-        <div id="logo">
-    	    <a href="/">
-                <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" style="width:400px;height:100px"></a>
-    	</div><!--logo-->
-    	<span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
-    </div>
-</div>
+{% include 'atlas/branding.html'%}
 {% block navigation %}
 {% include "atlas/middle_navigation.html" %}
 {% endblock %}
@@ -24,6 +16,56 @@
 {% endblock %}
 
 {% block content %}
+    <h1 rel='{{ disorder.id }}'>{{ disorder.name }}<span class="typebutton disorder_type"><a href="{% url 'all_disorders' %}">DISORDER</a></span></h1>
+    <div class='defn'>{{ disorder.definition }}</div>
+    <div id="unterbutton_slide_def">
+        <div class="defn">  
+            <div class="unterbutton_left" id="ub_left">    
+                <a href="#" class="slide_def" id="openpane">+ Edit Disorder Details</a>  
+            </div>
+        </div><!-- .defn -->
+    </div><!-- #unterbutton_slide_def -->
+    
+    <!--Edit disorder details-->
+    <div id="editpane" class="hidden">
+        <form method="post" id="dform" action="{% url 'update_disorder' disorder.id %}">  
+            {% csrf_token %}
+            <input type="hidden" name="id_object" value="{{ disorder.id }}">
+            <label for="disorder_name">Disorder Name</label><br>
+            <input type="text" name="disorder_name" id="disorder_name" value="{{ disorder.name }}" size="58"><br>
+            <label for="disorder_definition">Definition</label><br>
+            <textarea name="disorder_definition" id="disorder_definition" rows="12" cols="60">{{ disorder.definition }}</textarea>  <br><br>
+            <!-- disabling this for now 
+            {% if request.user.is_superuser %}
+            <div style="float:right;width:120px;">
+                <button style="background:none; background-color:red !important;color:#fff !important;" id="deleterious" title="delete disorder" aria-label="delete disorder" rel="{{ disorder.id }}">Delete Disorder</button>
+            </div>
+            {% endif %}-->
+            <input type="submit" value="submit" id="submittor" title="submit form" aria-label="submit form"> 
+            <input type="button" value="Cancel" onclick="window.location.reload()" aria-label="cancel update" title="cancel submission" />
+        </form><br><br>
+    </div><br>
+    <div class='attribo'>
+        <div id="edittargetw" style="display:none; border: 1px solid silver; padding: 20px; width: 350px;">  <i>Select the parent class for this disorder:</i><br><br> 
+        </div></div>
+
+       <div class="block-right-container clearfix">
+           <div id="block-implementors" class="block-back ">
+               <div class="pane">
+                  <div class="discdiv"><b>RELATIONSHIPS</b> to other disorders<br>
+                  {% for relation in disorder.relations %}
+                  <div class="relation-border pre-top-margin">
+                      <a href="{% url 'disorder' relation.id %}" rel="{{ relation.id }}" class="classic">{{ relation.name }}</a>
+                  </div>
+                  <div class="diso-relation-buffer"></div>
+                  {% endfor %}
+                  </div>  
+              </div>
+         </div>
+      </div>
+      <div class="clear_all">
+  </div>
+</div><br> 
 
 
 {% endblock %}
@@ -33,6 +75,14 @@ $(document).ready(function() {
     $(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
+       $("#openpane").click(function(){
+           $("#editpane").removeClass("hidden");
+       })
+
+       $("#closepane").click(function(){
+           $("#editpane").addClass("hidden");
+       })
+ 
     });
 });
 </script>

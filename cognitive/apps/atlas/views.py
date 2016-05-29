@@ -1,5 +1,5 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory, search
-from cognitive.apps.atlas.utils import clean_html, update_lookup
+from cognitive.apps.atlas.utils import clean_html, update_lookup, add_update
 from django.shortcuts import render
 from django.template import loader
 import numpy
@@ -171,6 +171,8 @@ def view_theory(request,uid):
 
 
 def view_disorder(request,uid):
+    disorder = Disorder.get(uid)[0]
+    context = {"disorder":disorder}
     return render(request,'atlas/view_disorder.html',context)
 
 
@@ -237,15 +239,22 @@ def contribute_disorder(request):
 def update_concept(request,uid):
     if request.method == "POST":
         definition = request.POST.get('definition', '')
-        if definition != "":
-            updates = {"definition":definition}
-            Concept.update(uid,updates=updates)
+        updates = add_update("definition",definition)
+        Concept.update(uid,updates=updates)
     return view_concept(request,uid)
 
 def update_task(request,uid):
     if request.method == "POST":
         definition = request.POST.get('definition', '')
-        if definition != "":
-            updates = {"definition":definition}
-            Task.update(uid,updates=updates)
+        updates = add_update("definition",definition)
+        Task.update(uid,updates=updates)
     return view_task(request,uid)
+
+def update_disorder(request,uid):
+    if request.method == "POST":
+        definition = request.POST.get('disorder_definition', '')
+        name = request.POST.get('disorder_name','')
+        updates = add_update("name",name)
+        updates = add_update("definition",definition,updates)
+        Disorder.update(uid,updates=updates)
+    return view_disorder(request,uid)

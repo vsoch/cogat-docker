@@ -9,15 +9,7 @@
 {% endblock %}
 
 {% block branding %}
-<div class="container">
-    <div id="brand">
-        <div id="logo">
-        <a href="/">
-                <img src="{% static "img/logo-front.png" %}" class="img" alt="Cognitive Atlas" style="width:400px;height:100px"></a>
-    </div><!--logo-->
-    <span id="tagline">a collaborative knowledge base characterizing the state of current thought in Cognitive Science.</span>
-    </div>
-</div>
+{% include 'atlas/branding.html'%}
 {% block navigation %}
 {% include "atlas/middle_navigation.html" %}
 {% endblock %}

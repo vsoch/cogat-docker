@@ -31,6 +31,18 @@ def generate_uid(node_type):
     return uid    
 
 
+def add_update(field,value,updates=None):
+    '''add_update will update the updates dictionary only given that a value is defined (not None or '') for a field
+    :param field: the name of the field to update
+    :param value: the value to update with
+    :param updates: the dictionary to update (optional)
+    '''
+    if updates == None:
+        updates = dict()
+    if value not in ["",None]:
+        updates[field] = value
+    return updates
+
 def clean_html(html,replacements=None):
     '''clean_html will replace newlines with <br> for rendering, along with \r characters
     :param html: the html to clean
