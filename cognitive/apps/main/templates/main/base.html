@@ -132,9 +132,8 @@
             complete: function (data, error){
                   $("#search_results").html("")
                   var results = JSON.parse(data.responseText);
-                  console.log(results)
                   $.each(results,function(i,e){
-                      $("#search_results").append('<li class="ui-menu-item" role="menuitem"><a href="#" class="ui-corner-all uia" tabindex="-1">' + e.name +'</a></li>');
+                      $("#search_results").append('<li class="ui-menu-item" role="menuitem"><a href="/' + e.label + '/id/' + e.id + '" class="ui-corner-all uia" tabindex="-1">' + e.name +'</a></li>');
                   });
 
                   // Search should highlight on mouseover

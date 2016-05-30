@@ -90,7 +90,7 @@ def color_by_relation(relation_name):
 
 # Query helper functions #########################################################################
 
-def do_query(query,fields,output_format="dict"):
+def do_query(query,fields,output_format="dict",drop_duplicates=True):
     '''do_query will return the result of a cypher query in the format specified (default is dict)
     :param query: string of cypher query
     :param output_format: desired output format. Default is "dict"
@@ -100,7 +100,8 @@ def do_query(query,fields,output_format="dict"):
     result = graph.cypher.execute(query)
     df = pandas.DataFrame(result.records, columns=result.columns)
     df.columns = fields
-    df = df.drop_duplicates()
+    if drop_duplicates == True:
+        df = df.drop_duplicates()
     if output_format == "df":
         return df
     elif output_format == "list":

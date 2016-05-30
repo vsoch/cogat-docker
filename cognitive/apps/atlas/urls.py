@@ -19,20 +19,20 @@ urlpatterns = [
     url(r'^tasks/(?P<letter>[a-z]|[A-Z]{1})/$', views.tasks_by_letter, name="tasks_by_letter"),
 
     # Single View
-    url(r'^disorders/id/(?P<uid>[\w\+%_& ]+)/$', views.view_disorder, name="disorder"),
-    url(r'^batteries/id/(?P<uid>[\w\+%_& ]+)/$', views.view_battery, name="battery"),
-    url(r'^theories/id/(?P<uid>[\w\+%_& ]+)/$', views.view_theory, name="theory"),
-    url(r'^concepts/id/(?P<uid>[\w\+%_& ]+)/$', views.view_concept, name="concept"),
-    url(r'^tasks/id/(?P<uid>[\w\+%_& ]+)/$', views.view_task, name="task"),
-    url(r'^contrasts/id/(?P<uid>[\w\+%_& ]+)/$', views.view_contrast, name="contrast"),
+    url(r'^disorder/id/(?P<uid>[\w\+%_& ]+)/$', views.view_disorder, name="disorder"),
+    url(r'^battery/id/(?P<uid>[\w\+%_& ]+)/$', views.view_battery, name="battery"),
+    url(r'^theory/id/(?P<uid>[\w\+%_& ]+)/$', views.view_theory, name="theory"),
+    url(r'^concept/id/(?P<uid>[\w\+%_& ]+)/$', views.view_concept, name="concept"),
+    url(r'^task/id/(?P<uid>[\w\+%_& ]+)/$', views.view_task, name="task"),
+    url(r'^contrast/id/(?P<uid>[\w\+%_& ]+)/$', views.view_contrast, name="contrast"),
 
     # Modify terms
     url(r'^terms/new/$', views.contribute_term, name="contribute_term"),
     url(r'^terms/add/$', views.add_term, name="add_term"),
-    url(r'^concepts/update/(?P<uid>[\w\+%_& ]+)/$', views.update_concept, name="update_concept"),
-    url(r'^tasks/update/(?P<uid>[\w\+%_& ]+)/$', views.update_task, name="update_task"),
-    url(r'^disorders/update/(?P<uid>[\w\+%_& ]+)/$', views.update_disorder, name="update_disorder"),
-    url(r'^theories/update/(?P<uid>[\w\+%_& ]+)/$', views.update_theory, name="update_theory"),
+    url(r'^concept/update/(?P<uid>[\w\+%_& ]+)/$', views.update_concept, name="update_concept"),
+    url(r'^task/update/(?P<uid>[\w\+%_& ]+)/$', views.update_task, name="update_task"),
+    url(r'^disorder/update/(?P<uid>[\w\+%_& ]+)/$', views.update_disorder, name="update_disorder"),
+    url(r'^theory/update/(?P<uid>[\w\+%_& ]+)/$', views.update_theory, name="update_theory"),
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),
@@ -45,8 +45,8 @@ api_urls = [
     url(r'^api/concept$',api_views.ConceptAPI.as_view(), name='concept_api_list'),
     url(r'^api/task$', api_views.TaskAPI.as_view(), name='task_api_list'),
     url(r'^api/disorder', api_views.DisorderAPI.as_view(), name='disorder_api_list'),
-    url(r'^tasks/json/(?P<uid>[\w\+%_& ]+)/$', graph.task_json, name="task_json"),
-    url(r'^concepts/json/(?P<uid>[\w\+%_& ]+)/$', graph.concept_json, name="concept_json"),
+    url(r'^task/json/(?P<uid>[\w\+%_& ]+)/$', graph.task_json, name="task_json"),
+    url(r'^concept/json/(?P<uid>[\w\+%_& ]+)/$', graph.concept_json, name="concept_json"),
 
 ]
 

@@ -366,5 +366,17 @@ def search(searchstring,fields=["name","id"]):
     if isinstance(fields,str):
         fields = [fields]
     return_fields = ",".join(["n.%s" %x for x in fields])
+    query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s, labels(n);''' %(searchstring,return_fields)
+    fields = fields + ["label"]
+    result = do_query(query,fields=fields,drop_duplicates=False,output_format="df")
+    result["label"] = [r[0] for r in result['label']]
+    result = result.drop_duplicates()
+    return result.to_dict(orient="records")
+
+# General get function across nodes, get by id
+def get(nodeid,fields=["name","id"]):
+    if isinstance(fields,str):
+        fields = [fields]
+    return_fields = ",".join(["n.%s" %x for x in fields])
     query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s;''' %(searchstring,return_fields)
     return do_query(query,fields=fields)
