@@ -46,26 +46,8 @@
                 {% endif %}
             </div>
 
-            <!-- Search Form -->
-            <div id="search-form-box" class=" pull-right">
-            <div id="searchformwrap">
-            <form method="post" action="/search/" name="searchform" id="searchform">
-            <input type="hidden" id="resmax" name="resmax" value="50">
-            <input type="hidden" id="ord" name="ord" value="alpha">
-            <input type="hidden" id="concepts" name="search_concepts" value="1">
-            <input type="hidden" id="tasks" name="search_tasks" value="1">
-            <input type="hidden" id="assertions" name="search_assertions" value="1">
-            <input type="hidden" id="batteries" name="search_batteries" value="1">
-            <input type="hidden" id="batteries" name="search_disorders" value="1">
-            <input type="hidden" id="theories" name="search_theories" value="1">
-            <input type="hidden" id="action_type" name="action_type" value="search">
-            <div class="ui-widget">
-                <input tabindex="1" type="text" class="fwidgettxt front searchterm" id="searchterm_front" size="20" name="searchterm" aria-label="Enter a search term" title="Enter a search term" placeholder="enter search term" />
-                <input tabindex="2" type="submit" value="Search" id="subji" class="button Search" title="submit search terms">
-            </div>
-            </form>
-        </div><!--/#sform -->
-        </div><!--/#search-form-box -->
+           {% include 'main/search.html' %}
+
         </div><!--container-->
     </div><!--/#utility-->
 
@@ -131,6 +113,29 @@
     <script src="{% static "js/jquery.tipsy.js"%}" type="text/javascript"></script>
     <script src="{% static "js/jquery-ui-1.8.14.custom.min.js"%}" type="text/javascript"></script>
     <script src="{% static "js/jquery.html5-placeholder-shim.js"%}" type="text/javascript"></script>
+    <script>
+    $(function() {
+
+    $('#searchterm').keyup(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'search' %}",
+            data: {
+                'searchterm' : $('#searchterm').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            },
+            complete: function (data, error){
+                  var results = JSON.parse(data.responseText);
+                  console.log(results)
+            },
+            dataType: 'html',
+        });
+    });
+
+    });
+    </script>
+
     {% block scripts %}{% endblock %}
 
 </body>

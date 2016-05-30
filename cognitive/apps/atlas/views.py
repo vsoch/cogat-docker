@@ -1,7 +1,10 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory, search
 from cognitive.apps.atlas.utils import clean_html, update_lookup, add_update
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render
 from django.template import loader
+import pickle
+import json
 import numpy
 
 Concept = Concept()
@@ -167,6 +170,8 @@ def view_battery(request,uid):
 
 
 def view_theory(request,uid):
+    theory = Theory.get(uid)[0]
+    context = {"theory":theory}
     return render(request,'atlas/view_theory.html',context)
 
 
@@ -174,10 +179,6 @@ def view_disorder(request,uid):
     disorder = Disorder.get(uid)[0]
     context = {"disorder":disorder}
     return render(request,'atlas/view_disorder.html',context)
-
-
-def view_theory(request,uid):
-    return render(request,'atlas/view_theory.html',context)
 
 
 # ADD NEW TERMS ###################################################################
@@ -250,6 +251,15 @@ def update_task(request,uid):
         Task.update(uid,updates=updates)
     return view_task(request,uid)
 
+def update_theory(request,uid):
+    if request.method == "POST":
+        description = request.POST.get('theory_description', '')
+        name = request.POST.get('theory_name','')
+        updates = add_update("name",name)
+        updates = add_update("description",description,updates)
+        Theory.update(uid,updates=updates)
+    return view_theory(request,uid)
+
 def update_disorder(request,uid):
     if request.method == "POST":
         definition = request.POST.get('disorder_definition', '')
@@ -258,3 +268,16 @@ def update_disorder(request,uid):
         updates = add_update("definition",definition,updates)
         Disorder.update(uid,updates=updates)
     return view_disorder(request,uid)
+
+# SEARCH TERMS ####################################################################
+
+def run_search(request):
+
+    data = "no results"
+    search_text = request.POST.get("searchterm","")
+    results = []
+    if search_text != '':
+        results = search(search_text)
+        data = json.dumps(results)
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)

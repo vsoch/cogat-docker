@@ -357,7 +357,7 @@ class Theory(Node):
 
     def __init__(self):
         self.name = "theory"
-        self.fields = ["id","name"]
+        self.fields = ["id","name","description"]
         self.color = "#BE0000" # dark red
 
 

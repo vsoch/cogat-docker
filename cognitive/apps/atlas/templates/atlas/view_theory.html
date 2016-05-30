@@ -16,7 +16,70 @@
 {% endblock %}
 
 {% block content %}
+<div class="marger"><div class="CATerm collection">
+  <h1 class="termtext">
+    <a class="color-collection" href="">
+            <em>{{ theory.name }}</em>
+          </a>
+    <span class="typebutton collection_type"><a href="{% url 'all_theories' %}">THEORY</a></span>
+  </h1>
+</div><!-- .CATerm.collection -->
 
+<div class="defncol">{{ theory.description }}
+<div class="attribo">
+    <div class="classification">
+    </div>
+  
+  <div class="attribution">
+  </div>
+</div><!-- .attribo -->
+
+<div id="unterbutton_slide_def">
+    <div class="unterbutton">
+        <a href="#" class="slide_def actionator" id="update_theory">edit theory</a>	
+    </div>
+</div>
+</div>
+<div id="edit_theory" style="margin-bottom:30px;" class="hidden popstar"><br />
+    <form method="post" action="{% url 'update_theory' theory.id %}" id="form_update_collection">
+        <fieldset class="fsetter">
+            <input type="hidden" name="theory_id" id="id_collection" value="{{ theory.id }}" />
+            <input type="hidden" name="theory_name" id="theory_name" value="{{ theory.name }}" />
+            <label class="collabel">Theory Description:</label><br />
+            <textarea name="theory_description" id="theory_description" class="required" rows="8" cols="80" title="theory description" aria-label="theory description" >{{ theory.description }}</textarea><br /><br />
+                <label class="collabel"></label>
+                <input type="button" value="cancel" onclick="window.location.reload()" title="cancel submission" aria-label="cancel submission"  />
+            <input type="submit" value="submit" title="submit form" aria-label="submit form" />
+         </fieldset>
+    </form>
+</div>
+<div id="block-holder" class="block-full">
+    <div id="block-measurements" class="block-half">
+        <h2>Constituent <strong>Assertions</strong></h2><br>
+            <ul class="alister">
+            {% for relation in theory.relations.ASSERTS %}
+                <li class="similitude {{relation.id}}">{{ relation.name }}
+                </li>
+            {% endfor %}
+            </ul><small>REFERENCED TERMS:</small> 
+            {% for relation in theory.relation.REFERENCED %}
+            <!-- No idea what this is-->
+            <a href="#" class="hovermark" rev="{{ relation.id }}">{{ relation.name }}</a>
+            {% endfor %}
+                       <a href="javascript:void(0)" id="slide_constass" class="actionator">+ add constituent assertion</a><br>
+            <div id="slidetarget_constass" style="display:none"><br>	
+                <div class="popstar">
+                    <form method="post" name="constass_form" id="constass_form" action="#">
+                        <input type="hidden" name="id_object" value="{{ theory.id }}"> 
+                        <input type="hidden" name="id_assertion" id="id_assertion" value=""> Select Assertion: 			<input type="text" name="text_description" id="text_description" size="120" value="" title="text description" aria-label="text description" ><br><br>			
+                        <input type="button" value="Cancel" onclick="document.location.reload(true);" title="cancel submission" aria-label="cancel submission" >
+                        <input type="submit" value="Add Constituent Assertion" title="submit form" aria-label="submit form">		
+                     </form>
+               </div>
+           </div> 
+      </div>
+ </div> 
+</div>
 
 {% endblock %}
 {% block scripts %}
@@ -26,6 +89,10 @@ $(document).ready(function() {
        $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
        $("#masker").fadeOut("fast");
     });
+    $("#update_theory").click(function(){
+        $("#edit_theory").removeClass("hidden")
+    })
+
 });
 </script>
 {% endblock %}

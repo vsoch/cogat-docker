@@ -82,7 +82,7 @@
             {% if "KINDOF" in concept.relations %}
             <div>
             {% for relation in concept.relations.KINDOF %}
-                <li class="hoverator-list" rel="{{ relation.id }}"><span style="float:right;width:10px;display:none;" id="list_hovercard_{{ relation.id }}"><a href="{% url 'concept' relation.id %}"><img src="{% static "images/icons/assert.png"%}" title="Click to view concept {{ relation.name }}: {{ relation.definition }}"></a></span><a href="{% url 'concept' relation.id %}" id="options_{{ relation.id }}" class="optionator concept" title="Click to view the page for {{ relation.name }}">{{ relation.name }}</a></li>
+                <li class="hoverator-list" rel="{{ relation.id }}"><span style="float:right;width:10px;display:none;" id="list_hovercard_{{ relation.id }}"><a href="{% url 'concept' relation.id %}"><img src="{% static "img/assert.png"%}" title="Click to view concept {{ relation.name }}: {{ relation.definition }}"></a></span><a href="{% url 'concept' relation.id %}" id="options_{{ relation.id }}" class="optionator concept" title="Click to view the page for {{ relation.name }}">{{ relation.name }}</a></li>
             {% endfor %}
             </div>
 

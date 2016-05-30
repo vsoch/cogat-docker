@@ -62,15 +62,7 @@ $(document).ready(function() {
         var text = $("#disorder_list option:selected").text()    
         console.log(selection);
         console.log(text);
-        var tree = []
-        // TODO: add classifications to list as we go, and continually add children until empty.
-        $.each(nodes, function(i, node) {
-            if (node.name == text){
-                tree.push(node);
-            }
-        });
-        // TODO: Add some dynamic rendering of tree to page
-        console.log(tree);
+        document.location = "disorders/id/" + selection
     });
 
 });
