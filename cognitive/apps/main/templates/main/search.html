@@ -3,11 +3,11 @@
                 <div id="searchformwrap">
                         <div class="ui-widget">
                             {% csrf_token %}
-                            <input tabindex="1" type="text" class="fwidgettxt front searchterm" id="searchterm" size="20" name="searchterm" aria-label="Enter a search term" title="Enter a search term" placeholder="enter search term" />
-                            <input tabindex="2" type="submit" value="Search" id="subji" class="button Search" title="submit search terms">
-                            <ul id="search-results">
+                            <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="searchterm" size="20" name="searchterm" aria-label="Enter a search term" title="Enter a search term" placeholder="enter search term" />
+                            <ul id="search_results" class="ui-autocomplete ui-menu ui-widget ui-widget-content ui-corner-all" role="listbox" aria-activedescendant="ui-active-menuitem" style="z-index: 1002; top: 32px; left: 987px; max-width:287px">
                             </ul>
 
+                            <input tabindex="2" type="submit" value="Search" id="subji" class="button Search" title="submit search terms">
                         </div>
                 </div><!--/#sform -->
             </div><!--/#search-form-box -->

@@ -127,7 +127,9 @@
             },
             complete: function (data, error){
                   var results = JSON.parse(data.responseText);
-                  console.log(results)
+                  $.each(results,function(i,e){
+                      $("#search_results").append('<li class="ui-menu-item" role="menuitem"><a href="#" class="ui-corner-all" tabindex="-1">' + e.name +'</a></li>');
+                  })
             },
             dataType: 'html',
         });
