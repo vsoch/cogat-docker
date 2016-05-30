@@ -116,6 +116,11 @@
     <script>
     $(function() {
 
+    $('#searchterm').click(function() {
+        $("#search_results").html("")
+    });
+
+
     $('#searchterm').keyup(function() {
 
         $.ajax({
