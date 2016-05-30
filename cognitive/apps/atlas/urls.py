@@ -12,7 +12,10 @@ urlpatterns = [
     url(r'^batteries$', views.all_batteries, name="all_batteries"),
     url(r'^theories$', views.all_theories, name="all_theories"),
     url(r'^tasks$', views.all_tasks, name="all_tasks"),
-    url(r'^search$', views.run_search, name="search"), # GET for json response
+
+    # Search (json response) views
+    url(r'^search$', views.search_all, name="search"), # GET for json response
+    url(r'^concepts/search$', views.search_concept, name="search_concept"),
 
     # View by letter
     url(r'^concepts/(?P<letter>[a-z]|[A-Z]{1})/$', views.concepts_by_letter, name="concepts_by_letter"),
@@ -33,6 +36,7 @@ urlpatterns = [
     url(r'^task/update/(?P<uid>[\w\+%_& ]+)/$', views.update_task, name="update_task"),
     url(r'^disorder/update/(?P<uid>[\w\+%_& ]+)/$', views.update_disorder, name="update_disorder"),
     url(r'^theory/update/(?P<uid>[\w\+%_& ]+)/$', views.update_theory, name="update_theory"),
+    url(r'^concept/assert/(?P<uid>[\w\+%_& ]+)/$', views.add_concept_relation, name="add_concept_relation"),
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),

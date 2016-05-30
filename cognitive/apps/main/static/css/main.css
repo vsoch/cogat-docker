@@ -2927,6 +2927,13 @@
 				width: 100%;
 			}
 
+                        #explore_icon {
+                               position: fixed;
+                               color: #CCC;
+                               top: 50px;
+                               left:100px;
+                        }
+
 		/* Hero */
 
 			#hero {

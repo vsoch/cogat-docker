@@ -8,7 +8,6 @@ cognitive/reload.py
 cognitive/local_settings.py
 cognitive/secrets.py
 cognitive/static/
-static/
 
 # test data
 cognitive/apps/statmaps/tests/test_data/feat/*

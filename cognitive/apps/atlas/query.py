@@ -60,7 +60,7 @@ class Node:
                         for property_name in properties.keys():
                             relation.properties[property_name] = properties[property_name]
                         relation.push()
-            return relation
+                    return relation
 
     def update(self,uid,updates):
         '''update will update a particular field of a node with a new entry
@@ -362,11 +362,20 @@ class Theory(Node):
 
 
 # General search function across nodes
-def search(searchstring,fields=["name","id"]):
+def search(searchstring,fields=["name","id"],node_type=None):
     if isinstance(fields,str):
         fields = [fields]
     return_fields = ",".join(["n.%s" %x for x in fields])
-    query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s, labels(n);''' %(searchstring,return_fields)
+
+    # Customize if specific kind of node requested
+    if node_type == None:
+        node_type = ""
+    else:
+        node_type = ":%s" %(node_type.lower())
+
+    query = '''MATCH (n%s) 
+               WHERE str(n.name) =~ '(?i).*%s.*' 
+               RETURN %s, labels(n);''' %(node_type,searchstring,return_fields)
     fields = fields + ["label"]
     result = do_query(query,fields=fields,drop_duplicates=False,output_format="df")
     result["label"] = [r[0] for r in result['label']]

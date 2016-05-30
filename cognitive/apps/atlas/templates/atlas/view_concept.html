@@ -24,7 +24,7 @@
             <a class="color-concept" href="">
                 <em>{{ concept.name }}</em>
             </a>
-            <span class="typebutton concept_type"><a href="/concepts/">CONCEPT</a></span>
+            <span class="typebutton concept_type"><a href="{% url 'all_concepts' %}">CONCEPT</a></span>
         </h1>
     </div><!-- .CATerm.concept -->
 
@@ -72,7 +72,61 @@
     <ul class="tabs">
         <li><a href="#list-view">List View</a></li>
     </ul>-->
-    <h2>Asserted <strong>relationships</strong> to other concepts</h2><div class="panes">
+    <h2>Asserted <strong>relationships</strong> to other concepts</h2>
+
+    {% if request.user.is_authenticated %}
+    <div id="relation_box" style="padding-top:20px;border-radius: 4px;padding: 10px;">
+    <button id="add_relation_button" style="float:right">add relation</button>
+
+    <!-- Add relation -->
+    <div id="add_relation" class="hidden">
+
+            <form method="POST" action="{% url 'add_concept_relation' concept.id %}">
+
+            <table class='block-4t'>
+                <tr><td>
+                <div id="ttblock" style="padding-top:20px">
+                    <input type="radio" value="PARTOF" name="relation_type" title='You must select a relation type!' aria-label='type of relation' />
+                    <label>is a part of</label>
+                    <br/>
+                    <input type="radio" value="KINDOF" name="relation_type" title='You must select a relation type!' aria-label='type of relation' />
+                    <label>is a kind of</label>
+                    <br/><br>
+
+                    <!-- Concept Search Form -->
+                    <div id="relation_search_box" style="padding-bottom:20px">
+                        <div id="searchformwrap">
+                            <div class="ui-widget">
+                                <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="relationterm" size="20" name="relationterm" aria-label="search for concept" title="Search for concept" placeholder="search for concept" />
+                            </div>
+                       </div>
+                    </div>
+                </div><!--/ttblock-->
+
+                {% csrf_token %}
+                <button id="cancel_relation_button" type="button" class="btn btn-primary">Cancel</button>
+                <input type="submit" value="submit" class="btn btn-primary"></input>
+
+                </td>
+
+                <td>
+
+                <!--Search results-->
+                <div>
+                    <h3>Concept Results</h3>
+                    <select name="concept_selection" id="relation_search_results" style="width:400px" class="hidden"></select>
+                    </ul>
+                </div>
+                </td>
+                </tr>
+</table>
+            </form>
+    </div>
+    </div>
+    {% endif %}
+
+
+    <div class="panes">
 
     <div class="discdiv tablist">
         <table class='block-4t'>
@@ -160,6 +214,53 @@ $(document).ready(function() {
     $("#cancel_button").click(function(){
         $("#update_definition").addClass('hidden');
     })
+
+    // Add a relation
+    $("#add_relation_button").click(function(){
+        $("#add_relation").removeClass('hidden');
+        $("#relation_box").css("background-color","#F7F7F7")
+    })
+
+    $("#cancel_relation_button").click(function(){
+        $("#add_relation").addClass('hidden');
+        $("#relation_box").css("background-color","")
+    })
+
+    // Add relation search
+    $(function() {
+
+    $('#relationterm').click(function() {
+        $("#relation_search_results").addClass("hidden")
+        $("#relation_search_results").html("")
+        $("#relation_search_results").attr("size","0")
+    });
+
+    $('#relationterm').keyup(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'search_concept' %}",
+            data: {
+                'relationterm' : $('#relationterm').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            },
+            complete: function (data, error){
+                  $("#relation_search_results").html("")
+                  var results = JSON.parse(data.responseText);
+                  $.each(results,function(i,e){
+                      $("#relation_search_results").append('<option value="' + e.id +'">'+ e.name +'</option>');
+                  });
+
+                  $("#relation_search_results").removeClass("hidden")
+                  $("#relation_search_results").attr("size","5")
+
+            },
+            dataType: 'html',
+        });
+
+    });
+
+    });
 
 });
 </script>

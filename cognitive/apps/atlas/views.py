@@ -269,15 +269,36 @@ def update_disorder(request,uid):
         Disorder.update(uid,updates=updates)
     return view_disorder(request,uid)
 
+# ADD RELATIONS ###################################################################
+
+def add_concept_relation(request,uid):
+    if request.method == "POST":
+        relation_type = request.POST.get('relation_type', '')
+        concept_selection = request.POST.get('concept_selection', '')
+        Concept.link(uid,concept_selection,relation_type)
+    return view_concept(request,uid)
+
+
 # SEARCH TERMS ####################################################################
 
-def run_search(request):
+def search_all(request):
 
     data = "no results"
     search_text = request.POST.get("searchterm","")
     results = []
     if search_text != '':
         results = search(search_text)
+        data = json.dumps(results)
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
+def search_concept(request):
+
+    data = "no results"
+    search_text = request.POST.get("relationterm","")
+    results = []
+    if search_text != '':
+        results = search(search_text,node_type="concept")
         data = json.dumps(results)
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)

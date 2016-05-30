@@ -6,12 +6,35 @@
     <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
     <title>Explore Cognitive Atlas</title>
 
+    <link type="text/css" href="{% static "css/cogat_app.css"%}" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="{% static "css/popoto.min.css"%}">
-
 </head>
-<body class="ppt-body">
-<header class="ppt-header">
-</header>
+
+<body style="background:#333;" class="ppt-body">
+
+    <div class="fullwrap" id="utility" style="min-height:30px">
+
+            <a href="/"><img id="explore_icon" src="{% static "img/logo-graphic.png" %}" class="img" alt="Explore the graph" width="30" style="padding-left:20px; padding-right:8px; float:left"></a>
+
+            <div id="userbar">
+    
+                {% if request.user.is_authenticated %}
+                    <a href="{% url 'logout' %}"><input type="button" class="tsbutton" value="Logout" title="Logout" aria-label="Logout" style="margin-left:30px"></a><small> to end your session </small>
+                {% else %}
+                    <!--Don't show login on login pages-->
+                    {% if request.get_full_path == "/accounts/login/" %}
+                    {% elif request.get_full_path == "/accounts/create/" %}
+                    {% else %}
+                <a href="{% url 'login' %}"><input type="button" class="tsbutton" value="Login" title="Login" aria-label="Login"></a><small> to edit and comment </small>
+                    {% endif %}
+                {% endif %}
+
+            </div>
+
+
+    </div><!--/#utility-->
+
+
 <section class="ppt-section-main">
     <div class="ppt-section-header">
         <span class="ppt-header-span">Graph</span> search
