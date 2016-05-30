@@ -6,4 +6,5 @@ python /code/manage.py migrate
 python /code/manage.py collectstatic --noinput
 # Must be run manually, otherwise will redo each time docker-compose restart uwsgi
 #python /code/scripts/migrate_database.py
+
 uwsgi --ini /code/uwsgi.ini
