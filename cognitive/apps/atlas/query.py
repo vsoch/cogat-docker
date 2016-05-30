@@ -362,7 +362,7 @@ class Theory(Node):
 
 
 # General search function across nodes
-def search(searchstring,fields="name"):
+def search(searchstring,fields=["name","id"]):
     if isinstance(fields,str):
         fields = [fields]
     return_fields = ",".join(["n.%s" %x for x in fields])
