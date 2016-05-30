@@ -1,0 +1,89 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+    <title>Explore Cognitive Atlas</title>
+
+    <link rel="stylesheet" href="{% static "css/popoto.min.css"%}">
+
+</head>
+<body class="ppt-body">
+<header class="ppt-header">
+</header>
+<section class="ppt-section-main">
+    <div class="ppt-section-header">
+        <span class="ppt-header-span">Graph</span> search
+    </div>
+    <div class="ppt-container-graph">
+        <nav id="popoto-taxonomy" class="ppt-taxo-nav">
+            <!-- Label/taxonomy filter will be generated here -->
+        </nav>
+        <div id="popoto-graph" class="ppt-div-graph">
+            <!-- Graph will be generated here -->
+        </div>
+    </div>
+    <div id="popoto-query" class="ppt-container-query">
+        <!-- Query viewer will be generated here -->
+    </div>
+    <div id="popoto-cypher" class="ppt-container-cypher">
+        <!-- Cypher query viewer will be generated here -->
+    </div>
+    <div class="ppt-section-header">
+        <!-- The total results count is updated with a listener defined in script -->
+        RESULTS <span id="result-total-count" class="ppt-count"></span>
+    </div>
+    <div id="popoto-results" class="ppt-container-results">
+        <!-- Results will be generated here -->
+    </div>
+</section>
+
+<script src="{% static "js/jquery-2.1.0.min.js"%}" charset="utf-8"></script>
+<script src="{% static "js/d3.v3.min.js"%}" charset="utf-8"></script>
+<script src="{% static "js/popoto.min.js"%}" charset="utf-8"></script>
+<script>
+// URL used to access Neo4j REST API to execute queries.
+popoto.rest.CYPHER_URL = "http://localhost:7474/db/data/transaction/commit";
+popoto.provider.nodeProviders = {
+    "task":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "definition"],
+        constraintAttribute:"name",
+    },
+    "condition":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "description"],
+        constraintAttribute:"name",
+    },
+    "theory":{
+        returnAttributes:["id", "creation_time", "name", "last_updated"],
+        constraintAttribute:"name",
+    },
+    "collection":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "battery"],
+        constraintAttribute:"name",
+    },
+    "concept":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "definition"],
+        constraintAttribute:"name",
+    },
+    "contrast":{
+        returnAttributes:["id", "creation_time", "name", "last_updated"],
+        constraintAttribute:"name",
+    },
+    "disorder":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "classification", "definition"],
+        constraintAttribute:"name",
+    },
+    "battery":{
+        returnAttributes:["id", "creation_time", "name", "last_updated", "collection"],
+        constraintAttribute:"name",
+    },
+};
+popoto.result.onTotalResultCount(function (count) {
+    document.getElementById("result-total-count").innerHTML = "(" + count + ")";
+});
+popoto.logger.LEVEL = popoto.logger.LogLevels.INFO;
+popoto.start("task");
+</script>
+</body>
+</html>

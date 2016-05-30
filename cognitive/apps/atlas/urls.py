@@ -37,6 +37,7 @@ urlpatterns = [
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),
     url(r'^graph/concept/(?P<uid>[\w\+%_& ]+)/$', graph.concept_graph, name="concept_graph"),
+    url(r'^graph/$', graph.explore_graph, name="explore_graph"),
 
 ] 
 
