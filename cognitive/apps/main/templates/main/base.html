@@ -120,7 +120,6 @@
         $("#search_results").html("")
     });
 
-
     $('#searchterm').keyup(function() {
 
         $.ajax({
@@ -133,14 +132,28 @@
             complete: function (data, error){
                   var results = JSON.parse(data.responseText);
                   $.each(results,function(i,e){
-                      $("#search_results").append('<li class="ui-menu-item" role="menuitem"><a href="#" class="ui-corner-all" tabindex="-1">' + e.name +'</a></li>');
+                      $("#search_results").append('<li class="ui-menu-item" role="menuitem"><a href="#" class="ui-corner-all uia" tabindex="-1">' + e.name +'</a></li>');
+                  });
+
+                  // Search should highlight on mouseover
+                  $(".ui-menu-item").hover(function(){
+                      $(this).attr("id","ui-active-menuitem")
+                      $("#ui-active-menuitem").addClass("ui-state-hover")
                   })
+
+                  $(".ui-menu-item").mouseleave(function(){
+                      $("#ui-active-menuitem").removeClass("ui-state-hover")
+                      $(this).attr("id","")
+                  })
+
             },
             dataType: 'html',
         });
+
     });
 
     });
+
     </script>
 
     {% block scripts %}{% endblock %}
