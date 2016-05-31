@@ -38,16 +38,19 @@ class Node:
         return node
 
 
-    def link(self,uid,endnode_id,relation_type,properties=None):
+    def link(self,uid,endnode_id,relation_type,endnode_type=None,properties=None):
         '''link will create a new link (relation) from a uid to a relation, first confirming
         that the relation is valid for the node
         :param uid: the unique identifier for the source node
         :param endnode_id: the unique identifier for the end node
         :param relation_type: the relation type
+        :param endnode_type: the type of the second node. If not specified, assumed to be same as startnode
         :param properties: properties to add to the relation
         '''
+        if endnode_type == None:
+            endnode_type = self.name
         startnode = graph.find_one(self.name,property_key='id',property_value=uid)
-        endnode = graph.find_one(self.name,property_key='id',property_value=endnode_id)
+        endnode = graph.find_one(endnode_type,property_key='id',property_value=endnode_id)
 
         if startnode != None and endnode != None:
 

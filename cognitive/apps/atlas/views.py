@@ -279,6 +279,14 @@ def add_concept_relation(request,uid):
     return view_concept(request,uid)
 
 
+def add_task_concept(request,uid):
+    if request.method == "POST":
+        relation_type = "ASSERTS" #task --asserts-> concept
+        concept_selection = request.POST.get('concept_selection', '')
+        Task.link(uid,concept_selection,relation_type,endnode_type="concept")
+    return view_task(request,uid)
+
+
 # SEARCH TERMS ####################################################################
 
 def search_all(request):

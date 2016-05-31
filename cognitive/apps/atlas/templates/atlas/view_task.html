@@ -63,6 +63,28 @@
 <!-- CONCEPTS -->
 <div id="block-measurements" class="block-halfwide block-back">
     <em><a href="javascript:void(0)" class="task">{{ task.name }}</a></em> has been asserted to measure the following <strong>CONCEPTS</strong>
+  
+    {% if request.user.is_authenticated %}
+    <button style="float:right;margin-top:10px" id="add_concept_button">ADD CONCEPT</button>		
+
+    <!-- add concept box -->
+    <form method="POST" action="{% url 'add_task_concept' task.id %}">
+        <div id="concept_search_box" style="padding-bottom:20px;padding-top:20px" class="hidden">
+            <div id="searchformwrap">
+                <div class="ui-widget">
+                <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="conceptterm" size="20" name="conceptterm" aria-label="search for concept" title="Search for concept" placeholder="search for concept" />
+                </div>
+            </div>
+            <div>
+                <select name="concept_selection" id="concept_search_results" style="width:400px" class="hidden"></select>
+            </div>
+            {% csrf_token %}
+            <button id="concept_cancel_button" type="button" class="btn btn-primary">Cancel</button>
+            <input type="submit" value="submit" class="btn btn-primary"></input>    
+        </form>
+    </div>
+    {% endif %}
+
     <div class="panes">
         <div class="pane">
             <div class="discdiv">
@@ -77,7 +99,7 @@
                                 <div style="padding-left:10px;padding-top:5px;"><small>as measured by the contrast:</small></div>
                             </div>
                             <div style='width:60%;float:left;text-align:left;'>
-                            <ul style="margin-left:30px;margin-top:8px;list-style-image:url('/static/img/contrast-icon.jpg');">
+                                <ul style="margin-left:30px;margin-top:8px;list-style-image:url('/static/img/contrast-icon.jpg');">
                                 {% for concept_name,assertions in concepts.items %}
                                     {% for assertion in assertions %}
                                     {% if assertion.concept_id = relation.id %}
@@ -87,7 +109,18 @@
                                     {% endif %}
                                     {% endfor %}
                                 {% endfor %}
-                                </ul>		
+                                </ul>
+
+                                <!-- Add contrast association -->
+                                <button style="border-radius:15px" class="add_contrast_button">+</button>		
+                                <div id="contrast_search_box" style="padding-bottom:20px" class="hidden">
+                                   <div id="searchformwrap">
+                                       <div class="ui-widget">
+                                           <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="relationterm" size="20" name="relationterm" aria-label="search for concept" title="Search for concept" placeholder="search for concept" />
+                                       </div>
+                                   </div>
+                                </div>
+
                         </div>
                     </div>
                     <br clear='all'></div>
@@ -210,6 +243,53 @@ $(document).ready(function() {
     $("#cancel_button").click(function(){
         $("#update_definition").addClass('hidden');
     })
+
+    // Show form to add concept
+    $("#add_concept_button").click(function(){
+        $("#concept_search_box").removeClass('hidden');
+    })
+    $("#concept_cancel_button").click(function(){
+        $("#concept_search_box").addClass('hidden');
+    })
+
+
+    {% if request.user.is_authenticated %}
+    // Add concept
+    $(function() {
+
+    $('#conceptterm').click(function() {
+        $("#concept_search_results").addClass("hidden")
+        $("#concept_search_results").html("")
+        $("#concept_search_results").attr("size","0")
+    });
+
+    $('#conceptterm').keyup(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'search_concept' %}",
+            data: {
+                'relationterm' : $('#conceptterm').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            },
+            complete: function (data, error){
+                  $("#concept_search_results").html("")
+                  var results = JSON.parse(data.responseText);
+                  $.each(results,function(i,e){
+                      $("#concept_search_results").append('<option value="' + e.id +'">'+ e.name +'</option>');
+                  });
+
+                  $("#concept_search_results").removeClass("hidden")
+                  $("#concept_search_results").attr("size","5")
+
+            },
+            dataType: 'html',
+        });
+
+    });
+    });
+    {% endif %}
+
 
 });
 </script>
