@@ -112,14 +112,31 @@
                                 </ul>
 
                                 <!-- Add contrast association -->
-                                <button style="border-radius:15px" class="add_contrast_button">+</button>		
-                                <div id="contrast_search_box" style="padding-bottom:20px" class="hidden">
-                                   <div id="searchformwrap">
-                                       <div class="ui-widget">
-                                           <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="relationterm" size="20" name="relationterm" aria-label="search for concept" title="Search for concept" placeholder="search for concept" />
-                                       </div>
-                                   </div>
+                                {% if request.user.is_authenticated %}
+                                <button style="border-radius:15px;float:right" id="add_contrast_button_{{ relation.id }}">+</button>		
+                                <div id="contrast_search_box_{{ relation.id }}" style="padding-left:13px;padding-bottom:20px" class="hidden">
+                                    <div>
+                                    {% if contrasts|length > 0 %}
+                                    <form style="padding-top:20px" method="post" action="{% url 'add_concept_contrast' task.id %}">
+                                        <select name="contrast_selection" id="add_contrast_{{ relation.id }}" style="width:220px" size="3" style="padding-left:10px;">
+                                        {% for contrast_id,contrast in contrasts.items %}
+                                        <option value="{{ contrast.0.contrast_id }}">{{ contrast.0.contrast_name }}</option>
+                                        {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="concept_id" value="{{ relation.id }}" />
+                                        {% csrf_token %}
+                                        <button id="cancel_button_{{ relation.id }}" type="button" class="btn btn-primary">Cancel</button>
+                                        <input type="submit" value="submit" class="btn btn-primary"></input>    
+
+                                    </form> 
+                                    {% else %}
+                                    <p style="padding-top:20px">No contrasts defined for task! 
+                                    <button id="close_button_{{ relation.id }}" style="border-radius:15px" type="button" class="btn">x</button>
+                                    </p>
+                                    {% endif %}
                                 </div>
+                                </div>
+                                {% endif %}
 
                         </div>
                     </div>
@@ -288,6 +305,29 @@ $(document).ready(function() {
 
     });
     });
+
+    // Button functionality for concept contrast selection
+    {% if "ASSERTS" in task.relations %}
+    (function() {
+       {% for relation in task.relations.ASSERTS %}
+
+        $("#add_contrast_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").removeClass("hidden")
+        }); 
+
+        $("#cancel_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").addClass("hidden")
+        });
+
+        $("#close_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").addClass("hidden")
+        });
+
+        {% endfor %}
+    })();
+    {% endif %}
+
+
     {% endif %}
 
 

@@ -286,6 +286,14 @@ def add_task_concept(request,uid):
         Task.link(uid,concept_selection,relation_type,endnode_type="concept")
     return view_task(request,uid)
 
+def add_concept_contrast(request,uid):
+    if request.method == "POST":
+        relation_type = "MEASUREDBY" #concept --MEASUREDBY-> contrast
+        contrast_selection = request.POST.get('contrast_selection', '')
+        concept_id = request.POST.get('concept_id', '')
+        Concept.link(concept_id,contrast_selection,relation_type,endnode_type="contrast")
+    return view_task(request,uid)
+
 
 # SEARCH TERMS ####################################################################
 

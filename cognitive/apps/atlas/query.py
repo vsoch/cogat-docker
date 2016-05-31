@@ -250,7 +250,7 @@ class Concept(Node):
     def __init__(self):
         self.name = "concept"
         self.fields = ["id","name","definition"]
-        self.relations = ["PARTOF","KINDOF"]
+        self.relations = ["PARTOF","KINDOF","MEASUREDBY"]
         self.color = "#3C7263" # sea green
 
 class Task(Node):
