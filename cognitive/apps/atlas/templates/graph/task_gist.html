@@ -1,0 +1,23 @@
+//setup
+//hide
+[source,cypher]
+----
+CREATE (neo:Database {name:'Neo4j'})
+CREATE (neo)-[:SUPPORTS]->(:Language {name:'Cypher'})
+----
+
+[source,cypher]
+----
+MATCH (db:Database)-[:SUPPORTS]->(language:Language)
+RETURN db.name as db, collect(language.name) as languages
+----
+
+//table
+
+[source,cypher]
+----
+MATCH (d:Database)-[rel:SUPPORTS]->(l:Language)
+RETURN d,l
+----
+
+//graph_result

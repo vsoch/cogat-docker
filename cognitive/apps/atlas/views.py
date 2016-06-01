@@ -318,3 +318,4 @@ def search_concept(request):
         data = json.dumps(results)
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
+

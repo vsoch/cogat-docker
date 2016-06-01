@@ -31,3 +31,15 @@ def concept_json(request,uid):
     nodes = Concept.graph(uid)
     return JsonResponse(nodes)
 
+# GRAPH GIST ######################################################################
+# These are export functions for concepts, tasks, etc to be previewed as graph gists
+
+# Can't test this until we have this on a server
+
+def task_gist(request,uid):
+    context = {"task_id":uid}
+    return render(request,'graph/task_gist.html',context)
+
+# Eg, This is the URL that can be linked to from a page
+# http://portal.graphgist.org/graph_gists/by_url?url=hello
+# Note: may need to this: https://docs.djangoproject.com/en/1.9/howto/outputting-csv/

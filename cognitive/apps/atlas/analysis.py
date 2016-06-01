@@ -16,7 +16,7 @@ def pagerank(relation="KINDOF"):
 
 # CLOSENESS_CENTRALITY ###############################################################
 
-# Gets all nodes connected by the FOLLOWS relationship and updates each node with the property key closeness_centrality.
+# Gets all nodes connected by some relationship and updates each node with the property key closeness_centrality.
 # The value of the closeness_centrality property is a float data type, ex. pagerank: 0.1337.
 # A key node centrality measure in networks is closeness centrality (Freeman, 1978; Opsahl et al., 2010; Wasserman and Faust, 1994). It is defined as the inverse of farness, which in turn, is the sum of distances to all other nodes.
 
@@ -59,7 +59,7 @@ def triangle_count(relation="MEASUREDBY"):
 
 # :GET /service/mazerunner/analysis/connected_components/MEASUREDBY
 
-# Gets all nodes connected by the FOLLOWS relationship and updates each node with the property key connected_components.
+# Gets all nodes connected by some relationship and updates each node with the property key connected_components.
 # The value of connected_components property is an integer data type, ex. connected_components: 181.
 # The value of connected_components represents the Neo4j internal node ID that has the lowest integer value for a set of connected nodes.
 # Connected components are used to find isolated clusters, that is, a group of nodes that can reach every other node in the group through a bidirectional traversal.
