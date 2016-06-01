@@ -45,6 +45,7 @@ urlpatterns = [
     url(r'^graph/concept/(?P<uid>[\w\+%_& ]+)/$', graph.concept_graph, name="concept_graph"),
     url(r'^graph/$', graph.explore_graph, name="explore_graph"),
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/gist$', graph.task_gist, name="task_gist"),
+    url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/gist/download$', graph.download_task_gist, name="download_task_gist"),
 
 ] 
 

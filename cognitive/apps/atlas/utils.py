@@ -30,6 +30,20 @@ def generate_uid(node_type):
         result = do_query(query,fields=["n.id"])
     return uid    
 
+def get_relation_nodetype(relation):
+    '''get_relation_nodetype will return the node type for a particular relation 
+    (eg --RELATION-->[NODE]
+    '''
+    node_types = {"HASCONDITION":"condition",
+                  "MEASUREDBY":"contrast",
+                  "DERIVEDFROM":"task",
+                  "ASSERTS":"concept",
+                  "HASCONTRAST":"contrast",
+                  "KINDOF":"concept",
+                  "PARTOF":"concept"}
+    if relation in node_types:
+        return node_types[relation]
+    return None
 
 def add_update(field,value,updates=None):
     '''add_update will update the updates dictionary only given that a value is defined (not None or '') for a field

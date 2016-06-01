@@ -1,6 +1,7 @@
 from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory, search
 from cognitive.apps.atlas.utils import clean_html, update_lookup, add_update
 from django.http import JsonResponse, HttpResponse
+from cognitive.settings import DOMAIN
 from django.shortcuts import render
 from django.template import loader
 import pickle
@@ -156,7 +157,8 @@ def view_task(request,uid):
     context = {"task":task,
                "concepts":concept_lookup,
                "contrasts":contrast_lookup,
-               "conditions":conditions}
+               "conditions":conditions,
+               "domain":DOMAIN}
 
     return render(request,'atlas/view_task.html',context)
 

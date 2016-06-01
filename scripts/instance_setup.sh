@@ -25,3 +25,9 @@ sudo shutdown -r 1 # reboot
 # You will need to create the .env and cognitive/secrets.py files
 # docker-compose up -d
 # the command above will download the images, and start the application in detached.
+
+# You will need to ssh into the instance to migrate the database, eg:
+# docker exec -it [CONTAINER ID] bash
+# (get container ids with docker ps)
+# To migrate: python scripts/migrate_database.py
+

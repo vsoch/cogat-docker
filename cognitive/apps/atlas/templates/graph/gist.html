@@ -1,0 +1,43 @@
+= The Cognitive Atlas
+:neo4j-version: 2.0.0
+:author: Poldracklab
+:twitter: @vsoch
+:tags: cognitive:concepts:psychology:neuroscience
+
+'''
+
+View {{ node_type | safe }}: {{ node_name | safe }}
+
+The Cognitive Atlas is a collaborative knowledge building project that aims to develop a knowledge base (or ontology) that characterizes the state of current thought in cognitive science. The project is led by Russell Poldrack, Professor of Psychology at Stanford University. Development of the project was supported by grant RO1MH082795 from the National Institute of Mental Health.
+
+'''
+
+//setup
+//hide
+[source, cypher]
+----
+
+{{ nodes | safe }}
+{{ relations | safe }}
+----
+
+//graph_result
+
+We can use cypher to query the graph, here is an example to select the first 25 entities ({{ node_type }}s)
+
+[source, cypher]
+----
+{{ query | safe }}
+----
+
+//table
+
+'''
+Here is an interactive console for you to explore the mini graph.
+
+//console
+'''
+
+== Poldracklab
+* link:http://poldracklab.stanford.edu[Poldracklab]
+* link:http://www.cognitiveatlas.org[The Cognitive Atlas]

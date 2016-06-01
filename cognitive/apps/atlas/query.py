@@ -1,4 +1,4 @@
-from cognitive.apps.atlas.utils import color_by_relation, generate_uid, do_query
+from cognitive.apps.atlas.utils import color_by_relation, generate_uid, do_query, get_relation_nodetype
 from py2neo import Path, Node as NeoNode, Relationship
 from cognitive.settings import graph
 import pandas
@@ -77,6 +77,39 @@ class Node:
             node.push()
 
 
+    def cypher(self,uid,lookup=None):
+        '''cypher returns a data structure with nodes and relations for an object to generate a gist with cypher
+        :param uid: the node unique id to look up
+        :param lookup: (optional) a previously defined lookup to obtain node/relation Ids, and the start count
+        '''
+        links = []
+        nodes = []
+        if lookup == None:
+            lookup = dict() # a lookup of node ids
+            count = 1
+        else:
+            count = numpy.max(lookup.values()) + 1
+        base = self.get(uid)[0]
+        if base["id"] not in lookup:
+            lookup[base["id"]] = count
+            count+=1
+        nodes.append(cypher_node(base["id"],self.name,base["name"],lookup[base["id"]]))
+        if "relations" in base:
+            for relation_type,relations in base["relations"].items():
+                print(relation_type)
+                print(relations)
+                node_type = get_relation_nodetype(relation_type)
+                for relation in relations:
+                    if relation["id"] not in lookup:
+                        lookup[relation["id"]] = count
+                        nodes.append(cypher_node(relation["id"],node_type,base["name"],lookup[base["id"]]))
+                        count+=1
+                    links.append(cypher_relation(relation_type,lookup[base["id"]],lookup[relation["id"]]))
+
+        result = {"nodes":"\n".join(nodes),"links":"\n".join(links)}
+        return result
+
+             
     def graph(self,uid,fields=None):
         '''graph returns a graph representation of one or more nodes, meaning a dictionary of nodes/links with
         (minimally) fields name, label, and id. Additional fields are included that are defined in the Node
@@ -392,3 +425,23 @@ def get(nodeid,fields=["name","id"]):
     return_fields = ",".join(["n.%s" %x for x in fields])
     query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s;''' %(searchstring,return_fields)
     return do_query(query,fields=fields)
+
+
+# Functions to generate cypher queries for nodes and relations
+def cypher_node(uid,node_type,name,count):
+    '''cyper_node creates a cypher node for including in a gist
+    :param uid: the unique id of the node
+    :param node_type: the type of node (eg, concept)
+    :param name: the name of the node
+    :param count: the node id (count) used to define relations and reference the node
+    '''
+    return 'create (_%s:`%s` {`id`:"%s", `name`:"%s"})' %(count,node_type,uid,name)
+
+def cypher_relation(relation_name,count1,count2):
+    '''cyper_relation creates a cypher relation for including in a gist
+    :param relation_name: the name of the relation
+    :param count1: the name of the node
+    :param count2: the node id (count) used to define relations and reference the node
+    '''
+    return 'create _%s-[:`%s`]->_%s' %(count1,relation_name,count2)
+

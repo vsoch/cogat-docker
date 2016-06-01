@@ -35,7 +35,8 @@
         {% if request.user.is_authenticated %}
         <a id="update_definition_button"><button>update definition</button></a>
         {% endif %}
-        <a target="_blank" href="{% url 'task_graph' task.id %}"><button>graph</button></a>
+        <a target="_blank" href="http://portal.graphgist.org/graph_gists/by_url?url={{ domain }}{% url 'task_gist' task.id %}"><button>graph</button></a>
+        <a target="_blank" href="{% url 'download_task_gist' task.id %}"><button>gist</button></a>
         <a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
         <a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
         </div><!-- .defn -->
