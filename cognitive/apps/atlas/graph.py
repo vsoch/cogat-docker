@@ -48,7 +48,7 @@ def task_gist(request,uid,query=None,return_gist=False):
     cypher = Task.cypher(uid)
     task = Task.get(uid)[0]
     if query == None:
-        query = "MATCH (t:task)-[r:ASSERTS]->(c:concept) RETURN t.name,c.name;"
+        query = "MATCH (t:task)-[r:ASSERTS]->(c:concept) RETURN t.name as task_name,c.name as concept_name;"
 
     context = {"relations":cypher["links"],
                "nodes":cypher["nodes"],
