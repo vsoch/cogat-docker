@@ -37,8 +37,6 @@
         {% endif %}
         <a target="_blank" href="http://portal.graphgist.org/graph_gists/by_url?url={{ domain }}{% url 'task_gist' task.id %}"><button>graph</button></a>
         <a target="_blank" href="{% url 'download_task_gist' task.id %}"><button>gist</button></a>
-        <a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
-        <a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
         </div><!-- .defn -->
 
     {% if request.user.is_authenticated %}
@@ -239,6 +237,10 @@
 </div></div>
 
 <br clear="all"><div class="clear_all"></div>
+
+<a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
+<a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
+
 </div><!-- #unterbutton_slide_XXX -->					
 </div><!-- .discdiv -->
 </div><!-- .pane -->
