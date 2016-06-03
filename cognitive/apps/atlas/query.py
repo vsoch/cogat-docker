@@ -291,7 +291,7 @@ class Task(Node):
     def __init__(self):
         self.name = "task"
         self.fields = ["id","name","definition"]
-        self.relations = ["HASCONDITION","ASSERTS","HASCONTRAST"]    
+        self.relations = ["HASCONDITION","ASSERTS"]    
         self.color = "#63506D" #purple
 
     def get_contrasts(self,task_id):
@@ -317,6 +317,22 @@ class Task(Node):
         return do_query(query,fields=fields)
             
 
+    def get_conditions(self,task_id):
+        '''get_conditions looks up the condition(s) associated with a task
+        :param task_id: the task unique id (trm|tsk_*) for the task
+        '''        
+        fields = ["condition.id","condition.name","condition.last_updated","condition.creation_time"]
+
+        return_fields = ",".join(fields)
+        query = '''MATCH (t:task)-[:HASCONDITION]->(c:condition) 
+                   WHERE t.id='%s'
+                   WITH c as condition
+                   RETURN %s''' %(task_id,return_fields)
+        fields = [x.replace(".","_") for x in fields]
+        
+        return do_query(query,fields=fields)
+
+
 
 class Disorder(Node):
 
@@ -331,6 +347,7 @@ class Condition(Node):
         self.name = "condition"
         self.fields = ["id","name","description"]
         self.color = "#BC1079" # dark pink
+        self.relations = ["HASCONTRAST"]
 
 class Contrast(Node):
     def __init__(self):

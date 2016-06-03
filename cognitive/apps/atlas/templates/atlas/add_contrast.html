@@ -1,0 +1,438 @@
+{% extends "main/base.html" %}
+{% load staticfiles %}
+{% block head %}
+<style>
+.ui-autocomplete-loading { background: white url("/images/facebox/loading.gif") right center no-repeat; }
+.asholder {position:relative;}
+#fade {
+  height:100%;
+  width:100%;
+  position: fixed;
+  top:0px;
+  left:0px;
+  z-index:2;
+  background-color: #333;
+  opacity:0.85;
+}
+
+#add_contrast {
+  min-width:600px;
+  min-height:200px;
+  background-color: white;
+  border-radius:10px;
+  z-index:100;
+  position: fixed;
+  top:25%;
+  margin: 20px;
+  padding: 20px;
+  left:25%;
+}
+</style>
+<link type="text/css" href="{% static "css/select2.min.css"%}" rel="stylesheet" media="screen">
+<link type="text/css" href="{% static "css/chosen.css"%}" rel="stylesheet" media="screen">
+{% endblock %}
+{% load staticfiles %}
+
+{% block branding %}
+{% include 'atlas/branding.html'%}
+{% block navigation %}
+{% include "atlas/middle_navigation.html" %}
+{% endblock %}
+
+{% endblock %}
+
+{% block content %}
+
+<!-- Form to derive contrast based on combination of conditions -->
+<div id="add_contrast">
+
+                <h2 style="padding-bottom:20px">Add New Contrast <i style="font-size:12" data-toggle="tooltip" title="A contrast is some operation over conditions" class="fa fa-question-circle"></i></h2>
+
+               <form action="{% url 'add_contrast' task.id %}" method="POST">
+               {% csrf_token %}
+
+               <label for="contrast_name">Contrast Name:</label>
+               <input type="text" name="contrast_name"></input><br>
+
+               <span id="credit_table_div" style="display: inline;">
+               <table class="table table-bordered table-hover" id="credit_table">
+      	        <thead>
+                    <tr>
+                        <th class="text-center">Conditions <i style="font-size:10" data-toggle="tooltip" title="Select one or more conditions for the left side of the operator" class="fa fa-question-circle"></i></th>
+                        <th class="text-center">Operator</th>
+                        <th class="text-center">Conditions</th>
+      		</thead>
+      		<tbody>
+                    <tr>
+                       <td>
+                           <div class="form-group">
+                               <select data-placeholder="Select Conditions" style="width:300px;" class="chzn-select-batch" multiple tabindex="6" name = "conditions_1">
+                                  {% for condition in conditions %}
+                                  <option value="{{ condition.condition_id }}">{{ condition.condition_name }}</option>
+                                  {% endfor %}                                      
+                               </select>
+                           </div>
+                       </td>
+                      <td><select class="form-control" name="operator" id="operator">
+                          <option value="MINUS">minus (-)</option>
+                          <option value="PLUS">plus (+)</option>
+                          <option value="MULTIPLY">multiply (x)</option>
+                          </select>
+                      </td>
+                       <td>
+                           <div class="form-group">
+                               <select data-placeholder="Select Conditions" style="width:300px;" class="chzn-select-batch" multiple tabindex="6" name = "conditions_2">
+                                  {% for condition in conditions %}
+                                  <option value="{{ condition.condition_id }}">{{ condition.condition_name }}</option>
+                                  {% endfor %}                                      
+                               </select>
+                           </div>
+                           </div>
+                       </td>
+                      </tr></tbody>
+      	  </table>
+          </span>
+            <input type="submit" value="Add">
+          </form>
+
+</div>
+
+<div id="fade"></div>
+<div class="container" id="pagecontent">
+
+<div id="block-definition" class="block-full">	
+    <div class="assertion">
+        <div class="CATerm task">
+            <h1 class="termtext">
+                <a class="color-task" href="">
+                <em>{{ task.name }}</em>
+                </a>
+                <span class="typebutton task_type"><a href="{% url 'all_tasks' %}">TASK</a></span>
+            </h1>
+        </div><!-- .CATerm.task -->
+
+        <div class="defn">
+            {{ task.definition | safe }}<br><br>
+        {% if request.user.is_authenticated %}
+        <a id="update_definition_button"><button>update definition</button></a>
+        {% endif %}
+        <a target="_blank" href="http://portal.graphgist.org/graph_gists/by_url?url={{ domain }}{% url 'task_gist' task.id %}"><button>graph</button></a>
+        <a target="_blank" href="{% url 'download_task_gist' task.id %}"><button>gist</button></a>
+        </div><!-- .defn -->
+
+    {% if request.user.is_authenticated %}
+    <!-- Update definition -->
+    <div id="update_definition" class="hidden">
+        <form method="POST" action="{% url 'update_task' task.id %}">
+            <div class="modal-body">
+                <textarea name="definition" rows="4" cols="50">{{ task.definition }}</textarea>
+            </div>
+            {% csrf_token %}
+            <button id="cancel_button" type="button" class="btn btn-primary">Cancel</button>
+            <input type="submit" value="submit" class="btn btn-primary"></input>
+        </form>
+    </div>
+    {% endif %}
+
+
+        <div id="unterbutton_slide_def" class="defn"></div><!-- #unterbutton_slide_def.defn -->
+
+        <div class="clear_all"></div>
+    </div><!-- #block-definition.block-full -->
+
+<!-- CONCEPTS -->
+<div id="block-measurements" class="block-halfwide block-back">
+    <em><a href="javascript:void(0)" class="task">{{ task.name }}</a></em> has been asserted to measure the following <strong>CONCEPTS</strong>
+  
+    {% if request.user.is_authenticated %}
+    <button style="float:right;margin-top:10px" id="add_concept_button">ADD CONCEPT</button>		
+
+    <!-- add concept box -->
+    <form method="POST" action="{% url 'add_task_concept' task.id %}">
+        <div id="concept_search_box" style="padding-bottom:20px;padding-top:20px" class="hidden">
+            <div id="searchformwrap">
+                <div class="ui-widget">
+                <input tabindex="1" autocomplete="off" type="text" class="fwidgettxt front searchterm" id="conceptterm" size="20" name="conceptterm" aria-label="search for concept" title="Search for concept" placeholder="search for concept" />
+                </div>
+            </div>
+            <div>
+                <select name="concept_selection" id="concept_search_results" style="width:400px" class="hidden"></select>
+            </div>
+            {% csrf_token %}
+            <button id="concept_cancel_button" type="button" class="btn btn-primary">Cancel</button>
+            <input type="submit" value="submit" class="btn btn-primary"></input>    
+        </form>
+    </div>
+    {% endif %}
+
+    <div class="panes">
+        <div class="pane">
+            <div class="discdiv">
+                {% if "ASSERTS" in task.relations %}
+                    {% for relation in task.relations.ASSERTS %}
+                    <div id="table_{{ relation.id }}" class="nullspace">
+                        <div>
+                            <div style='width:100%;height:1em'>
+                                <a href="{% url 'concept' relation.id %}" class="concept">{{ relation.name }}</a>
+                            </div>
+                            <div style='width:40%;float:left'>
+                                <div style="padding-left:10px;padding-top:5px;"><small>as measured by the contrast:</small></div>
+                            </div>
+                            <div style='width:60%;float:left;text-align:left;'>
+                                <ul style="margin-left:30px;margin-top:8px;list-style-image:url('/static/img/contrast-icon.jpg');">
+                                {% for concept_name,assertions in concepts.items %}
+                                    {% for assertion in assertions %}
+                                    {% if assertion.concept_id = relation.id %}
+                                    <li class="contrastli">
+                                        <a href="#" class="task">{{ assertion.contrast_name }}</a>
+                                    </li>
+                                    {% endif %}
+                                    {% endfor %}
+                                {% endfor %}
+                                </ul>
+
+                                <!-- Add contrast association -->
+                                {% if request.user.is_authenticated %}
+                                <button style="border-radius:15px;float:right" id="add_contrast_button_{{ relation.id }}">+</button>		
+                                <div id="contrast_search_box_{{ relation.id }}" style="padding-left:13px;padding-bottom:20px" class="hidden">
+                                    <div>
+                                    {% if contrasts|length > 0 %}
+                                    <form style="padding-top:20px" method="post" action="{% url 'add_concept_contrast' task.id %}">
+                                        <select name="contrast_selection" id="add_contrast_{{ relation.id }}" style="width:220px" size="3" style="padding-left:10px;">
+                                        {% for contrast_id,contrast in contrasts.items %}
+                                        <option value="{{ contrast.0.contrast_id }}">{{ contrast.0.contrast_name }}</option>
+                                        {% endfor %}
+                                        </select>
+                                        <input type="hidden" name="concept_id" value="{{ relation.id }}" />
+                                        {% csrf_token %}
+                                        <button id="cancel_button_{{ relation.id }}" type="button" class="btn btn-primary">Cancel</button>
+                                        <input type="submit" value="submit" class="btn btn-primary"></input>    
+
+                                    </form> 
+                                    {% else %}
+                                    <p style="padding-top:20px">No contrasts defined for task! 
+                                    <button id="close_button_{{ relation.id }}" style="border-radius:15px" type="button" class="btn">x</button>
+                                    </p>
+                                    {% endif %}
+                                </div>
+                                </div>
+                                {% endif %}
+
+                        </div>
+                    </div>
+                    <br clear='all'></div>
+                    <br clear="all"><br clear="all">
+                    <div id="target_{{ relation.id }}" style="display:none;padding-left:10px;"></div>
+                    <div class="dotholder"><hr class="dotty"></div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- DISORDERS -->
+<div id="bloastsk-implementors" class="block-halfwide-rfloat block-back block-margin">
+    <div class="pane">
+        <div class="discdiv"><b>DISORDERS</b> associated with <em><a href="javascript:void(0)" class="task">{{ task.name }}</a></em><br>
+            <span class="noassoc">No associations have been added.</span><br><br>
+        </div>
+    </div>
+</div><br clear="all">	
+
+<!-- IMPLEMENTATIONS -->
+<div id="block-implementors" class="block-halfwide block-back ">
+    <div class="pane">
+        <div class="discdiv"><b>IMPLEMENTATIONS</b> of <em><a href="javascript:void(0)" class="task">{{ task.name }}</a></em><br>
+            <div style="margin-top:10px;">
+                <table style="cell-padding:10px;"></table>
+            </div><span class="noassoc">No implementations have been added.</span><br>
+        </div>
+    </div>
+</div>
+
+<!-- EXTERNAL DATASETS -->
+<div id="block-implementors" class="block-halfwide-rfloat block-back block-margin">
+    <div class="pane">
+        <div class="discdiv"><b>EXTERNAL DATASETS</b> for <a href="javascript:void(0)" class="task">{{ task.name }}</a><br />
+            <span class="noassoc">No external datasets have been added.</span><br/>
+        </div>
+    </div>
+</div>
+<div class="clear_all"></div>
+
+<!-- CONDITIONS -->
+<div style="width: 960px;"><div class="block-thirdwide block-back"><strong> CONDITIONS</strong>
+    {% for condition_id,condition in conditions.items %}
+    <div class="conblock{{ forloop.counter }}" id="conditions-block">
+         <div id="condition_container{{ condition_id }}">
+            <div class="conblock-inner-left"><a name="{{ condition.condition_name }}"><em>{{ condition.condition_name }}</em></a> 
+            </div>
+        </div>
+        <div class='clear_all'></div>
+    </div>
+    {% endfor %}
+
+    <a name="conditions"></a><br /><p class="subinfo">Experimental conditions are the subsets of an experiment that define the relevant experimental manipulation.</p>
+</div>
+
+<!--CONTRASTS-->
+<div class="block-thirdwide block-back block-margin">
+    <strong>CONTRASTS</strong>
+    <div class="conblock2" id="contrasts-block">
+        {% for contrast_id,contrast in contrasts.items %}
+        <div id="contrast_container_{{ contrast.0.contrast_id }}">
+            <div class="conblock-inner-wide">
+                <a name="{{ contrast.0.contrast_name }}" class="task" href="{% url 'contrast' contrast_id %}">{{ contrast.0.contrast_name }}</a>
+            </div>
+            <div id="editcont_{{ contrast.0.contrast_id }}" style="display:none" class="popstar marbot"><br/>
+            <form method="post" action="/post/" name="conteditform">
+                <input type="hidden" name="form_type" value="contrast_update" />
+                <input type="hidden" name="return_page" value="task/id" />
+                <input type="hidden" name="id_object" value="{{ task.id }}" />	
+                <input type="hidden" name="id" value="{{ contrast.0.contrast_id }}" />	
+
+                <table>
+                    <tr><td><strong>Edit Contrast:</strong><br/>
+                        <input type="text" name="contrast_text" value="{{ contrast.0.contrast_name }}" size="28" title="contrast text" aria-label="contrast text">
+                    </td></tr>
+                    <tr><td><strong>Contrast URI:</strong><br/>
+                        <input type="text" name="contrast_uri" value="" size="28" title="contrast uri" aria-label="contrast uri">
+                    </td></tr>
+                    <tr><td style="text-align:right">
+                        <input type="button" onclick="javascript:window.location.reload();" value="cancel" title="cancel submission" aria-label="cancel submission"/>
+                        <input type="submit" value="update" title="submit form" aria-label="submit form" />
+                        <input type="button" rel="{{ contrast.0.contrast_id }}" class="contrast-delete" value="delete" title="delete contrast" aria-label="delete contrast" />
+                     </td></tr>
+                </table>
+            </form>
+        </div>
+    </div>
+    <div class=clear_all></div>
+    {% endfor %}    
+</div>  
+<a name="contrasts"></a><br/>
+
+<p class="subinfo">In the Cognitive Atlas, we define a contrast as any function over experimental conditions. The simplest contrast is the indicator value for a specific condition; more complex contrasts include linear or nonlinear functions of the indicator across different experimental conditions.</p>
+
+</div></div>
+
+<br clear="all"><div class="clear_all"></div>
+
+<a target="_blank" href="{% url 'task_json' task.id %}"><button>json</button></a>
+<a target="_blank" href="http://neurovault.org/tasks/{{ task.id }}"><button>neurovault</button></a>
+
+</div><!-- #unterbutton_slide_XXX -->					
+</div><!-- .discdiv -->
+</div><!-- .pane -->
+<div class="clear_all"></div>
+<div class="clear_all"><br/>
+  
+{% endblock %}
+{% block scripts %}
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/NodeList-traverse.js"></script>
+<script src="{% static "js/chosen-dojo.js"%}" type="text/javascript"></script>
+<script src="{% static "js/select2.min.js"%}" type="text/javascript"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $(function() {
+       $(".tooltip").tipsy({fade:false, gravity:"w", html:true});
+       $("#masker").fadeOut("fast");
+    });
+
+    // Show form to update definition
+    $("#update_definition_button").click(function(){
+        $("#update_definition").removeClass('hidden');
+    })
+    $("#cancel_button").click(function(){
+        $("#update_definition").addClass('hidden');
+    })
+
+    // Show form to add concept
+    $("#add_concept_button").click(function(){
+        $("#concept_search_box").removeClass('hidden');
+    })
+    $("#concept_cancel_button").click(function(){
+        $("#concept_search_box").addClass('hidden');
+    })
+
+    var conditions = {{ conditions | safe }};
+    var condition_names = [] 
+    $.each(conditions,function(i,e){
+        condition_names.push(e.condition_name);
+    })
+
+    // Select2 and dojo menus
+    $("#operator").select2();
+  
+    dojo.ready(function() {
+        dojo.query(".chzn-select").chosen();
+        dojo.query(".chzn-select-deselect").chosen({allow_single_deselect:true});
+        dojo.query(".chzn-select-batch").chosen({batch_select:true});
+    });
+        
+    {% if request.user.is_authenticated %}
+    // Add condition
+    $(function() {
+
+    $('#conceptterm').click(function() {
+        $("#concept_search_results").addClass("hidden")
+        $("#concept_search_results").html("")
+        $("#concept_search_results").attr("size","0")
+    });
+
+    $('#conceptterm').keyup(function() {
+
+        $.ajax({
+            type: "POST",
+            url: "{% url 'search_concept' %}",
+            data: {
+                'relationterm' : $('#conceptterm').val(),
+                'csrfmiddlewaretoken' : $("input[name=csrfmiddlewaretoken]").val()
+            },
+            complete: function (data, error){
+                  $("#concept_search_results").html("")
+                  var results = JSON.parse(data.responseText);
+                  $.each(results,function(i,e){
+                      $("#concept_search_results").append('<option value="' + e.id +'">'+ e.name +'</option>');
+                  });
+
+                  $("#concept_search_results").removeClass("hidden")
+                  $("#concept_search_results").attr("size","5")
+
+            },
+            dataType: 'html',
+        });
+
+    });
+    });
+
+    // Button functionality for concept contrast selection
+    {% if "ASSERTS" in task.relations %}
+    (function() {
+       {% for relation in task.relations.ASSERTS %}
+
+        $("#add_contrast_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").removeClass("hidden")
+        }); 
+
+        $("#cancel_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").addClass("hidden")
+        });
+
+        $("#close_button_{{ relation.id }}").click(function(){
+            $("#contrast_search_box_{{ relation.id }}").addClass("hidden")
+        });
+
+        {% endfor %}
+    })();
+    {% endif %}
+
+
+    {% endif %}
+
+
+});
+</script>
+{% endblock %}

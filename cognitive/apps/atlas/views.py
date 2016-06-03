@@ -1,4 +1,5 @@
-from cognitive.apps.atlas.query import Concept, Task, Disorder, Contrast, Battery, Theory, search
+from cognitive.apps.atlas.query import Concept, Task, Disorder, \
+  Contrast, Battery, Theory, Condition, search
 from cognitive.apps.atlas.utils import clean_html, update_lookup, add_update
 from django.http import JsonResponse, HttpResponse
 from cognitive.settings import DOMAIN
@@ -14,6 +15,7 @@ Disorder = Disorder()
 Contrast = Contrast()
 Battery = Battery()
 Theory = Theory()
+Condition = Condition()
 
 # Needed on all pages
 counts = {"disorders":Disorder.count(),
@@ -74,16 +76,14 @@ def all_disorders(request):
 
     context = {'appname': "The Cognitive Atlas",
                'active':"disorders",
-               'nodes':disorders,
-               'counts':counts}
+               'nodes':disorders}
 
     return render(request,"atlas/all_disorders.html",context)
 
 def all_contrasts(request):
     '''all_contrasts returns page with list of all contrasts'''
-
     contrasts = Contrast.all(order_by="name",fields=fields)
-    return all_nodes(request,contrasts,counts["contrasts"],"contasts")    
+    return all_nodes(request,contrasts,"contasts")    
 
 
 # VIEWS BY LETTER #############################################################
@@ -96,8 +96,7 @@ def nodes_by_letter(request,letter,nodes,nodes_count,node_type):
                'nodes':nodes,
                'letter':letter,
                'term_type':node_type[:-1],
-               'filtered_nodes_count':nodes_count,
-               'counts':counts}
+               'filtered_nodes_count':nodes_count}
 
     return render(request,"atlas/terms_by_letter.html",context)
 
@@ -276,6 +275,9 @@ def update_disorder(request,uid):
 # ADD RELATIONS ###################################################################
 
 def add_concept_relation(request,uid):
+    '''add_concept_relation will add a relation from a concept to another concept (PARTOF or KINDOF)
+    :param uid: the uid of the concept page, for returning to the page after creation
+    '''
     if request.method == "POST":
         relation_type = request.POST.get('relation_type', '')
         concept_selection = request.POST.get('concept_selection', '')
@@ -283,24 +285,67 @@ def add_concept_relation(request,uid):
     return view_concept(request,uid)
 
 def add_task_contrast(request,uid):
+    '''add_task_contrast will display the view to add a contrast to a task, meaning a set of conditions
+    and an operator over the conditions. This view is a box over the faded out view_task page
+    :param uid: the unique id of the task
+    '''
     context = view_task(request,uid,return_context=True)
+    context["conditions"] = Task.get_conditions(uid)
     return render(request,'atlas/add_contrast.html',context)
 
 
 def add_task_concept(request,uid):
+    '''add_task_concept will add a cognitive concept to the list on a task page, making the assertion that the concept
+    is associated with the task.
+    :param uid: the unique id of the task, for returning to the task page when finished
+    '''
     if request.method == "POST":
         relation_type = "ASSERTS" #task --asserts-> concept
         concept_selection = request.POST.get('concept_selection', '')
         Task.link(uid,concept_selection,relation_type,endnode_type="concept")
     return view_task(request,uid)
 
+
 def add_concept_contrast(request,uid):
+    '''add_concept_contrast will add a contrast associated with conditions--> task to the task view
+    :param uid: the uid of the task, to return to the correct page after creation
+    '''
     if request.method == "POST":
         relation_type = "MEASUREDBY" #concept --MEASUREDBY-> contrast
         contrast_selection = request.POST.get('contrast_selection', '')
         concept_id = request.POST.get('concept_id', '')
         Concept.link(concept_id,contrast_selection,relation_type,endnode_type="contrast")
     return view_task(request,uid)
+
+
+def add_contrast(request,task_id):
+    '''add_contrast is the function called when the user submits a set of conditions and an operator to specify
+    a new contrast.
+    :param task_id: the id of the task, to return to the correct page after submission
+    '''
+    if request.method == "POST":
+        relation_type = "HASCONTRAST" #condition --HASCONTRAST-> contrast
+
+        # Get fields from post
+        post = dict(request.POST)
+        contrast_name = post.get('contrast_name', '')
+        conditions_left = post.get('conditions_1', '')
+        conditions_right = post.get('conditions_2', '')
+        operator = post.get('operator', '')
+
+        if contrast_name != "" and operator != "":
+            properties = {"operator":operator}
+            node = Contrast.create(name=contrast_name,properties=properties)
+
+            # Make a link between contrast and conditions, specify side as property of relation
+            for condition in conditions_left:
+                properties = {"operator_side":"left","operator":operator}
+                Condition.link(condition,node["id"],relation_type,endnode_type="contrast",properties=properties)
+            for condition in conditions_right:
+                properties = {"operator_side":"right","operator":operator}
+                Condition.link(condition,node["id"],relation_type,endnode_type="contrast",properties=properties)
+
+    return view_task(request,task_id)
 
 
 # SEARCH TERMS ####################################################################
