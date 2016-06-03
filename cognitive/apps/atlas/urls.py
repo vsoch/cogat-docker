@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^concept/add/contrast/(?P<uid>[\w\+%_& ]+)/$', views.add_concept_contrast, name="add_concept_contrast"),
     url(r'^task/add/contrast/(?P<uid>[\w\+%_& ]+)/$', views.add_task_contrast, name="add_task_contrast"),
     url(r'^contrast/add/(?P<task_id>[\w\+%_& ]+)/$', views.add_contrast, name="add_contrast"),
+    url(r'^condition/add/(?P<task_id>[\w\+%_& ]+)/$', views.add_condition, name="add_condition"),
 
     # Graph views
     url(r'^graph/task/(?P<uid>[\w\+%_& ]+)/$', graph.task_graph, name="task_graph"),

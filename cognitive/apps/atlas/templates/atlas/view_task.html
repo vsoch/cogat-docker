@@ -181,7 +181,19 @@
 <div class="clear_all"></div>
 
 <!-- CONDITIONS -->
-<div style="width: 960px;"><div class="block-thirdwide block-back"><strong> CONDITIONS</strong>
+<div style="width: 960px;"><div class="block-thirdwide block-back"><strong> CONDITIONS</strong><br>
+    {% if request.user.is_authenticated %}
+       <button id="add_condition" style="position:relative;border-radius:15px;float:right;top:-20px">+</button>
+        <form action="{% url 'add_condition' task.id %}" method="POST">
+            {% csrf_token %}
+           <div id="condition_box" style="padding-top:30px" class="hidden">
+               <label for="condition_name">Condition Name</label>
+               <input type="text" name="condition_name"></input>
+               <input type="submit" value="submit" class="btn btn-primary"></input>    
+               <button id="condition_cancel_button" type="button" class="btn btn-primary">Cancel</button>
+           </div>
+        </form>
+    {% endif %}
     {% for condition_id,condition in conditions.items %}
     <div class="conblock{{ forloop.counter }}" id="conditions-block">
          <div id="condition_container{{ condition_id }}">
@@ -199,7 +211,11 @@
 <div class="block-thirdwide block-back block-margin">
     <strong>CONTRASTS</strong>
     <div class="conblock2" id="contrasts-block">
+        {% if conditions|length > 0 %}
         <a href="{% url 'add_task_contrast' task.id %}"><button style="position:relative;border-radius:15px;float:right;top:-20px">+</button></a>
+        {% else %}
+        <p class="subinfo" style="color:#d89013;padding-top:20px">You must specify conditions before you can define contrasts.</p>
+        {% endif %}
 
         {% for contrast_id,contrast in contrasts.items %}
         <div id="contrast_container_{{ contrast.0.contrast_id }}">
@@ -272,6 +288,15 @@ $(document).ready(function() {
     })
     $("#concept_cancel_button").click(function(){
         $("#concept_search_box").addClass('hidden');
+    })
+
+
+    // Show input to add condition
+    $("#add_condition").click(function(){
+        $("#condition_box").removeClass('hidden');
+    })
+    $("#condition_cancel_button").click(function(){
+        $("#condition_box").addClass('hidden');
     })
 
 

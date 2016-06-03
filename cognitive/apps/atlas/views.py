@@ -235,8 +235,21 @@ def add_term(request):
 
 
 def contribute_disorder(request):
-
     return render(request,'atlas/contribute_disorder.html',context)
+
+def add_condition(request,task_id):
+    '''add_condition will add a condition associated with a task
+    :param task_id: the uid of the task, to return to the correct page after creation
+    '''
+    if request.method == "POST":
+        relation_type = "HASCONDITION" #task --HASCONDITION-> condition
+        condition_name = request.POST.get('condition_name', '')
+
+        if condition_name != "":
+            condition = Condition.create(name=condition_name)
+            Task.link(task_id,condition["id"],relation_type,endnode_type="condition")
+    return view_task(request,task_id)
+
 
 # UPDATE TERMS ####################################################################
 
