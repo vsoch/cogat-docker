@@ -199,6 +199,8 @@
 <div class="block-thirdwide block-back block-margin">
     <strong>CONTRASTS</strong>
     <div class="conblock2" id="contrasts-block">
+        <a href="{% url 'add_task_contrast' task.id %}"><button style="position:relative;border-radius:15px;float:right;top:-20px">+</button></a>
+
         {% for contrast_id,contrast in contrasts.items %}
         <div id="contrast_container_{{ contrast.0.contrast_id }}">
             <div class="conblock-inner-wide">

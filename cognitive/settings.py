@@ -96,6 +96,9 @@ TEMPLATES = [
 ]
 
 
+# CUSTOM CONTEXT PROCESSORS
+TEMPLATES[0]['OPTIONS']['context_processors'].append("main.context_processors.counts_processor")
+
 WSGI_APPLICATION = 'cognitive.wsgi.application'
 
 

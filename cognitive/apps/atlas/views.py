@@ -131,7 +131,7 @@ def view_concept(request,uid):
     return render(request,'atlas/view_concept.html',context)
 
 
-def view_task(request,uid):
+def view_task(request,uid,return_context=False):
     task = Task.get(uid)[0]
  
     # Replace newlines with <br>, etc.
@@ -160,6 +160,8 @@ def view_task(request,uid):
                "conditions":conditions,
                "domain":DOMAIN}
 
+    if return_context == True:
+        return context
     return render(request,'atlas/view_task.html',context)
 
 
@@ -279,6 +281,10 @@ def add_concept_relation(request,uid):
         concept_selection = request.POST.get('concept_selection', '')
         Concept.link(uid,concept_selection,relation_type)
     return view_concept(request,uid)
+
+def add_task_contrast(request,uid):
+    context = view_task(request,uid,return_context=True)
+    return render(request,'atlas/add_contrast.html',context)
 
 
 def add_task_concept(request,uid):
