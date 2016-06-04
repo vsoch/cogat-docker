@@ -331,10 +331,16 @@
   
 {% endblock %}
 {% block scripts %}
+
+<script src="{% static "js/select2.min.js"%}" type="text/javascript"></script>
+<script>
+// Select2 and dojo menus
+$("#operator").select2();
+</script>
+
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/dojo.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/dojo/1.7.2/dojo/NodeList-traverse.js"></script>
 <script src="{% static "js/chosen-dojo.js"%}" type="text/javascript"></script>
-<script src="{% static "js/select2.min.js"%}" type="text/javascript"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     $(function() {
@@ -363,9 +369,6 @@ $(document).ready(function() {
     $.each(conditions,function(i,e){
         condition_names.push(e.condition_name);
     })
-
-    // Select2 and dojo menus
-    $("#operator").select2();
   
     dojo.ready(function() {
         dojo.query(".chzn-select").chosen();
