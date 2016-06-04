@@ -19,6 +19,8 @@
 
 <div class="container" id="pagecontent">
 
+{{ concepts }}
+
 <div id="block-definition" class="block-full">	
     <div class="assertion">
         <div class="CATerm task">
@@ -99,14 +101,14 @@
                             </div>
                             <div style='width:60%;float:left;text-align:left;'>
                                 <ul style="margin-left:30px;margin-top:8px;list-style-image:url('/static/img/contrast-icon.jpg');">
-                                {% for concept_name,assertions in concepts.items %}
+                                {% for concept,assertions in concepts.items %}
+                                    {% if concept = relation.id %}
                                     {% for assertion in assertions %}
-                                    {% if assertion.concept_id = relation.id %}
                                     <li class="contrastli">
                                         <a href="#" class="task">{{ assertion.contrast_name }}</a>
                                     </li>
-                                    {% endif %}
                                     {% endfor %}
+                                    {% endif %}
                                 {% endfor %}
                                 </ul>
 
@@ -194,9 +196,9 @@
            </div>
         </form>
     {% endif %}
-    {% for condition_id,condition in conditions.items %}
+    {% for condition in conditions %}
     <div class="conblock{{ forloop.counter }}" id="conditions-block">
-         <div id="condition_container{{ condition_id }}">
+         <div id="condition_container{{ condition.condition_id }}">
             <div class="conblock-inner-left"><a name="{{ condition.condition_name }}"><em>{{ condition.condition_name }}</em></a> 
             </div>
         </div>
@@ -217,21 +219,21 @@
         <p class="subinfo" style="color:#d89013;padding-top:20px">You must specify conditions before you can define contrasts.</p>
         {% endif %}
 
-        {% for contrast_id,contrast in contrasts.items %}
-        <div id="contrast_container_{{ contrast.0.contrast_id }}">
+        {% for contrast in contrasts %}
+        <div id="contrast_container_{{ contrast.contrast_id }}">
             <div class="conblock-inner-wide">
-                <a name="{{ contrast.0.contrast_name }}" class="task" href="{% url 'contrast' contrast_id %}">{{ contrast.0.contrast_name }}</a>
+                <a name="{{ contrast.contrast_name }}" class="task" href="{% url 'contrast' contrast.contrast_id %}">{{ contrast.contrast_name }}</a>
             </div>
-            <div id="editcont_{{ contrast.0.contrast_id }}" style="display:none" class="popstar marbot"><br/>
+            <div id="editcont_{{ contrast.contrast_id }}" style="display:none" class="popstar marbot"><br/>
             <form method="post" action="/post/" name="conteditform">
                 <input type="hidden" name="form_type" value="contrast_update" />
                 <input type="hidden" name="return_page" value="task/id" />
                 <input type="hidden" name="id_object" value="{{ task.id }}" />	
-                <input type="hidden" name="id" value="{{ contrast.0.contrast_id }}" />	
+                <input type="hidden" name="id" value="{{ contrast.contrast_id }}" />	
 
                 <table>
                     <tr><td><strong>Edit Contrast:</strong><br/>
-                        <input type="text" name="contrast_text" value="{{ contrast.0.contrast_name }}" size="28" title="contrast text" aria-label="contrast text">
+                        <input type="text" name="contrast_text" value="{{ contrast.contrast_name }}" size="28" title="contrast text" aria-label="contrast text">
                     </td></tr>
                     <tr><td><strong>Contrast URI:</strong><br/>
                         <input type="text" name="contrast_uri" value="" size="28" title="contrast uri" aria-label="contrast uri">
@@ -239,7 +241,7 @@
                     <tr><td style="text-align:right">
                         <input type="button" onclick="javascript:window.location.reload();" value="cancel" title="cancel submission" aria-label="cancel submission"/>
                         <input type="submit" value="update" title="submit form" aria-label="submit form" />
-                        <input type="button" rel="{{ contrast.0.contrast_id }}" class="contrast-delete" value="delete" title="delete contrast" aria-label="delete contrast" />
+                        <input type="button" rel="{{ contrast.contrast_id }}" class="contrast-delete" value="delete" title="delete contrast" aria-label="delete contrast" />
                      </td></tr>
                 </table>
             </form>

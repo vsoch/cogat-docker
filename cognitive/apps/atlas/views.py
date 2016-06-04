@@ -139,23 +139,17 @@ def view_task(request,uid,return_context=False):
 
     # Make a lookup dictionary based on concept id
     concept_lookup = dict()
-    contrast_lookup = dict()
     for contrast in contrasts:
-        concept_lookup = update_lookup(concept_lookup,contrast["concept_id"],contrast)
-        contrast_lookup = update_lookup(contrast_lookup,contrast["contrast_id"],contrast)
+        contrast_concepts = Contrast.get_concepts(contrast["contrast_id"])
+        for concept in contrast_concepts:
+            concept_lookup = update_lookup(concept_lookup,concept["concept_id"],contrast)
 
-    # If we want association of conditions with contrasts
-    #conditions = {x:Contrast.get_conditions(x) for x in list(contrast_lookup.keys())}
-    conditions = dict()
-    for contrast_id in list(contrast_lookup.keys()):
-        new_conditions = Contrast.get_conditions(contrast_id)
-        for new_condition in new_conditions:
-            if new_condition["condition_id"] not in conditions:
-                conditions[new_condition["condition_id"]] = new_condition
+    # Retrieve conditions, make associations with contrasts
+    conditions = Task.get_conditions(uid)
 
     context = {"task":task,
                "concepts":concept_lookup,
-               "contrasts":contrast_lookup,
+               "contrasts":contrasts,
                "conditions":conditions,
                "domain":DOMAIN}
 

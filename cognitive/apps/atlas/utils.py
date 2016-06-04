@@ -80,10 +80,12 @@ def update_lookup(lookup,key,entry):
     :param lookup: dictionary to update
     :param entry: the entry to add to the list
     '''
+    if not isinstance(entry,list):
+        entry = [entry]
     if key in lookup:
-        lookup[key].append(entry)
+        lookup[key] = lookup[key] + entry
     else:
-        lookup[key] = [entry]
+        lookup[key] = entry
     return lookup
 
 def color_by_relation(relation_name):

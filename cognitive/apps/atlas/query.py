@@ -299,8 +299,7 @@ class Task(Node):
         :param task_id: the task unique id (trm|tsk_*) for the task
         '''
         
-        fields = ["concept.id","concept.creation_time","concept.name","concept.last_updated","concept.definition",
-                  "contrast.id","contrast.creation_time","contrast.name","contrast.last_updated"]
+        fields = ["contrast.id","contrast.creation_time","contrast.name","contrast.last_updated"]
 
         return_fields = ",".join(fields)
         query = '''MATCH (t:task)-[:HASCONDITION]->(c:condition) 
@@ -308,14 +307,15 @@ class Task(Node):
                    WITH c as condition
                    MATCH (condition)-[:HASCONTRAST]->(con:contrast) 
                    WITH con as contrast
-                   MATCH (c:concept)-[:MEASUREDBY]->(contrast)
-                   WITH c as concept, contrast
                    RETURN %s''' %(task_id,return_fields)
 
         fields = [x.replace(".","_") for x in fields]
         
-        return do_query(query,fields=fields)
-            
+        result = do_query(query,fields=fields,drop_duplicates=False,output_format="df")
+        result["contrast_name"] = [r[0] if isinstance(r,list) else r for r in result['contrast_name']]
+        result = result.drop_duplicates()
+        return result.to_dict(orient="records")
+
 
     def get_conditions(self,task_id):
         '''get_conditions looks up the condition(s) associated with a task
@@ -375,6 +375,26 @@ class Contrast(Node):
         
         return do_query(query,fields=fields)
 
+
+    def get_concepts(self,contrast_id,fields=None):
+        '''get_concepts returns conditions associated with a contrast
+        :param contrast_id: the contrast unique id (cnt) for the task
+        :param fields: condition fields to return
+        '''
+
+        if fields == None:
+            fields = ["concept.creation_time","concept.id","concept.description",
+                      "concept.last_updated","concept.name"]
+
+        return_fields = ",".join(fields)
+        query = '''MATCH (con:concept)-[:MEASUREDBY]->(c:contrast) 
+                   WHERE c.id='%s'
+                   WITH con as concept
+                   RETURN %s''' %(contrast_id,return_fields)
+
+        fields = [x.replace(".","_") for x in fields]
+        
+        return do_query(query,fields=fields)
 
 
     def get_tasks(self,contrast_id,fields=None):
