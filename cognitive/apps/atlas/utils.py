@@ -88,6 +88,17 @@ def update_lookup(lookup,key,entry):
         lookup[key] = entry
     return lookup
 
+def merge_cypher(cypher1,cypher2):
+    '''merge_cypher will combine two cypher objects, meaning dictionaries with lists of nodes and links
+    it is assumed that there are not repeated nodes
+    :param cypher1: the first cypher dict
+    :param cypher2: the second cypher dict
+    '''
+    cypher = dict()
+    cypher["nodes"] = cypher1["nodes"] + cypher2["nodes"]
+    cypher["links"] = cypher1["links"] + cypher2["links"]
+    return cypher
+
 def color_by_relation(relation_name):
     '''color_by_relation returns node color based on relation type
     :param relation_name: the name of the relation to look up color for

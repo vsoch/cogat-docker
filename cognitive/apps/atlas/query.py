@@ -77,43 +77,49 @@ class Node:
             node.push()
 
 
-    def cypher(self,uid,lookup=None):
+    def cypher(self,uid,lookup=None,return_lookup=False):
         '''cypher returns a data structure with nodes and relations for an object to generate a gist with cypher
         :param uid: the node unique id to look up
-        :param lookup: (optional) a previously defined lookup to obtain node/relation Ids, and the start count
+        :param lookup: an optional lookup dictionary to append to
+        :param return_lookup: if true, returns a lookup with nodes and relations that are added to the graph
         '''
+        base = self.get(uid)[0]
+
+        # Keep track of nodes we've seen
         links = []
         nodes = []
+
+        # Update the lookup
         if lookup == None:
-            lookup = dict() # a lookup of node ids
-            count = 1
-        else:
-            count = numpy.max(lookup.values()) + 1
-        base = self.get(uid)[0]
-        if base["id"] not in lookup:
-            lookup[base["id"]] = count
-            count+=1
-        nodes.append(cypher_node(base["id"],self.name,base["name"],lookup[base["id"]]))
+            lookup = dict()
+        if self.name not in lookup:
+            lookup[self.name] = []
+        if base["id"] not in lookup[self.name]:
+            lookup[self.name].append(base["id"])
+            nodes.append(cypher_node(base["id"],self.name,base["name"],base["_id"]))
+            # id is the cognitive atlas id, _id is the graph id
+
         if "relations" in base:
             for relation_type,relations in base["relations"].items():
-                print(relation_type)
-                print(relations)
                 node_type = get_relation_nodetype(relation_type)
+                if node_type not in lookup:
+                    lookup[node_type] = []
                 for relation in relations:
-                    if relation["id"] not in lookup:
-                        lookup[relation["id"]] = count
-                        nodes.append(cypher_node(relation["id"],node_type,relation["name"],lookup[relation["id"]]))
-                        count+=1
-                    links.append(cypher_relation(relation_type,lookup[base["id"]],lookup[relation["id"]]))
+                    if relation["id"] not in lookup[node_type]:
+                        lookup[node_type].append(relation["id"])
+                        nodes.append(cypher_node(relation["id"],node_type,relation["name"],relation["_id"]))
+                        links.append(cypher_relation(relation_type,base["_id"],relation["_id"]))
 
-        result = {"nodes":"\n".join(nodes),"links":"\n".join(links)}
+        result = {"nodes":nodes,"links":links}
+        if return_lookup == True:
+            return result, lookup
         return result
 
              
     def graph(self,uid,fields=None):
         '''graph returns a graph representation of one or more nodes, meaning a dictionary of nodes/links with
         (minimally) fields name, label, and id. Additional fields are included that are defined in the Node
-        objects fields
+        objects fields. THIS FUNCTION WILL LIKELY BE REMOVED.
         '''
         minimum_fields = ["name"]
         if fields == None:
@@ -171,7 +177,7 @@ class Node:
         '''
         if fields == None:
             fields = self.fields
-        return_fields = ",".join(["n.%s" %(x) for x in fields])
+        return_fields = ",".join(["n.%s" %(x) for x in fields] + ["ID(n)"])
 
         query = "MATCH (n:%s)" %self.name
         for tup in filters:
@@ -179,6 +185,7 @@ class Node:
             if filter_name == "starts_with":
                 query = "%s WHERE n.%s =~ '(?i)%s.*'" %(query,filter_field,filter_value)
         query = "%s RETURN %s" %(query,return_fields)
+        fields = fields + ["_id"]
         return do_query(query,output_format=format,fields=fields)
 
 
@@ -193,7 +200,7 @@ class Node:
         if fields == None:
            fields = self.fields
 
-        return_fields = ",".join(["n.%s" %(x) for x in fields])
+        return_fields = ",".join(["n.%s" %(x) for x in fields] + ["ID(n)"])
         query = "MATCH (n:%s) RETURN %s" %(self.name,return_fields)
 
         if order_by != None:
@@ -204,6 +211,7 @@ class Node:
         if limit != None:
             query = "%s LIMIT %s" %(query,limit) 
 
+        fields = fields + ["_id"]
         return do_query(query,fields=fields,output_format=format)
 
     def get(self,uid,field="id",get_relations=True,relations=None):
@@ -219,6 +227,7 @@ class Node:
         for parent in parents:
             new_node = {}
             new_node.update(parent.properties)
+            new_node["_id"] = parent._id
 
             if get_relations == True:
                 relation_nodes = dict()
@@ -226,6 +235,8 @@ class Node:
                 for new_relation in new_relations:
                     new_relation_node = {}
                     new_relation_node.update(new_relation.end_node.properties)
+                    new_relation_node["_id"] = new_relation.end_node._id
+                    new_relation_node["_relation_id"] = new_relation._id
                     new_relation_node["relationship_type"] = new_relation.type
                     if new_relation.type in relation_nodes:
                         relation_nodes[new_relation.type].append(new_relation_node)
@@ -245,30 +256,27 @@ class Node:
     def search_all_fields(self, params):
         if isinstance(params,str):
             params = [params]
-        return_fields = ",".join(["c.%s" %(x) for x in self.fields])
+        return_fields = ",".join(["c.%s" %(x) for x in self.fields] + ["ID(c)"])
         query = "MATCH (c:%s) WHERE c.{0} =~ '(?i).*{1}.*$' RETURN %s;" %(self.name,return_fields)
-        queries = []
-        for field in self.fields:
-            for param in params:
-               queries.append(query.format(field, param))
         
         # Combine queries into transaction
         tx = graph.cypher.begin()
 
-        for query in queries:
-            tx.append(query)
+        for field in self.fields:
+            for param in params:
+               tx.append(query.format(field, param))
 
         # Return as pandas data frame
         results = tx.commit()
         if not results or sum(len(res) for res in results) == 0:
             return {}
         
-        df = pandas.DataFrame(columns=self.fields)
+        df = pandas.DataFrame(columns=self.fields + ["_id"])
         i = 0
         for result in results:
             for record in result.records:
                 attr_values = []
-                for field in self.fields:
+                for field in self.fields + ["ID(c)"]:
                     attr_name = "c.%s" %(field)
                     attr_values.append(getattr(record, attr_name, ""))
                 df.loc[i] = attr_values
@@ -299,9 +307,9 @@ class Task(Node):
         :param task_id: the task unique id (trm|tsk_*) for the task
         '''
         
-        fields = ["contrast.id","contrast.creation_time","contrast.name","contrast.last_updated"]
+        fields = ["contrast.id","contrast.creation_time","contrast.name","contrast.last_updated","ID(contrast)"]
 
-        return_fields = ",".join(fields)
+        return_fields = ",".join(fields) 
         query = '''MATCH (t:task)-[:HASCONDITION]->(c:condition) 
                    WHERE t.id='%s'
                    WITH c as condition
@@ -310,6 +318,7 @@ class Task(Node):
                    RETURN %s''' %(task_id,return_fields)
 
         fields = [x.replace(".","_") for x in fields]
+        fields[-1] = "_id" # consistent name for graph node id
         
         result = do_query(query,fields=fields,drop_duplicates=False,output_format="df")
         result["contrast_name"] = [r[0] if isinstance(r,list) else r for r in result['contrast_name']]
@@ -321,7 +330,7 @@ class Task(Node):
         '''get_conditions looks up the condition(s) associated with a task
         :param task_id: the task unique id (trm|tsk_*) for the task
         '''        
-        fields = ["condition.id","condition.name","condition.last_updated","condition.creation_time"]
+        fields = ["condition.id","condition.name","condition.last_updated","condition.creation_time","ID(condition)"]
 
         return_fields = ",".join(fields)
         query = '''MATCH (t:task)-[:HASCONDITION]->(c:condition) 
@@ -329,7 +338,8 @@ class Task(Node):
                    WITH c as condition
                    RETURN %s''' %(task_id,return_fields)
         fields = [x.replace(".","_") for x in fields]
-        
+        fields[-1] = "_id"        
+
         return do_query(query,fields=fields)
 
 
@@ -363,7 +373,7 @@ class Contrast(Node):
 
         if fields == None:
             fields = ["condition.creation_time","condition.id",
-                      "condition.last_updated","condition.name"]
+                      "condition.last_updated","condition.name","ID(condition)"]
 
         return_fields = ",".join(fields)
         query = '''MATCH (cond:condition)-[:HASCONTRAST]->(c:contrast) 
@@ -372,6 +382,7 @@ class Contrast(Node):
                    RETURN %s''' %(contrast_id,return_fields)
 
         fields = [x.replace(".","_") for x in fields]
+        fields[-1] = "_id"
         
         return do_query(query,fields=fields)
 
@@ -384,7 +395,7 @@ class Contrast(Node):
 
         if fields == None:
             fields = ["concept.creation_time","concept.id","concept.description",
-                      "concept.last_updated","concept.name"]
+                      "concept.last_updated","concept.name","ID(concept)"]
 
         return_fields = ",".join(fields)
         query = '''MATCH (con:concept)-[:MEASUREDBY]->(c:contrast) 
@@ -393,6 +404,7 @@ class Contrast(Node):
                    RETURN %s''' %(contrast_id,return_fields)
 
         fields = [x.replace(".","_") for x in fields]
+        fields[-1] = "_id"
         
         return do_query(query,fields=fields)
 
@@ -403,12 +415,12 @@ class Contrast(Node):
         :param fields: task fields to return
         '''
         if fields == None:
-            fields = ["creation_time","definition","id","last_updated","name"]
+            fields = ["task.creation_time","task.definition","task.id","task.last_updated","task.name","ID(task)"]
         
         # task --> [hascondition] --> condition
         # condition -> [hascontrast] -> contrast
 
-        return_fields = ",".join(["task.%s" %f for f in fields])
+        return_fields = ",".join(fields)
         query = '''MATCH (c:concept)-[:MEASUREDBY]->(co:contrast) 
                    WHERE co.id='%s' WITH co as contrast 
                    MATCH (c:condition)-[:HASCONTRAST]->(contrast) WITH c as condition 
@@ -416,6 +428,8 @@ class Contrast(Node):
                    WITH DISTINCT t as task
                    RETURN %s''' %(contrast_id,return_fields)
 
+        fields = fields.replace(".","_")
+        fields[-1] = "_id"
         return do_query(query,fields=fields)
         
 
@@ -438,7 +452,7 @@ class Theory(Node):
 def search(searchstring,fields=["name","id"],node_type=None):
     if isinstance(fields,str):
         fields = [fields]
-    return_fields = ",".join(["n.%s" %x for x in fields])
+    return_fields = ",".join(["n.%s" %x for x in fields] + ["ID(n)"])
 
     # Customize if specific kind of node requested
     if node_type == None:
@@ -449,7 +463,7 @@ def search(searchstring,fields=["name","id"],node_type=None):
     query = '''MATCH (n%s) 
                WHERE str(n.name) =~ '(?i).*%s.*' 
                RETURN %s, labels(n);''' %(node_type,searchstring,return_fields)
-    fields = fields + ["label"]
+    fields = fields + ["_id","label"]
     result = do_query(query,fields=fields,drop_duplicates=False,output_format="df")
     result["label"] = [r[0] for r in result['label']]
     result = result.drop_duplicates()
@@ -459,8 +473,9 @@ def search(searchstring,fields=["name","id"],node_type=None):
 def get(nodeid,fields=["name","id"]):
     if isinstance(fields,str):
         fields = [fields]
-    return_fields = ",".join(["n.%s" %x for x in fields])
+    return_fields = ",".join(["n.%s" %x for x in fields] + ["ID(n)"])
     query = '''MATCH (n) WHERE str(n.name) =~ '(?i).*%s.*' RETURN %s;''' %(searchstring,return_fields)
+    fields = fields + ["_id"]
     return do_query(query,fields=fields)
 
 

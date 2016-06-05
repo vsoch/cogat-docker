@@ -1,11 +1,14 @@
+from cognitive.apps.atlas.query import Task, Concept, Condition, Contrast
+from cognitive.apps.atlas.utils import merge_cypher
 from django.http import JsonResponse, HttpResponse
-from cognitive.apps.atlas.query import Task, Concept
 from django.template import loader,Context
 from django.shortcuts import render
 import csv
 
 Task = Task()
 Concept = Concept()
+Condition = Condition()
+Contrast = Contrast()
 
 # Return full graph visualizations
 
@@ -45,13 +48,31 @@ def task_gist(request,uid,query=None,return_gist=False):
     :param query: a custom query. If not defined, will show a table of concepts asserted.
     :param return_gist: if True, will return the context with all needed variables
     '''
-    cypher = Task.cypher(uid)
+    
+    task_cypher,lookup = Task.cypher(uid,return_lookup=True)
+    node_types = list(lookup)
+    for node_type in node_types:
+        for term in lookup[node_type]:
+            if node_type == "condition":
+                new_cypher,lookup = Condition.cypher(term,lookup=lookup,return_lookup=True)
+            elif node_type == "task":
+                new_cypher,lookup = Task.cypher(term,lookup=lookup,return_lookup=True)
+            elif node_type == "contrast":
+                new_cypher,lookup = Contrast.cypher(term,lookup=lookup,return_lookup=True)
+            elif node_type == "concept":
+                new_cypher,lookup = Concept.cypher(term,lookup=lookup,return_lookup=True)
+            task_cypher = merge_cypher(task_cypher,new_cypher)
+
     task = Task.get(uid)[0]
     if query == None:
         query = "MATCH (t:task)-[r:ASSERTS]->(c:concept) RETURN t.name as task_name,c.name as concept_name;"
 
-    context = {"relations":cypher["links"],
-               "nodes":cypher["nodes"],
+    # Join by newline
+    task_cypher["links"] = "\n".join(task_cypher["links"])
+    task_cypher["nodes"] = "\n".join(task_cypher["nodes"])
+
+    context = {"relations":task_cypher["links"],
+               "nodes":task_cypher["nodes"],
                "node_type":"task",
                "node_name":task["name"],
                "query":query}
