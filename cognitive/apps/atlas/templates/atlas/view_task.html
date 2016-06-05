@@ -118,8 +118,8 @@
                                     {% if contrasts|length > 0 %}
                                     <form style="padding-top:20px" method="post" action="{% url 'add_concept_contrast' task.id %}">
                                         <select name="contrast_selection" id="add_contrast_{{ relation.id }}" style="width:220px" size="3" style="padding-left:10px;">
-                                        {% for contrast_id,contrast in contrasts.items %}
-                                        <option value="{{ contrast.0.contrast_id }}">{{ contrast.0.contrast_name }}</option>
+                                        {% for contrast in contrasts %}
+                                        <option value="{{ contrast.contrast_id }}">{{ contrast.contrast_name }}</option>
                                         {% endfor %}
                                         </select>
                                         <input type="hidden" name="concept_id" value="{{ relation.id }}" />
