@@ -7,4 +7,8 @@ Light Django application and containers for Spark and Neo4j to serve the Cogniti
 
 Get Docker:  [https://docs.docker.com/installation/](https://docs.docker.com/installation/)
 
+## Setting up social authentication
+
+To set up the social auth backend, after starting the server you will need to [follow these instructions](https://django-allauth.readthedocs.io/en/latest/installation.html#post-installation).
+
 More details to come.

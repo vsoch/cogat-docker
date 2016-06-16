@@ -24,6 +24,7 @@ RUN pip install requests==2.9.0
 RUN pip install simplegeneric==0.8.1
 RUN pip install six==1.10.0
 RUN pip install cognitiveatlas
+RUN pip install django-allauth
 RUN pip install psycopg2
 RUN pip install uwsgi
 
