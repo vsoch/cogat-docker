@@ -45,7 +45,7 @@
                    <small>Recently updated mental</small> <b>CONCEPTS</b>
                    <ul class="superlist">
                        {% for concept in concepts %}
-                       <li><a href="/term/id/{{ concept.id }}" class="concept">{{ concept.name }}</a></li>
+                       <li><a href="/concept/id/{{ concept.id }}" class="concept">{{ concept.name }}</a></li>
                        {% endfor %}
                    </ul>
                    <a href="/concepts" class="superbutton wideload concept">BROWSE ALL {{ counts.concepts }} <b>CONCEPTS</b></a>
@@ -54,7 +54,7 @@
                <small>Recently updated experimental</small> <b>TASKS</b>
                    <ul class="superlist">
                    {% for task in tasks %}
-                       <li><a href="/term/id/{{ task.id }}" class="task">{{ task.name }}</a></li>
+                       <li><a href="/task/id/{{ task.id }}" class="task">{{ task.name }}</a></li>
                    {% endfor %}
                    </ul>
                    <a href="/tasks" class="superbutton wideload task">BROWSE ALL {{ counts.tasks }} <b>TASKS</b></a>
