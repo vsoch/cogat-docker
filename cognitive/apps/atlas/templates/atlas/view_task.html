@@ -220,7 +220,7 @@
         {% for contrast in contrasts %}
         <div id="contrast_container_{{ contrast.contrast_id }}">
             <div class="conblock-inner-wide">
-                <a name="{{ contrast.contrast_name }}" class="task" href="{% url 'contrast' contrast.contrast_id %}">{{ contrast.contrast_name }}</a>
+                <a name="{{ contrast.contrast_name }}" class="task" href="http://portal.graphgist.org/graph_gists/by_url?url={{ domain }}{% url 'contrast' contrast.contrast_id %}">{{ contrast.contrast_name }}</a>
             </div>
             <div id="editcont_{{ contrast.contrast_id }}" style="display:none" class="popstar marbot"><br/>
             <form method="post" action="/post/" name="conteditform">

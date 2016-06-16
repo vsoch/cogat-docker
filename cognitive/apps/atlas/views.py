@@ -158,10 +158,6 @@ def view_task(request,uid,return_context=False):
     return render(request,'atlas/view_task.html',context)
 
 
-def view_contrast(request,uid):
-    return render(request,'atlas/view_contrast.html',context)
-
-
 def view_battery(request,uid):
     return render(request,'atlas/view_battery.html',context)
 
@@ -335,22 +331,25 @@ def add_contrast(request,task_id):
 
         # Get fields from post
         post = dict(request.POST)
+        #pickle.dump(post,open('result.pkl','wb'))
         contrast_name = post.get('contrast_name', '')
-        conditions_left = post.get('conditions_1', '')
-        conditions_right = post.get('conditions_2', '')
-        operator = post.get('operator', '')
+        skip = ["contrast_name","csrfmiddlewaretoken"]
 
-        if contrast_name != "" and operator != "":
-            properties = {"operator":operator}
-            node = Contrast.create(name=contrast_name,properties=properties)
+        # Get dictionary with new conditions with nonzero weights
+        conditions = dict()
+        condition_ids = [x for x in post.keys() if x not in skip]
+        for condition_id in condition_ids:
+            weight = int(post.get(condition_id,0)[0])
+            if weight != 0:
+                conditions[condition_id] = weight
+
+        if contrast_name != "" and len(conditions) > 0:
+            node = Contrast.create(name=contrast_name)
 
             # Make a link between contrast and conditions, specify side as property of relation
-            for condition in conditions_left:
-                properties = {"operator_side":"left","operator":operator}
-                Condition.link(condition,node["id"],relation_type,endnode_type="contrast",properties=properties)
-            for condition in conditions_right:
-                properties = {"operator_side":"right","operator":operator}
-                Condition.link(condition,node["id"],relation_type,endnode_type="contrast",properties=properties)
+            for condition_id,weight in conditions.items():
+                properties = {"weight":weight}
+                Condition.link(condition_id,node["id"],relation_type,endnode_type="contrast",properties=properties)
 
     return view_task(request,task_id)
 

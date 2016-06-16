@@ -16,20 +16,19 @@
 }
 
 #add_contrast {
-  min-width:600px;
+  min-width:400px;
   min-height:200px;
   background-color: white;
   border-radius:10px;
   z-index:100;
   position: fixed;
-  top:25%;
+  top:5%;
   margin: 20px;
-  padding: 20px;
-  left:25%;
+  padding: 50px;
+  left:30%;
 }
 </style>
 <link type="text/css" href="{% static "css/select2.min.css"%}" rel="stylesheet" media="screen">
-<link type="text/css" href="{% static "css/chosen.css"%}" rel="stylesheet" media="screen">
 {% endblock %}
 {% load staticfiles %}
 
@@ -59,37 +58,20 @@
       	        <thead>
                     <tr>
                         <th class="text-center">Conditions <i style="font-size:10" data-toggle="tooltip" title="Select one or more conditions for the left side of the operator" class="fa fa-question-circle"></i></th>
-                        <th class="text-center">Operator</th>
-                        <th class="text-center">Conditions</th>
+                        <th class="text-center">Weight</th>
       		</thead>
       		<tbody>
+                    {% for condition in conditions %}
                     <tr>
                        <td>
-                           <div class="form-group">
-                               <select data-placeholder="Select Conditions" style="width:300px;" class="chzn-select-batch" multiple tabindex="6" name = "conditions_1">
-                                  {% for condition in conditions %}
-                                  <option value="{{ condition.condition_id }}">{{ condition.condition_name }}</option>
-                                  {% endfor %}                                      
-                               </select>
-                           </div>
+                           <p>{{ condition.condition_name }}</p>
                        </td>
-                      <td><select class="form-control" name="operator" id="operator">
-                          <option value="MINUS">minus (-)</option>
-                          <option value="PLUS">plus (+)</option>
-                          <option value="MULTIPLY">multiply (x)</option>
-                          </select>
-                      </td>
                        <td>
-                           <div class="form-group">
-                               <select data-placeholder="Select Conditions" style="width:300px;" class="chzn-select-batch" multiple tabindex="6" name = "conditions_2">
-                                  {% for condition in conditions %}
-                                  <option value="{{ condition.condition_id }}">{{ condition.condition_name }}</option>
-                                  {% endfor %}                                      
-                               </select>
-                           </div>
-                           </div>
+                           <input type="numeric" name="{{ condition.condition_id }}" value="0"></input>
                        </td>
-                      </tr></tbody>
+                      </tr>
+                   {% endfor %}
+                 </tbody>
       	  </table>
           </span>
             <input type="submit" value="Add">
@@ -363,18 +345,6 @@ $(document).ready(function() {
     $("#concept_cancel_button").click(function(){
         $("#concept_search_box").addClass('hidden');
     })
-
-    var conditions = {{ conditions | safe }};
-    var condition_names = [] 
-    $.each(conditions,function(i,e){
-        condition_names.push(e.condition_name);
-    })
-  
-    dojo.ready(function() {
-        dojo.query(".chzn-select").chosen();
-        dojo.query(".chzn-select-deselect").chosen({allow_single_deselect:true});
-        dojo.query(".chzn-select-batch").chosen({batch_select:true});
-    });
         
     {% if request.user.is_authenticated %}
     // Add condition

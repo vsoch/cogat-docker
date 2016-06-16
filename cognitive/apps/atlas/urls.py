@@ -26,8 +26,9 @@ urlpatterns = [
     url(r'^battery/id/(?P<uid>[\w\+%_& ]+)/$', views.view_battery, name="battery"),
     url(r'^theory/id/(?P<uid>[\w\+%_& ]+)/$', views.view_theory, name="theory"),
     url(r'^concept/id/(?P<uid>[\w\+%_& ]+)/$', views.view_concept, name="concept"),
-    url(r'^task/id/(?P<uid>[\w\+%_& ]+)/$', views.view_task, name="task"),
-    url(r'^contrast/id/(?P<uid>[\w\+%_& ]+)/$', views.view_contrast, name="contrast"),
+    url(r'^task/id/(?P<uid>[\w\+%_& ]+)/$', views.view_task, name="task"), 
+    url(r'^contrast/id/(?P<uid>[\w\+%_& ]+)/$', graph.contrast_gist, name="contrast"),
+                                     # using neo4j graph as standard view for contrast
 
     # Modify terms
     url(r'^terms/new/$', views.contribute_term, name="contribute_term"),
