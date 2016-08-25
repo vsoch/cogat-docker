@@ -11,4 +11,5 @@ requests==2.9.0
 simplegeneric==0.8.1
 six==1.10.0
 psycopg2
+django-allauth
 uwsgi

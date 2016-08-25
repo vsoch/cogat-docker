@@ -27,6 +27,7 @@ RUN pip install cognitiveatlas
 RUN pip install django-allauth
 RUN pip install psycopg2
 RUN pip install uwsgi
+RUN pip install django-allauth
 
 RUN mkdir /code
 WORKDIR /code
